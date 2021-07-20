@@ -1,5 +1,4 @@
-<h1>Crear/Editar un GrupoInvestigacion</h1>
-<hr>
+<app-titulo-dialogo [Titulo]="'Crear/Editar un GrupoInvestigacion ...'"></app-titulo-dialogo>
 
 <div class="text-center" style="margin: 20px;" *ngIf="guardando">
     <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
@@ -12,32 +11,54 @@
 </div>
 
 <form *ngIf="!guardando && !leyendo" ngNativeValidate (ngSubmit)="guardarGrupoInvestigacion()">
-    <div class="form-group">
-        <label style="font-weight: bold;">Nombre</label>
-        <input type="text" required class="form-control" [(ngModel)]="grupoinvestigacion.nombre" name="nombre">
-    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label style="font-weight: bold;">Nombre</label>
+                <input type="text" required class="form-control" [(ngModel)]="grupoinvestigacion.nombre" name="nombre">
+            </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Sigla</label>
-        <input type="text" required class="form-control" [(ngModel)]="grupoinvestigacion.sigla" name="sigla">
-    </div>
+            <div class="form-group">
+                <label style="font-weight: bold;">Sigla</label>
+                <input type="text" required class="form-control" [(ngModel)]="grupoinvestigacion.sigla" name="sigla">
+            </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Director</label>
-        <select [(ngModel)]="grupoinvestigacion.iddirector" name="iddirector" class="custom-select">
+            <div class="form-group">
+                <label style="font-weight: bold;">Director</label>
+                <select [(ngModel)]="grupoinvestigacion.iddirector" name="iddirector" class="custom-select">
           <option [value]="docente.iddocente" *ngFor="let docente of Docentes" >{{ docente.nombre | capitalizado }}</option>
         </select>
+            </div>
+
+            <div class="form-group">
+                <label class="font-weight-bold">Logo</label>
+                <div class="text-center">
+                    <img class="card-img-top" [src]="grupoinvestigacion.logo">
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-file" style="height: 32px;">
+                        <input type="file" class="custom-file-input" (change)="importarImagen($event.target.files[0])">
+                        <label class="custom-file-label">Buscar foto ...</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="form-group">
+                <label style="font-weight: bold;">Misión</label>
+                <angular-editor [placeholder]="" [config]="genService.editorConfig" [(ngModel)]="grupoinvestigacion.mision" name="descripcion_mejora"></angular-editor>
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold;">Visión</label>
+                <angular-editor [placeholder]="" [config]="genService.editorConfig" [(ngModel)]="grupoinvestigacion.vision" name="descripcion_mejora"></angular-editor>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Misión</label>
-        <input type="text" required class="form-control" [(ngModel)]="grupoinvestigacion.mision" name="mision">
-    </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Visión</label>
-        <input type="text" required class="form-control" [(ngModel)]="grupoinvestigacion.vision" name="vision">
-    </div>
 
     <button class="btn btn-outline-success float-right"><img src="assets/Iconos/Guardar.png" style="height: 32px;"> Guardar</button>
 </form>

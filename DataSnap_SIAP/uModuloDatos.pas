@@ -7,7 +7,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.PG,
-  FireDAC.Phys.PGDef, uMd5, Utilidades;
+  FireDAC.Phys.PGDef, uMd5, Utilidades, uTAttribute, uTCRUDModel;
 
 type
   TmoduloDatos = class(TDataModule)
@@ -15,14 +15,22 @@ type
     Encriptador: TMD5;
   private
     FtokenServidor: string;
+
     procedure settokenServidor(const Value: string);
-    { Private declarations }
   public
     function postLoginUsuario(usuario: TJSONObject): TJSONObject;
     function generarNuevoToken: string;
 
     property tokenServidor: string read FtokenServidor write settokenServidor;
   end;
+
+const
+  JSON_RESPONSE = 'Response';
+  JSON_RESULTS = 'Results';
+  JSON_STATUS = 'Status';
+  JSON_REGISTER = 'Register';
+  RESPONSE_INCORRECTO = 'Incorrecto';
+  RESPONSE_CORRECTO = 'Correcto';
 
 var
   moduloDatos: TmoduloDatos;
@@ -41,14 +49,14 @@ end;
 function TmoduloDatos.postLoginUsuario(usuario: TJSONObject): TJSONObject;
 var
   QUsuario: TFDQuery;
-  JsonLogin: TJSONObject;
+  JsonLogin, JsonUsuario: TJSONObject;
   Cedula: string;
   Contra1, Contra2: string;
 begin
   try
-    JsonLogin := TJSONObject.Create;
+    JsonLogin := TJSONObject.create;
 
-    QUsuario := TFDQuery.Create(nil);
+    QUsuario := TFDQuery.create(nil);
     QUsuario.Connection := Conexion;
 
     Cedula := usuario.GetValue('cedula').Value;
@@ -66,6 +74,12 @@ begin
 
       if Contra1 = Contra2 then
       begin
+        JsonUsuario := TJSONObject.create;
+        JsonUsuario.AddPair('cedula', QUsuario.FieldByName('cedula').AsString);
+        JsonUsuario.AddPair('correo', QUsuario.FieldByName('correo').AsString);
+        JsonUsuario.AddPair('nombre', QUsuario.FieldByName('nombre').AsString);
+
+        JsonLogin.AddPair('Usuario', JsonUsuario);
         JsonLogin.AddPair('Respuesta', 'Acceso-Correcto');
         JsonLogin.AddPair('Token', FtokenServidor);
       end

@@ -47,7 +47,7 @@ import { RUTA_DOCENTES, RUTA_TIPO_CONTRATO, RUTA_CATEGORIA_DOCENTE, RUTA_FACTOR_
          RUTA_FACULTADES, RUTA_PROGRAMAS, RUTA_SERVICIOSPROGRAMA, RUTA_SERVICIOPROGRAMA, RUTA_ACTUALIZACIONES, RUTA_TAREAS_PENDIENTES,
          RUTA_FUNCIONESDOCENTE, RUTA_EGRESADOS, RUTA_FACTOR_EXTENSION, RUTA_GRUPOSINVESTIGACION, RUTA_MODALIDADES, RUTA_AREASPROFUNDIZACION,
          RUTA_TRABAJOSGRADO, RUTA_PERIODOS, RUTA_EXPORTAR_AGENDA_DOCENTE, RUTA_EXPORTAR_AGENDAS_FACULTAD, RUTA_ESTADO_AGENDAS,
-         RUTA_ESTADISTICAS_FACTOR_DOCENTES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA } from './config/config';
+         RUTA_ESTADISTICAS_FACTOR_DOCENTES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA, RUTA_SEMINARIO } from './config/config';
 
 import { FacultadesComponent } from './factores/docentes/facultades/facultades.component';
 import { ProgramasComponent } from './factores/docentes/programas/programas.component';
@@ -67,7 +67,7 @@ import { EstadoAgendasComponent } from './factores/docentes/agendas/estado-agend
 import { EstadisticasFactorDocentesComponent } from './factores/docentes/estadisticas-factor-docentes/estadisticas-factor-docentes.component';
 import { EfdServiciosProgramaComponent } from './factores/docentes/estadisticas-factor-docentes/efd-servicios-programa/efd-servicios-programa.component';
 import { EfdHorasFacultadesComponent } from './factores/docentes/estadisticas-factor-docentes/efd-horas-facultades/efd-horas-facultades.component';
-import { RUTA_ESTADISTICAS_HORAS_FACULTADES, RUTA_FACTORES, RUTA_CREAR_EDITAR_TRABAJO_GRADO, RUTA_DIRECTORES_JURADOS_TRABAJO_GRADO, RUTA_ADMINISTRADOR, RUTA_NOT_PAGE_FOUND, RUTA_ACERCA, RUTA_MANUAL_AYUDA, RUTA_GESTION_ERRORES, RUTA_PLAN_MEJORAMIENTO, RUTA_CREAR_EDITAR_PLAN_MEJORAMIENTO, RUTA_INICIO, RUTA_FACTORES_CALIDAD, RUTA_VER_TRABAJO_GRADO, RUTA_EXPORTAR_TRABAJOS_GRADO, RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO } from './config/config';
+import { RUTA_ESTADISTICAS_HORAS_FACULTADES, RUTA_FACTORES, RUTA_CREAR_EDITAR_TRABAJO_GRADO, RUTA_DIRECTORES_JURADOS_TRABAJO_GRADO, RUTA_ADMINISTRADOR, RUTA_NOT_PAGE_FOUND, RUTA_ACERCA, RUTA_MANUAL_AYUDA, RUTA_GESTION_ERRORES, RUTA_PLAN_MEJORAMIENTO, RUTA_CREAR_EDITAR_PLAN_MEJORAMIENTO, RUTA_INICIO, RUTA_FACTORES_CALIDAD, RUTA_VER_TRABAJO_GRADO, RUTA_EXPORTAR_TRABAJOS_GRADO, RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO, RUTA_ESTADISTICAS_TRABAJOS_GRADO, RUTA_ESTADISTICAS, RUTA_REPORTE_DIRECCION_JURADO, RUTA_GRUPO_INVESTIGACION, RUTA_EVENTOS_SEMINARIO } from './config/config';
 import { CrearEditarTrabajoGradoComponent } from './factores/procesos_academicos/trabajos-grado/crear-editar-trabajo-grado/crear-editar-trabajo-grado.component';
 import { DirectoresJuradosComponent } from './factores/docentes/docentes/directores-jurados/directores-jurados.component';
 import { AcercaComponent } from './acerca/acerca.component';
@@ -78,6 +78,12 @@ import { FactoresCalidadComponent } from './factores/procesos_academicos/plan-me
 import { VerTrabajoGradoComponent } from './factores/procesos_academicos/trabajos-grado/ver-trabajo-grado/ver-trabajo-grado.component';
 import { ExportarTrabajosGradoComponent } from './factores/procesos_academicos/trabajos-grado/exportar-trabajos-grado/exportar-trabajos-grado.component';
 import { ReporteDireccionTrabajosGradoComponent } from './factores/procesos_academicos/trabajos-grado/reporte-direccion-trabajos-grado/reporte-direccion-trabajos-grado.component';
+import { EstadisticasTrabajosGradoComponent } from './factores/procesos_academicos/trabajos-grado/estadisticas-trabajos-grado/estadisticas-trabajos-grado.component';
+import { EstadisticasComponent } from './estadisticas/estadisticas.component';
+import { ReporteDireccionJuradoComponent } from './factores/procesos_academicos/trabajos-grado/reporte-direccion-jurado/reporte-direccion-jurado.component';
+import { GrupoInvestigacionComponent } from './factores/investigacion/grupos-investigacion/grupo-investigacion/grupo-investigacion.component';
+import { SeminarioComponent } from './factores/extension/seminario/seminario.component';
+import { EventosSeminarioComponent } from './factores/extension/seminario/eventos-seminario/eventos-seminario.component';
 
 const routes: Routes = [
 
@@ -97,6 +103,8 @@ const routes: Routes = [
   {path: RUTA_AREASPROFUNDIZACION, component: AreasProfundizacionComponent},
   {path: RUTA_MODALIDADES, component: ModalidadesComponent},
   {path: RUTA_TRABAJOSGRADO, component: TrabajosGradoComponent},
+  {path: RUTA_REPORTE_DIRECCION_JURADO, component: ReporteDireccionJuradoComponent},
+  {path: RUTA_ESTADISTICAS_TRABAJOS_GRADO, component: EstadisticasTrabajosGradoComponent},
   {path: RUTA_EXPORTAR_TRABAJOS_GRADO, component: ExportarTrabajosGradoComponent},
   {path: RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO, component: ReporteDireccionTrabajosGradoComponent},
   {path: RUTA_VER_TRABAJO_GRADO + '/:IdTrabajoGrado', component: VerTrabajoGradoComponent},
@@ -150,11 +158,21 @@ const routes: Routes = [
 
   {path: 'investigacion', component: InvestigacionComponent, canActivate: [RutaNavegarService]},
   {path: RUTA_GRUPOSINVESTIGACION, component: GruposInvestigacionComponent},
+  {path: RUTA_GRUPO_INVESTIGACION + '/:IdGrupo', component: GrupoInvestigacionComponent},
 
   // %%%%%%% FACTORES - EXTENSIÓN Y GESTIÓN DEL GRADUADO %%%%%%%
 
   {path: RUTA_FACTOR_EXTENSION, component: ExtensionComponent, canActivate: [RutaNavegarService]},
   {path: RUTA_EGRESADOS, component: EgresadosComponent},
+  {path: RUTA_SEMINARIO, component: SeminarioComponent, children: [
+    {path: RUTA_EVENTOS_SEMINARIO, component: EventosSeminarioComponent},
+  ]},
+
+  // %%%%%%% Estadísticas Generales de Toda la Aplicación %%%%%%%
+  {path: RUTA_ESTADISTICAS, component: EstadisticasComponent, canActivate: [RutaNavegarService],
+    children: [
+      {path: RUTA_ESTADISTICAS_TRABAJOS_GRADO, component: EstadisticasTrabajosGradoComponent}
+    ]},
 
   // %%%%%%% MENU - ACERCA DE %%%%%%%
   {path: RUTA_ACERCA, component: AcercaComponent,

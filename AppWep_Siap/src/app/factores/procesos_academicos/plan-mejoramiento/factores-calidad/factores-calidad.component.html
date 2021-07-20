@@ -1,9 +1,14 @@
 <div class="m-3">
     <div class="modal-footer">
-        <button class="btn btn-outline-success" (click)="agregarFactorCalidad()"><img style="width: 32px;" src="assets/Iconos/Agregar.png"> Crear Factor de Calidad</button>
+        <button class="btn btn-outline-success" (click)="agregarFactorCalidad()"><i class="fas fa-check-circle"></i> Crear factor de calidad</button>
     </div>
 
-    <table class="table table-hover">
+    <div class="text-center" style="margin: 40px;" *ngIf="leyendo">
+        <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
+        <h3>Buscando factores de calidad ...</h3>
+    </div>
+
+    <table class="table table-hover" *ngIf="!leyendo">
         <thead class="table-dark">
             <tr>
                 <th>No</th>

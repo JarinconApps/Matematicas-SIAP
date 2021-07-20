@@ -30,7 +30,7 @@
                         <h1 class="text-info">{{ contrato.contrato | capitalizado }}</h1>
 
                         <div class="modal-footer">
-                            <button onclick="crearExcel(value, value)" [value]="'Reporte_Trabajos_de_Grado_' + contrato.contrato + '.xls'" class="btn btn-outline-success"><img src="assets/Iconos/Excel.png" style="width: 32px;"> Exportar a Excel</button>
+                            <button onclick="crearExcel(value, value)" [value]="'Reporte_Trabajos_de_Grado_' + contrato.contrato + '.xls'" class="btn btn-outline-success"><i class="fas fa-file-excel"></i> Exportar a Excel</button>
                         </div>
 
                         <table class="table table-hover puntero-manito" [attr.id]="'Reporte_Trabajos_de_Grado_' + contrato.contrato + '.xls'">
@@ -129,18 +129,46 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h2 class="text-info">Docentes dirigiendo trabajos de grado</h2>
-                        <hr>
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-action" *ngFor="let director of Directores">{{ director.nombre | capitalizado }} ({{ director.noTerminados.length }} Trabajos) </li>
-                        </ul>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-success" onclick="crearExcel('directores', value)" [value]="'docentes-con-direccion-trabajos-de-grado.xls'" class="btn btn-outline-success"><i class="fas fa-file-excel"></i> Descargar</button>
+                        </div>
+
+                        <table class="table table-hover" id="directores">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Docente</th>
+                                    <th>Cantidad Trabajos</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let director of Directores">
+                                    <td>{{ director.nombre | capitalizado }}</td>
+                                    <td>{{ director.noTerminados.length }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="col-md-6">
                         <h2 class="text-info">Docentes que no estan dirigiendo trabajos de grado</h2>
-                        <hr>
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-action" *ngFor="let noDirector of noDirectores">{{ noDirector.nombre | capitalizado }}</li>
-                        </ul>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-success" onclick="crearExcel('no-directores', value)" [value]="'docentes-sin-direccion-trabajos-de-grado.xls'" class="btn btn-outline-success"><i class="fas fa-file-excel"></i> Descargar</button>
+                        </div>
+
+                        <table class="table table-hover" id="no-directores">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Docente</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let noDirector of noDirectores">
+                                    <td>{{ noDirector.nombre | capitalizado }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
@@ -256,17 +284,48 @@
                     <div class="col-md-6">
                         <h2 class="text-info">Docentes evaluando trabajos de grado</h2>
                         <hr>
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-action" *ngFor="let evaluador of Evaluadores">{{ evaluador.nombre | capitalizado }} ({{ evaluador.noTerminados.length }} Trabajos) </li>
-                        </ul>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-success" onclick="crearExcel('evaluadores', value)" [value]="'docentes-evaluando-trabajos-de-grado.xls'" class="btn btn-outline-success"><i class="fas fa-file-excel"></i> Descargar</button>
+                        </div>
+
+                        <table class="table table-hover" id="evaluadores">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Docente</th>
+                                    <th>Cantidad Trabajos</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let evaluador of Evaluadores">
+                                    <td>{{ evaluador.nombre | capitalizado }}</td>
+                                    <td>{{ evaluador.noTerminados.length }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="col-md-6">
                         <h2 class="text-info">Docentes que no estan evaluando trabajos de grado</h2>
-                        <hr>
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-action" *ngFor="let noEvaluador of noEvaluadores">{{ noEvaluador.nombre | capitalizado }}</li>
-                        </ul>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-success" onclick="crearExcel('no-evaluadores', value)" [value]="'docentes-que-no-estan-evaluando-trabajos-de-grado.xls'" class="btn btn-outline-success"><i class="fas fa-file-excel"></i> Descargar</button>
+                        </div>
+
+                        <table class="table table-hover" id="no-evaluadores">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Docente</th>
+                                    <th>Cantidad Trabajos</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let noEvaluador of noEvaluadores">
+                                    <td>{{ noEvaluador.nombre | capitalizado }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>
@@ -277,7 +336,31 @@
                  Cantidad de trabajos de grado por docente
                  ================================================================================================================================================================= -->
             <div *ngIf="Vistas[4]">
-                <app-visor-grafica [Datos]="Datos" [Etiquetas]="Etiquetas" [Titulo]="'Cantidad de Trabajos de Grado Dirigidos por Docente'"></app-visor-grafica>
+                <app-visor-grafica [IdGrafica]="'cantidad-trabajos'" [Datos]="Datos" [Etiquetas]="Etiquetas" [Titulo]="'Cantidad de Trabajos de Grado Dirigidos por Docente'"></app-visor-grafica>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-success" [value]="'Cantidad_de_trabajos_de_grado_dirigidos_por_docente.xls'" onclick="crearExcel('reporte-trabajos-grado', value)"><i class="fas fa-file-excel"></i> Descargar en Excel</button>
+                </div>
+
+                <div id="reporte-trabajos-grado">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>No</th>
+                                <th>Docente</th>
+                                <th>Cantidad de Trabajos Dirigidos</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let registro of tablaReporte; let id = index">
+                                <td>{{ id + 1 }}</td>
+                                <td>{{ registro.docente | capitalizado }}</td>
+                                <td>{{ registro.cantidad }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>

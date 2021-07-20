@@ -55,7 +55,17 @@
 }
 
 
-/* Impresión de Horizontal*/
+/* Impresión Horizontal*/
+
+@media print {
+    #trabajoGrado {
+        size: 25cm 35.7cm;
+        margin: 5mm 5mm 5mm 5mm;
+    }
+    #botonesEditarPerfilDocente {
+        display: none;
+    }
+}
 
 @page {
     size: 25cm 35.7cm;
@@ -67,7 +77,7 @@
 /* EFECTOS */
 
 .card-shadow {
-    box-shadow: 4px 4px 10px #666;
+    box-shadow: 4px 4px 10px #676;
 }
 
 
@@ -225,7 +235,7 @@ footer {
 }
 
 .font-size-24 {
-    font-size: 24px;
+    font-size: 18px;
 }
 
 .circular-landscape {

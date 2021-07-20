@@ -1,0 +1,128 @@
+<div class="modal-footer">
+    <button class="btn btn-outline-success" (click)="agregarEvento()"><i class="fas fa-plus-circle"></i> Agregar evento</button>
+</div>
+
+<div class="card shadow mb-3" *ngFor="let seminario of eventosSeminario">
+    <div class="card-body">
+        <h3 class="text-info">{{ seminario.titulo | capitalizado }}</h3>
+        <hr>
+
+        <div class="row">
+            <div class="form-group col">
+                <label class="font-weight-bold">Número</label>
+                <p>{{ seminario.numero }}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Semestre</label>
+                <p>{{ seminario.semestre }}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Fecha</label>
+                <p>{{ seminario.fecha }}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Modalidad</label>
+                <p>{{ seminario.modalidad }}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Área de profundización</label>
+                <p>{{ seminario.area_profundizacion }}</p>
+            </div>
+        </div>
+
+        <h4 class="text-info">Conferencia</h4>
+        <hr>
+        <div class="row">
+            <div class="form-group col">
+                <label class="font-weight-bold">Conferencista</label>
+                <p>{{ seminario.conferencista }}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Título</label>
+                <p>{{ seminario.titulo }}</p>
+            </div>
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Resumen</label>
+            <p class="text-justify" [innerHTML]="seminario.resumen"></p>
+        </div>
+
+        <div class="row">
+            <div class="form-group col">
+                <label class="font-weight-bold">Institución</label>
+                <p class="text-justify" [innerHTML]="seminario.origen_conferencista"></p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Grupo o dependencia Universitaria</label>
+                <p class="text-justify" [innerHTML]="seminario.grupo_dependencia"></p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">País</label>
+                <p class="text-justify" [innerHTML]="seminario.pais_origen"></p>
+            </div>
+        </div>
+
+        <h5 class="text-info">Asistencia</h5>
+        <hr>
+
+        <div class="row">
+            <div class="form-group col">
+                <label class="font-weight-bold">Graduados</label>
+                <p class="text-justify">{{ seminario.graduados}}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Estudiantes</label>
+                <p class="text-justify">{{ seminario.estudiantes}}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Nacionales</label>
+                <p class="text-justify">{{ seminario.nacional}}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Internacionales</label>
+                <p class="text-justify">{{ seminario.internacional}}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Total</label>
+                <p class="text-justify">{{ seminario.total}}</p>
+            </div>
+        </div>
+
+        <h5 class="text-info">Evidencias</h5>
+        <hr>
+
+        <div class="row">
+            <div class="form-group col">
+                <label class="font-weight-bold">Lugar</label>
+                <p class="text-justify">{{ seminario.lugar}}</p>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Enlace de Yotube</label>
+                <a [href]="seminario.youtube" class="text-justify">{{ seminario.youtube}}</a>
+            </div>
+
+            <div class="form-group col">
+                <label class="font-weight-bold">Evidencias</label>
+                <p class="text-justify">{{ seminario.evidencias}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-warning" (click)="editarEvento(seminario)"><i class="fas fa-edit"></i> Editar</button>
+        <button class="btn btn-outline-danger" (click)="eliminarEvento(seminario)"><i class="fas fa-trash-alt"></i> Eliminar</button>
+    </div>
+</div>

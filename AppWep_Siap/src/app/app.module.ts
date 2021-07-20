@@ -159,6 +159,16 @@ import { VerTrabajoGradoComponent } from './factores/procesos_academicos/trabajo
 import { ExportarTrabajosGradoComponent } from './factores/procesos_academicos/trabajos-grado/exportar-trabajos-grado/exportar-trabajos-grado.component';
 import { ReporteDireccionTrabajosGradoComponent } from './factores/procesos_academicos/trabajos-grado/reporte-direccion-trabajos-grado/reporte-direccion-trabajos-grado.component';
 import { VisorGraficaComponent } from './comunes/visor-grafica/visor-grafica.component';
+import { EstadisticasTrabajosGradoComponent } from './factores/procesos_academicos/trabajos-grado/estadisticas-trabajos-grado/estadisticas-trabajos-grado.component';
+import { EstadisticasComponent } from './estadisticas/estadisticas.component';
+import { TiempoPipe } from './pipes/tiempo.pipe';
+import { ReporteDireccionJuradoComponent } from './factores/procesos_academicos/trabajos-grado/reporte-direccion-jurado/reporte-direccion-jurado.component';
+import { CrearEditarAreaDocenteComponent } from './factores/docentes/docente/crear-editar-area-docente/crear-editar-area-docente.component';
+import { GrupoInvestigacionComponent } from './factores/investigacion/grupos-investigacion/grupo-investigacion/grupo-investigacion.component';
+import { CrearEditarEnlaceDivulgacionComponent } from './factores/docentes/docente/crear-editar-enlace-divulgacion/crear-editar-enlace-divulgacion.component';
+import { SeminarioComponent } from './factores/extension/seminario/seminario.component';
+import { EventosSeminarioComponent } from './factores/extension/seminario/eventos-seminario/eventos-seminario.component';
+import { CrearEditarEventoSeminarioComponent } from './factores/extension/seminario/eventos-seminario/crear-editar-evento-seminario/crear-editar-evento-seminario.component';
 
 
 
@@ -379,6 +389,26 @@ import { VisorGraficaComponent } from './comunes/visor-grafica/visor-grafica.com
 
     ReporteDireccionTrabajosGradoComponent,
 
+    EstadisticasTrabajosGradoComponent,
+
+    EstadisticasComponent,
+
+    TiempoPipe,
+
+    ReporteDireccionJuradoComponent,
+
+    CrearEditarAreaDocenteComponent,
+
+    GrupoInvestigacionComponent,
+
+    CrearEditarEnlaceDivulgacionComponent,
+
+    SeminarioComponent,
+
+    EventosSeminarioComponent,
+
+    CrearEditarEventoSeminarioComponent,
+
 
   ],
   imports: [
@@ -432,7 +462,12 @@ import { VisorGraficaComponent } from './comunes/visor-grafica/visor-grafica.com
     CrearEditarFormacionComponent,
     SeleccionarGrupoComponent,
     CrearEditarTipoProduccionComponent,
-    CrearEditarProductoComponent
+    CrearEditarProductoComponent,
+    ExportarTrabajosGradoComponent,
+    VerTrabajoGradoComponent,
+    CrearEditarAreaDocenteComponent,
+    CrearEditarEnlaceDivulgacionComponent,
+    CrearEditarEventoSeminarioComponent
   ],
   bootstrap: [AppComponent]
 })

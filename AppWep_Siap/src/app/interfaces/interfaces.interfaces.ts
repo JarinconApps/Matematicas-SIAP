@@ -301,6 +301,8 @@ export interface GrupoInvestigacion {
   iddirector?: string;
   mision?: string;
   vision?: string;
+  logo?: string;
+  director?: Docente;
 }
 
 export interface Modalidad {
@@ -311,6 +313,8 @@ export interface Modalidad {
 export interface AreaProfundizacion {
   idareaprofundizacion?: string;
   nombre?: string;
+  iddocente?: string;
+  idareadocente?: string;
 }
 
 export interface TiempoTrabajoGrado {
@@ -642,6 +646,24 @@ export interface ReporteTrabajoGrado {
   Docentes?: Docente[];
 }
 
+export interface Statistic {
+  Label?: string;
+  Count?: number;
+  Percent?: number;
+}
+
+export interface Statistics {
+  Statistics?: Statistic[];
+  Labels?: string[];
+  Data?: Data;
+  Ordenar?: string;
+}
+
+export interface Data {
+  data?: number[];
+  label?: string[];
+}
+
 export interface Paginacion {
   desde?: number;
   cantidad?: number;
@@ -649,9 +671,68 @@ export interface Paginacion {
   resultado?: string;
   ordenarPor?: string;
   contenido?: any[];
-  attrOrdenar?: string[];
   todos?: string;
 }
 
+export interface FiltroBusquedaTrabajosGrado {
+  titulo?: string;
+  estudiante?: string;
+  director?: string;
+  idModalidad?: string;
+  idAreaProfundizacion?: string;
+  idGrupoInvestigacion?: string;
+  estadoProyecto?: string;
+  paginacion?: Paginacion;
+  fechaInicio?: string;
+  fechaFin?: string;
+}
 
+export interface ReporteDireccionJurado {
+  Dirigidos: {
+    Terminados: TrabajoGrado[];
+    NoTerminados: TrabajoGrado[];
+  };
+  Jurado: TrabajoGrado[];
+}
 
+export interface RespuestaCRUD {
+  Response?: string;
+  Results?: any[];
+  Status?: string;
+}
+
+export interface Login {
+  Usuario?: Usuario;
+  Respuesta?: string;
+  Token?: string;
+}
+
+export interface EnlaceDivulgacion {
+  iddivulgacion?: string;
+  nombre?: string;
+  direccion?: string;
+  iddocente?: string;
+}
+
+export interface Seminario {
+  idseminario?: string;
+  semestre?: string;
+  numero?: number;
+  fecha?: string;
+  conferencista?: string;
+  titulo?: string;
+  resumen?: string;
+  origen_conferencista?: string;
+  grupo_dependencia?: string;
+  pais_origen?: string;
+  area_profundizacion?: string;
+  modalidad?: string;
+  graduados?: number;
+  estudiantes?: number;
+  nacional?: number;
+  internacional?: number;
+  total?: number;
+  lugar?: string;
+  youtube?: string;
+  evidencias?: string;
+}

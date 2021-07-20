@@ -5,10 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NoImagenPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
+  transform(value: string): string {
 
     if (!value || value === 'El Archivo No Existe') {
-      return 'assets/Imagenes/noImagenPerfil.jpg';
+      return 'assets/Imagenes/noImagen.jpg';
     } else {
       return value;
     }

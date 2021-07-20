@@ -24,7 +24,7 @@ export class DlgGrupoInvestigacionComponent implements OnInit {
 
   Docentes: Docente[] = [];
 
-  accion: string;
+  accion = 'Crear';
   id: string;
   contIntentos = 0;
   guardando = false;
@@ -32,29 +32,23 @@ export class DlgGrupoInvestigacionComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<DlgGrupoInvestigacionComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private genService: GeneralService,
+              public genService: GeneralService,
               private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.accion = this.data.accion;
-    this.id = this.data.idgrupoinvestigacion;
-    this.leerDocentes();
 
-    if (this.accion === 'Editar') {
-      this.leerGrupoInvestigacion();
+    if (this.data.grupoInvestigacion !== null) {
+      this.grupoinvestigacion = this.data.grupoInvestigacion;
+      this.accion = 'Editar';
     }
+
+    this.leerDocentes();
   }
 
   leerDocentes() {
     this.genService.getDocentes('nombre').subscribe((rDocentes: any) => {
       this.Docentes = rDocentes.Docentes;
     });
-  }
-
-  leerGrupoInvestigacion() {
-      this.genService.getGrupoInvestigacion(this.id).subscribe((rGrupoInvestigacion: GrupoInvestigacion) => {
-        this.grupoinvestigacion = rGrupoInvestigacion;
-      });
   }
 
   guardarGrupoInvestigacion() {
@@ -84,6 +78,27 @@ export class DlgGrupoInvestigacionComponent implements OnInit {
     this.snackBar.openFromComponent(SnackBarComponent, {
       data: {Titulo: titulo, Mensaje: msg}, duration: 5000
     });
+  }
+
+  importarImagen(archivo: File) {
+
+    if (!archivo) {
+      return;
+    }
+
+    const ArchivoSubir: File = archivo;
+
+    // %%%%%%% Subir Archivo %%%%%%%
+    const reader = new FileReader();
+    reader.readAsDataURL(ArchivoSubir);
+    reader.onload = () => {
+
+      this.grupoinvestigacion.logo = reader.result.toString();
+    };
+
+    reader.onerror = (error) => {
+
+    };
   }
 
   }

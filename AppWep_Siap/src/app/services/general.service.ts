@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LS_ULTIMA_RUTA } from '../config/config';
 import { map, retry } from 'rxjs/operators';
-import { Periodo } from '../interfaces/interfaces.interfaces';
+import { Periodo, Usuario, Login } from '../interfaces/interfaces.interfaces';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Injectable({
@@ -83,8 +83,11 @@ export class GeneralService {
   private URL_MODALIDADES = 'Modalidades';
   private URL_AREAPROFUNDIZACION = 'AreaProfundizacion';
   private URL_AREASPROFUNDIZACION = 'AreasProfundizacion';
+  private URL_AREA_DOCENTE = 'AreaDocente';
+  private URL_AREAS_DOCENTE = 'AreasDocente';
   private URL_TRABAJOGRADO = 'TrabajoGrado';
   private URL_TRABAJOSGRADO = 'TrabajosGrado';
+  private URL_ESTADISTICAS_TRABAJOS_GRADO = 'EstadisticasTrabajoGrado';
   private URL_DIRECTORES_TRABAJOS_GRADO = 'DirectoresTrabajosGrado';
   private URL_EVALUADORES_TRABAJOS_GRADO = 'EvaluadoresTrabajosGrado';
   private URL_PERIODO = 'Periodo';
@@ -107,16 +110,25 @@ export class GeneralService {
   private URL_FORMACION = 'formacion';
   private URL_FORMACIONES = 'formaciones';
   private URL_GRUPOINV_DOCENTE = 'GrupoInvDocente';
+  private URL_DOCENTES_GRUPO_INVESTIGACION = 'DocentesGrupoInvestigacion';
   private URL_TIPO_PRODUCCION = 'TipoProduccion';
   private URL_TIPOS_PRODUCCION = 'TiposProduccion';
   private URL_PRODUCTO = 'Producto';
   private URL_PRODUCTOS_DOCENTE = 'ProductosDocente';
   private URL_PRODUCTOS = 'Productos';
+  private URL_DIRECCION_JURADO_DOCENTE = 'DireccionJuradoDocente';
+  private URL_VALIDAR_TOKEN = 'validarToken';
+  private URL_ENLACE_DIVULGACION = 'EnlaceDivulgacion';
+  private URL_ENLACES_DIVULGACION = 'EnlacesDivulgacion';
+  private URL_SEMINARIO = 'Seminario';
+  private URL_SEMINARIOS = 'Seminarios';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
     Autorizacion: ''
   });
+
+  usuario: Usuario = null;
 
   constructor(private http: HttpClient,
               private router: Router) {
@@ -290,25 +302,6 @@ export class GeneralService {
     return this.http.get(url);
   }
 
-  descargarTablaExcel() {
-    const uri = 'data:application/vnd.ms-excel;base64,'
-    const template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
-
-    const base64 = function(s) {
-      return window.btoa(unescape(encodeURIComponent(s)));
-     }
-
-    const format = function(s, c) {
-      return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; });
-    }
-
-    return function(table, name) {
-      if (!table.nodeType) table = document.getElementById(table)
-      var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-      window.location.href = uri + base64(format(template, ctx))
-    }
-  }
-
   generarID() {
 
     let id = '';
@@ -359,6 +352,11 @@ export class GeneralService {
     return this.http.get(url);
   }
 
+  getValidarToken(token: string) {
+    const url = this.dataSnap_Route(this.URL_VALIDAR_TOKEN) + this.parametro(token);
+    return this.http.get(url);
+  }
+
   postUsuario(datos: string) {
     const url = this.dataSnap_Usuario() + this.parametro(this.token);
     const headers = new HttpHeaders({
@@ -367,21 +365,30 @@ export class GeneralService {
     return this.http.post(url, datos, {headers});
   }
 
+  establecerToken(token: string) {
+    this.token = token;
+
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Autorizacion: this.token
+    });
+  }
+
   postLoginUsuario(datos: string) {
     const url = this.dataSnap_Route(this.URL_LOGIN_USUARIO);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
     return this.http.post(url, datos, {headers}).pipe(
-      map((RespLogin: any) => {
+      map((RespLogin: Login) => {
 
         if (RespLogin.Respuesta === 'Acceso-Correcto') {
-          this.token = RespLogin.Token;
 
-          this.headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Autorizacion: this.token
-          });
+          this.establecerToken(RespLogin.Token);
+
+          this.usuario = RespLogin.Usuario;
+          localStorage.setItem('Usuario', JSON.stringify(this.usuario));
+          localStorage.setItem('Token', this.token);
         }
 
         return RespLogin;
@@ -798,6 +805,11 @@ export class GeneralService {
   getDocentes(ordenarPor: string) {
     const url = this.dataSnap_Path(this.URL_DOCENTES) + this.parametro(ordenarPor);
     return this.http.get(url).pipe(retry(10));
+  }
+
+  getDireccionJuradoDocente(IdDocente: string) {
+    const url = this.dataSnap_Path(this.URL_DIRECCION_JURADO_DOCENTE) + this.parametro(IdDocente);
+    return this.http.get(url, {headers: this.headers}).pipe(retry(10));
   }
 
   getDirectoresJurados() {
@@ -1413,6 +1425,34 @@ export class GeneralService {
     return this.http.delete(url, {headers}).pipe(retry(10));
   }
 
+  /** ## Áreas de Profundización Docentes
+   * Contiene los servicios para manejar las áreas de profundización de los docentes
+   */
+
+  /** ###  postAreaDocente
+   * Registrar un área de profundización al docente
+   */
+  postAreaDocente(datos: string) {
+    const url = this.dataSnap_Path(this.URL_AREA_DOCENTE);
+    return this.http.post(url, datos, {headers: this.headers}).pipe(retry(10));
+  }
+
+  /** ##  getAreasDocente
+   * Obtiene las áreas de profundización del docente
+   */
+  getAreasDocente(IdDocente: string) {
+    const url = this.dataSnap_Path(this.URL_AREAS_DOCENTE) + this.parametro(IdDocente);
+    return this.http.get(url, {headers: this.headers}).pipe(retry(10));
+  }
+
+  /** ### deleteAreaDocente
+   * Elimina el área de profundización del docente
+   */
+  deleteAreaDocente(idareadocente: string) {
+    const url = this.dataSnap_Path(this.URL_AREA_DOCENTE) + this.parametro(idareadocente);
+    return this.http.delete(url, {headers: this.headers}).pipe(retry(10));
+  }
+
   /* TrabajoGrado %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
   postTrabajoGrado(datos: string) {
@@ -1454,6 +1494,12 @@ export class GeneralService {
     const url = this.dataSnap_Path(this.URL_TRABAJOGRADO) + this.parametro(id);
     const headers = this.headers;
     return this.http.delete(url, {headers}).pipe(retry(10));
+  }
+
+  getEstadisticasTrabajosGrado() {
+    const url = this.dataSnap_Path(this.URL_ESTADISTICAS_TRABAJOS_GRADO);
+    const headers = this.headers;
+    return this.http.get(url, {headers}).pipe(retry(10));
   }
 
   /* Periodo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -1709,6 +1755,12 @@ export class GeneralService {
     return this.http.get(url, {headers});
   }
 
+  getDocentesGrupoInvestigacion(IdGrupo: string) {
+    const url = this.dataSnap_Path(this.URL_DOCENTES_GRUPO_INVESTIGACION) + this.parametro(IdGrupo);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
   deleteGrupoInvestigacionDocente(IdGrupoDocente: string) {
     const url = this.dataSnap_Path(this.URL_GRUPOINV_DOCENTE) + this.parametro(IdGrupoDocente);
     const headers = this.headers;
@@ -1793,6 +1845,70 @@ export class GeneralService {
 
   putProducto(datos: string) {
     const url = this.dataSnap_Path(this.URL_PRODUCTO);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
+  }
+
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     CRUD
+     Enlaces divulgación
+  =========================================================================================================================*/
+
+  getEnlacesDivulgacion(IdDocente: string) {
+    const url = this.dataSnap_Path(this.URL_ENLACES_DIVULGACION) + this.parametro(IdDocente);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  deleteEnlaceDivulgalcion(IdEnlace: string) {
+    const url = this.dataSnap_Path(this.URL_ENLACE_DIVULGACION) + this.parametro(IdEnlace);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
+  }
+
+  postEnlaceDivulgacion(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ENLACE_DIVULGACION);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  putEnlaceDivulgacion(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ENLACE_DIVULGACION);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
+  }
+
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     CRUD
+     Eventos del Seminario del programa
+  =========================================================================================================================*/
+
+  getSeminario(IdSeminario: string) {
+    const url = this.dataSnap_Path(this.URL_SEMINARIO) + this.parametro(IdSeminario);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  getSeminarios() {
+    const url = this.dataSnap_Path(this.URL_SEMINARIOS);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  deleteSeminario(IdSeminario: string) {
+    const url = this.dataSnap_Path(this.URL_SEMINARIO) + this.parametro(IdSeminario);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
+  }
+
+  postSeminario(datos: string) {
+    const url = this.dataSnap_Path(this.URL_SEMINARIO);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  putSeminario(datos: string) {
+    const url = this.dataSnap_Path(this.URL_SEMINARIO);
     const headers = this.headers;
     return this.http.put(url, datos, {headers});
   }

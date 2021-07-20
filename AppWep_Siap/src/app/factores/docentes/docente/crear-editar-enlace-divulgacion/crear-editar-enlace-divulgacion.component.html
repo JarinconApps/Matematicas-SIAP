@@ -1,0 +1,17 @@
+<app-titulo-dialogo [Titulo]="'Seleccione un área de profundización ...'"></app-titulo-dialogo>
+
+<div class="form-group">
+    <label class="font-weight-bold">Nombre</label>
+    <select class="custom-select" [(ngModel)]="enlaceDivulgacion.nombre" name="nombre">
+      <option [value]="enlace" *ngFor="let enlace of enlaces">{{ enlace | capitalizado}}</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label class="font-weight-bold">Dirección</label>
+    <input class="form-control" [(ngModel)]="enlaceDivulgacion.direccion" name="direccion">
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-outline-success" (click)="guardar()"><i class="fas fa-save"></i> Guardar</button>
+</div>

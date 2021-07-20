@@ -113,6 +113,15 @@ alter table siap_docentes add column activo text;
 alter table siap_docentes add column documento text;
 alter table siap_docentes add column vinculacion text;
 alter table siap_docentes add column institucion text;
+alter table siap_docentes add column contra text;
+
+/* Enlaces de divulgación docente*/
+create table if not exists siap_divulgacion_docente(
+	iddivulgacion text primary key not null,
+	nombre text,
+	direccion text,
+	iddocente integer references siap_docentes(iddocente)
+);
 
 create table if not exists siap_formacion (
 	idformacion text primary key not null,
@@ -262,6 +271,7 @@ create table if not exists siap_gruposinvestigacion(
        mision text,
        vision text
 );
+alter table siap_gruposinvestigacion add column logo text;
 
 /*Tabla para Modalidad*/
 create table if not exists siap_modalidades(
@@ -273,6 +283,13 @@ create table if not exists siap_modalidades(
 create table if not exists siap_areasprofundizacion(
        idareaprofundizacion text primary key not null,
        nombre text
+);
+
+/* Tabla de áreas de profundización de un docente */
+create table if not exists siap_areas_docente(
+	idareadocente text primary key not null,
+	iddocente integer references siap_docentes(iddocente),
+	idareaprofundizacion text references siap_areasprofundizacion(idareaprofundizacion)
 );
 
 /*Tabla para TrabajoGrado*/
@@ -424,7 +441,27 @@ create table if not exists siap_produccion_docente(
 	iddocente integer references siap_docentes(iddocente)
 );
 
-
+create table if not exists siap_seminario(
+	idseminario text primary key not null,
+	semestre text,
+	numero integer,
+	fecha date,
+	conferencista text,
+	titulo text,
+	resumen text,
+	origen_conferencista text,
+	grupo_dependencia text,
+	pais_origen text,
+	area_profundizacion text,
+	modalidad text,
+	graduados integer,
+	estudiantes integer,
+	nacional integer,
+	internacional integer,
+	lugar text,
+	youtube text,
+	evidencias text
+);
 
 
 

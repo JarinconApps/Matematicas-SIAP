@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TrabajoGrado, Paginacion } from '../../../../interfaces/interfaces.interfaces';
 import { GeneralService } from '../../../../services/general.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-exportar-trabajos-grado',
@@ -10,33 +11,12 @@ import { GeneralService } from '../../../../services/general.service';
 export class ExportarTrabajosGradoComponent implements OnInit {
 
   TrabajosGrado: TrabajoGrado[] = [];
-  leyendo = false;
 
-  paginacion: Paginacion = {
-    desde: 1,
-    cantidad: 5,
-    resultado: '',
-    todos: 'si',
-    ordenarPor: 'titulo',
-    attrOrdenar: ['titulo']
-  };
-
-  constructor(private genService: GeneralService) { }
+  constructor(public dialogRef: MatDialogRef<ExportarTrabajosGradoComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    this.leerTrabajosGrado();
-  }
-
-  leerTrabajosGrado() {
-
-    this.leyendo = true;
-
-    const datos = JSON.stringify(this.paginacion);
-    this.genService.getTrabajosGrado(datos).subscribe((resultPaginacion: Paginacion) => {
-      this.TrabajosGrado = resultPaginacion.contenido;
-      this.paginacion = resultPaginacion;
-      this.leyendo = false;
-    });
+   this.TrabajosGrado = this.data.TrabajosGrado;
   }
 
 }

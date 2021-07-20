@@ -1,14 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrabajoGrado } from '../../../../interfaces/interfaces.interfaces';
 import { GeneralService } from '../../../../services/general.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ver-trabajo-grado',
   templateUrl: './ver-trabajo-grado.component.html',
   styles: []
 })
-export class VerTrabajoGradoComponent implements OnInit, OnDestroy {
+export class VerTrabajoGradoComponent implements OnInit {
 
   trabajogrado: TrabajoGrado = {
     titulo: '',
@@ -46,39 +47,20 @@ export class VerTrabajoGradoComponent implements OnInit, OnDestroy {
     fechainicioejecucion: '2000-08-20',
     cantidadsemestresejecucion: {
       Dias: '',
-      Meses: '',
+      Meses: '0',
       Anos: '',
       Semestres: ''
     },
     estadoproyecto: ''
-};
+  };
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private genService: GeneralService) { }
-
+  constructor(public dialogRef: MatDialogRef<VerTrabajoGradoComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    this.obtenerParametros();
-  }
 
-  obtenerParametros() {
-    this.activatedRoute.params.subscribe((rParams: any) => {
-      console.log(rParams);
-      this.trabajogrado = {idtrabajogrado: rParams.IdTrabajoGrado};
-
-      this.obtenerTrabajoGrado();
-    });
-  }
-
-  obtenerTrabajoGrado() {
-    this.genService.getTrabajoGrado(this.trabajogrado.idtrabajogrado).subscribe((rTrabajo: TrabajoGrado) => {
-      console.log(rTrabajo);
-      this.trabajogrado = rTrabajo;
-    });
-  }
-
-  ngOnDestroy(): void {
-
+    this.trabajogrado = this.data.trabajoGrado;
+    console.log(this.trabajogrado.cantidadsemestresejecucion.Meses);
   }
 
 }

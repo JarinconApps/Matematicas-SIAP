@@ -19,8 +19,17 @@ uses
   uTReferenciaResumen in 'uTReferenciaResumen.pas',
   uFResumenes in 'uFResumenes.pas' {FResumenes} ,
   uFCertificados in 'uFCertificados.pas' {FCertificados} ,
-  Utilidades in '..\..\..\..\Dropbox\MIS_PROYECTOS\7000_Librerias\Utilidades\Utilidades.pas',
-  uModuloDatos in 'uModuloDatos.pas' {moduloDatos: TDataModule};
+  Utilidades
+    in '..\..\..\..\Dropbox\MIS_PROYECTOS\7000_Librerias\Utilidades\Utilidades.pas',
+  uModuloDatos in 'uModuloDatos.pas' {moduloDatos: TDataModule} ,
+  uFVisorContenido
+    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\Formularios\uFVisorContenido.pas' {FVisorContenido} ,
+  uTAttribute
+    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTAttribute.pas',
+  uTCRUDModel
+    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTCRUDModel.pas',
+  uTValidateToken
+    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas';
 
 {$R *.res}
 
@@ -33,7 +42,7 @@ begin
   Application.CreateForm(TFDataSnapMatematicas, FDataSnapMatematicas);
   Application.CreateForm(TFResumenes, FResumenes);
   Application.CreateForm(TFCertificados, FCertificados);
-
+  Application.CreateForm(TFVisorContenido, FVisorContenido);
   Application.Run;
 
 end.

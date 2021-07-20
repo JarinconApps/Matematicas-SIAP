@@ -12,6 +12,7 @@ import { DialogosService } from '../../../../services/dialogos.service';
 export class FactoresCalidadComponent implements OnInit {
 
   FactoresCalidad: FactorCalidad[] = [];
+  leyendo = false;
 
   constructor(private genService: GeneralService,
               private transfer: TransferService,
@@ -22,8 +23,10 @@ export class FactoresCalidadComponent implements OnInit {
   }
 
   obtenerFactoresCalidad() {
+    this.leyendo = true;
     this.genService.getFactoresCalidad().subscribe((rFactores: any) => {
       this.FactoresCalidad = rFactores.Factores;
+      this.leyendo = false;
     });
   }
 

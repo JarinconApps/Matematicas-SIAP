@@ -1,6 +1,6 @@
 import { GeneralService } from './../../services/general.service';
 import { Component, OnInit } from '@angular/core';
-import { RUTA_DOCENTES, RUTA_LISTADO_DOCENTES, RUTA_TIPO_CONTRATO, RUTA_ACTUALIZACIONES, RUTA_CATEGORIA_DOCENTE, RUTA_FACTOR_DOCENTES, RUTA_ERRORES, RUTA_AGENDAS, RUTA_FACULTADES, RUTA_PROGRAMAS, RUTA_SERVICIOSPROGRAMA, RUTA_ADMINISTRADOR, RUTA_TAREAS_PENDIENTES, RUTA_FUNCIONESDOCENTE, RUTA_EGRESADOS, RUTA_GRUPOSINVESTIGACION, RUTA_MODALIDADES, RUTA_AREASPROFUNDIZACION, RUTA_TRABAJOSGRADO, RUTA_PERIODOS } from '../../config/config';
+import { RUTA_DOCENTES, RUTA_LISTADO_DOCENTES, RUTA_TIPO_CONTRATO, RUTA_ACTUALIZACIONES, RUTA_CATEGORIA_DOCENTE, RUTA_FACTOR_DOCENTES, RUTA_ERRORES, RUTA_AGENDAS, RUTA_FACULTADES, RUTA_PROGRAMAS, RUTA_SERVICIOSPROGRAMA, RUTA_ADMINISTRADOR, RUTA_TAREAS_PENDIENTES, RUTA_FUNCIONESDOCENTE, RUTA_EGRESADOS, RUTA_GRUPOSINVESTIGACION, RUTA_MODALIDADES, RUTA_AREASPROFUNDIZACION, RUTA_TRABAJOSGRADO, RUTA_PERIODOS, RUTA_DOCENTE, RUTA_INICIO } from '../../config/config';
 import { TransferService } from '../../services/transfer.service';
 
 export interface SubMenu {
@@ -68,14 +68,10 @@ export class MenuComponent implements OnInit {
 
   permisoNavegar = false;
 
-  constructor(private genService: GeneralService,
-              private transfer: TransferService) { }
+  constructor(public genService: GeneralService) { }
 
   ngOnInit() {
-    this.transfer.obtenerPermisoNavegar.subscribe((rPermiso: boolean) => {
-      this.permisoNavegar = rPermiso;
 
-    });
   }
 
   irAMenu(ruta: string) {
@@ -86,5 +82,18 @@ export class MenuComponent implements OnInit {
 
     this.genService.navegar(rutas);
   }
+
+  configurarHojaVida() {
+    this.genService.navegar([RUTA_FACTOR_DOCENTES, RUTA_DOCENTE, this.genService.usuario.cedula]);
+  }
+
+  cerrarSesion() {
+    localStorage.removeItem('Usuario');
+    localStorage.removeItem('Token');
+    this.genService.usuario = null;
+
+    this.genService.navegar([RUTA_INICIO]);
+  }
+
 
 }

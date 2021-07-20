@@ -1,80 +1,89 @@
-<div class="card shadow m-3">
-    <div class="media m-3">
+<div class="media m-3" #trabajoGrado>
 
-        <div class="media-body">
-            <h1 class="text-info text-center font-weight-bold">Universidad del Quindío</h1>
-            <h2 class="text-info text-center font-weight-bold">Facultad de Ciencias de la Educación</h2>
-            <h3 class="text-info text-center font-weight-bold">Programa de Licenciatura en Matemáticas</h3>
+    <div class="media-body">
+        <h1 class="text-info text-center font-weight-bold">Universidad del Quindío</h1>
+        <h2 class="text-info text-center font-weight-bold">Facultad de Ciencias de la Educación</h2>
+        <h3 class="text-info text-center font-weight-bold">Programa de Licenciatura en Matemáticas</h3>
+        <hr>
+
+        <h2 class="mt-3 text-center font-weight-bold">{{ trabajogrado.titulo | capitalizado }}</h2>
+        <hr>
+
+        <div class="mb-3">
+            <h5 class="text-info text-center">Autor(es)</h5>
             <hr>
 
-            <h2 class="mt-3 text-center font-weight-bold">{{ trabajogrado.titulo | capitalizado }}</h2>
-            <hr>
+            <h3 class="text-center">{{ trabajogrado.estudiante1 | capitalizado}}</h3>
+            <h3 class="text-center" *ngIf="trabajogrado.estudiante2.length > 0">{{ trabajogrado.estudiante2 | capitalizado}}</h3>
+            <h3 class="text-center" *ngIf="trabajogrado.estudiante3.length > 0">{{ trabajogrado.estudiante3 | capitalizado}}</h3>
+        </div>
 
-            <div class="mb-3">
-                <h5 class="text-info text-center">Autor(es)</h5>
+        <div class="row">
+
+            <div class="col-md-6">
+                <h5 class="text-info">Dirección</h5>
                 <hr>
-
-                <h3 class="text-center">{{ trabajogrado.estudiante1 | capitalizado}}</h3>
-                <h3 class="text-center" *ngIf="trabajogrado.estudiante2.length > 0">{{ trabajogrado.estudiante2 | capitalizado}}</h3>
-                <h3 class="text-center" *ngIf="trabajogrado.estudiante3.length > 0">{{ trabajogrado.estudiante3 | capitalizado}}</h3>
+                <ul>
+                    <li><b>Director: </b>{{ trabajogrado.director.nombre | capitalizado}}</li>
+                    <li *ngIf="trabajogrado.codirector"><b>Codirector: </b>{{ trabajogrado.codirector.nombre | capitalizado}}</li>
+                </ul>
             </div>
 
-            <div class="row">
-
-                <div class="col-md-6">
-                    <h5 class="text-info">Dirección</h5>
-                    <hr>
-                    <ul>
-                        <li><b>Director: </b>{{ trabajogrado.director.nombre | capitalizado}}</li>
-                        <li *ngIf="trabajogrado.codirector"><b>Codirector: </b>{{ trabajogrado.codirector.nombre | capitalizado}}</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-6">
-                    <h5 class="text-info">Jurados</h5>
-                    <hr>
-                    <ul>
-                        <li>{{ trabajogrado.jurado1.nombre | capitalizado}}</li>
-                        <li>{{ trabajogrado.jurado2.nombre | capitalizado}}</li>
-                        <li>{{ trabajogrado.jurado3.nombre | capitalizado}}</li>
-                    </ul>
-                </div>
-            </div>
-            <hr>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <h5 class="text-info">Tipología</h5>
-                    <hr>
-                    <ul>
-                        <li><b>Modalidad:           </b>{{ trabajogrado.modalidad.nombre| capitalizado}}</li>
-                        <li><b>Área Profundización: </b>{{ trabajogrado.areaProfundizacion.nombre| capitalizado}}</li>
-                        <li><b>Grupo Investigación: </b>{{ trabajogrado.grupoInvestigacion.nombre| capitalizado}}</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4">
-                    <h5 class="text-info">Evaluación</h5>
-                    <hr>
-                    <ul>
-                        <li><b>Propuesta:          </b>{{ trabajogrado.evaluacionpropuesta| capitalizado}}</li>
-                        <li><b>Trabajo Escrito:    </b>{{ trabajogrado.evaluaciontrabajoescrito| capitalizado}}</li>
-                        <li><b>Sustentación:       </b>{{ trabajogrado.evaluacionsustentacion| capitalizado}}</li>
-                        <li><b>Calificación Final: </b>{{ trabajogrado.calificacionfinal | capitalizado}}</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4">
-                    <h5 class="text-info">Estado</h5>
-                    <hr>
-                    <ul>
-                        <li><b>Fecha de Entrega de Propuesta: </b>{{ trabajogrado.actapropuesta}}</li>
-                        <li><b>Fecha de Inicio de Ejecución:  </b>{{ trabajogrado.fechainicioejecucion}}</li>
-                        <li><b>Fecha de Sustentación:         </b>{{ trabajogrado.fechasustentacion}}</li>
-                    </ul>
-                </div>
+            <div class="col-md-6">
+                <h5 class="text-info">Jurados</h5>
+                <hr>
+                <ul>
+                    <li>{{ trabajogrado.jurado1.nombre | capitalizado}}</li>
+                    <li>{{ trabajogrado.jurado2.nombre | capitalizado}}</li>
+                    <li>{{ trabajogrado.jurado3.nombre | capitalizado}}</li>
+                </ul>
             </div>
         </div>
-    </div>
+        <hr>
 
+        <div class="row">
+            <div class="col">
+                <h5 class="text-info">Tipología</h5>
+                <hr>
+                <ul>
+                    <li><b>Modalidad:           </b>{{ trabajogrado.modalidad.nombre| capitalizado}}</li>
+                    <li><b>Área Profundización: </b>{{ trabajogrado.areaProfundizacion.nombre| capitalizado}}</li>
+                    <li><b>Grupo Investigación: </b>{{ trabajogrado.grupoInvestigacion.nombre| capitalizado}}</li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h5 class="text-info">Evaluación</h5>
+                <hr>
+                <ul>
+                    <li><b>Propuesta:          </b>{{ trabajogrado.evaluacionpropuesta| capitalizado}}</li>
+                    <li><b>Trabajo Escrito:    </b>{{ trabajogrado.evaluaciontrabajoescrito| capitalizado}}</li>
+                    <li><b>Sustentación:       </b>{{ trabajogrado.evaluacionsustentacion| capitalizado}}</li>
+                    <li><b>Calificación Final: </b>{{ trabajogrado.calificacionfinal | capitalizado}}</li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h5 class="text-info">Estado</h5>
+                <hr>
+                <ul>
+                    <li><b>Fecha de Entrega de Propuesta: </b>{{ trabajogrado.actapropuesta}}</li>
+                    <li><b>Fecha de Inicio de Ejecución:  </b>{{ trabajogrado.fechainicioejecucion}}</li>
+                    <li><b>Fecha de Sustentación:         </b>{{ trabajogrado.fechasustentacion}}</li>
+                </ul>
+            </div>
+
+            <div class="col">
+                <h5 class="text-info">Duración</h5>
+                <hr>
+                <ul>
+                    <li><b>Días: </b>{{ trabajogrado.cantidadsemestresejecucion.Dias}}</li>
+                    <li><b>Meses: </b>{{ trabajogrado.cantidadsemestresejecucion.Meses}}</li>
+                    <li><b>Semestres: </b>{{ trabajogrado.cantidadsemestresejecucion.Semestres}}</li>
+                    <li><b>Años: </b>{{ trabajogrado.cantidadsemestresejecucion.Anos}}</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
 </div>

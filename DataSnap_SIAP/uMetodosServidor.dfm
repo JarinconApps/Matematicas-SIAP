@@ -17,26 +17,11 @@ object Matematicas: TMatematicas
     Left = 40
     Top = 32
   end
-  object Query: TFDQuery
-    Connection = Conexion
-    Left = 32
-    Top = 120
-  end
   object DireccionLibreria: TFDPhysPgDriverLink
     DriverID = 'PG'
     VendorLib = 'libpq.dll'
     Left = 408
     Top = 32
-  end
-  object Query2: TFDQuery
-    Connection = Conexion
-    Left = 32
-    Top = 176
-  end
-  object Query3: TFDQuery
-    Connection = Conexion
-    Left = 32
-    Top = 240
   end
   object SMTP: TIdSMTP
     IOHandler = SSL

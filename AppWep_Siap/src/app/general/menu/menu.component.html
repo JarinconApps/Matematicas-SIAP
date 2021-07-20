@@ -4,7 +4,8 @@
             <div class="form-group">
                 <h1>SIAP</h1>
                 <h6>Versión {{ version }}</h6>
-            </div> <small *ngIf="!permisoNavegar">(Sistema de Información de Autoevaluación del Programa)</small></h1>
+            </div>
+        </h1>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -12,6 +13,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto" routerLinkActive>
+
 
             <!-- %%%%%%% PROCESOS ACADÉMICOS %%%%%%% -->
             <li class="nav-item dropdown puntero-manito" *ngIf="permisoNavegar">
@@ -166,5 +168,19 @@
             </li>
 
         </ul>
+
+        <form class="form-inline my-2 my-lg-0">
+            <div class="dropdown" *ngIf="genService.usuario">
+                <a class="btn btn-warning dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ genService.usuario.nombre | capitalizado}}</a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item puntero-manito" (click)="configurarHojaVida()"><i class="fas fa-user-cog"></i> Configurar hoja de Vida</a>
+                    <a class="dropdown-item puntero-manito" (click)="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                </div>
+            </div>
+        </form>
     </div>
 </nav>
+<div class="bg-success" style="padding: 20px;">
+    <h4 class="text-white">(Sistema de Información de Autoevaluación del Programa de Licenciatura en Matemáticas)</h4>
+</div>

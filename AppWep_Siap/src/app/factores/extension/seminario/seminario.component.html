@@ -1,0 +1,27 @@
+<div class="m-3 row">
+    <div class="col-md-3">
+        <div class="card shadow">
+            <div class="card-header bg-dark">
+                <h3 class="text-white text-center">Menú del Seminario</h3>
+            </div>
+
+            <div class="card-body">
+                <ul class="list-group-flush list-group">
+                    <li class="list-group-item list-group-item-action puntero-manito" *ngFor="let menu of Menus">
+                        <div class="media">
+                            <img class="mr-3" [src]="menu.imagen" style="width: 48px;">
+                            <div class="media-body">
+                                <h4 class="text-info">{{ menu.nombre | capitalizado }}</h4>
+                                <p class="text-justify">{{ menu.descripcion }}</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <router-outlet></router-outlet>
+    </div>
+</div>

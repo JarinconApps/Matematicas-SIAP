@@ -87,6 +87,24 @@ export class EfdServiciosProgramaComponent implements OnInit {
         this.lbDatosGeneral.push(estd.Programa);
         colores.push(new Utilidades().generarColor());
       }
+
+      // Ordenar los datos de mayor a menor
+      for (let i = 0; i < datos.length; i++) {
+        for (let j = i; j < datos.length; j++) {
+          if (Number(datos[i]) > Number(datos[j])) {
+            const tempDato = datos[i];
+            datos[i] = datos[j];
+            datos[j] = tempDato;
+
+            const tempEtiqueta = this.lbDatosGeneral[i];
+            this.lbDatosGeneral[i] = this.lbDatosGeneral[j];
+            this.lbDatosGeneral[j] = tempEtiqueta;
+          }
+        }
+      }
+      console.log('Todo ordendo');
+      console.log(datos);
+
       this.datosGeneral.push({data: datos, label: 'Programas'});
       this.generalChartColors[0].backgroundColor = colores;
     });

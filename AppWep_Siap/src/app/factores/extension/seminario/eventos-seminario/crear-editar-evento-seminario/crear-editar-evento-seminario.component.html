@@ -1,0 +1,113 @@
+<app-titulo-dialogo [Titulo]="'Creando/Editando evento del seminario ...'"></app-titulo-dialogo>
+
+<form ngNativeValidated (ngSubmit)="guardar()">
+    <div class="row">
+        <div class="form-group col">
+            <label class="font-weight-bold">Número</label>
+            <input class="form-control" [(ngModel)]="evento.numero" name="numero">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Semestre</label>
+            <select class="custom-select" required [(ngModel)]="evento.semestre" name="semestre">
+              <option [value]="sem" *ngFor="let sem of semestre">{{ sem }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Título</label>
+        <input class="form-control" type="text" [(ngModel)]="evento.titulo" name="titulo">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Conferencista</label>
+        <input class="form-control" type="text" [(ngModel)]="evento.conferencista" name="conferencista">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Resumen</label>
+        <angular-editor [placeholder]="" [config]="genService.editorConfig" [(ngModel)]="evento.resumen" name="resumen"></angular-editor>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label class="font-weight-bold">Fecha</label>
+            <app-date-picker [Fecha]="evento.fecha" (CambioFecha)="evento.fecha = $event"></app-date-picker>
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Modalidad</label>
+            <select class="custom-select" required [(ngModel)]="evento.modalidad" name="modalidad">
+            <option [value]="mod" *ngFor="let mod of modalidad">{{ mod }}</option>
+          </select>
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Área de Profundización</label>
+            <select class="custom-select" required [(ngModel)]="evento.modalidad" name="modalidad">
+            <option [value]="area.nombre" *ngFor="let area of areasProfundizacion">{{ area.nombre | capitalizado }}</option>
+          </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label class="font-weight-bold">Institución conferencista</label>
+            <input class="form-control" type="text" [(ngModel)]="evento.origen_conferencista" name="origen_conferencista">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Grupo o dependencia Universitaria</label>
+            <input class="form-control" type="text" [(ngModel)]="evento.grupo_dependencia" name="grupo_dependencia">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">País de Origen</label>
+            <input class="form-control" type="text" [(ngModel)]="evento.pais_origen" name="pais_origen">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label class="font-weight-bold">Asistentes Graduados</label>
+            <input class="form-control" type="number" [(ngModel)]="evento.graduados" name="graduados">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Asistentes Estudiantes</label>
+            <input class="form-control" type="number" [(ngModel)]="evento.estudiantes" name="estudiantes">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Asistentes Nacionales</label>
+            <input class="form-control" type="number" [(ngModel)]="evento.nacional" name="nacional">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Asistentes Internacionales</label>
+            <input class="form-control" type="number" [(ngModel)]="evento.internacional" name="internacional">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label class="font-weight-bold">Lugar</label>
+            <input class="form-control" type="text" [(ngModel)]="evento.lugar" name="lugar">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Enlace Youtube</label>
+            <input class="form-control" type="text" [(ngModel)]="evento.youtube" name="youtube">
+        </div>
+
+        <div class="form-group col">
+            <label class="font-weight-bold">Evidencia</label>
+            <input class="form-control" type="text" [(ngModel)]="evento.evidencias" name="evidencias">
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-success"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+</form>

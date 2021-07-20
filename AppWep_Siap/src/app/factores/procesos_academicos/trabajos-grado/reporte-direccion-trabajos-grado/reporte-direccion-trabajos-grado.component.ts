@@ -64,6 +64,8 @@ export class ReporteDireccionTrabajosGradoComponent implements OnInit {
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' }
   ];
 
+  tablaReporte: any[] = [];
+
   constructor(private genService: GeneralService) { }
 
   ngOnInit() {
@@ -115,6 +117,11 @@ export class ReporteDireccionTrabajosGradoComponent implements OnInit {
           if (trabajos > 0) {
             datos.push(trabajos);
             this.Etiquetas.push(new CapitalizadoPipe().transform(docente.nombre));
+
+            this.tablaReporte.push({
+              docente: docente.nombre,
+              cantidad: trabajos
+            });
           }
 
           if ((docente.Terminados.length === 0) && (docente.noTerminados.length === 0)) {
@@ -125,6 +132,25 @@ export class ReporteDireccionTrabajosGradoComponent implements OnInit {
             } else {
               this.Directores.push(docente);
             }
+          }
+        }
+      }
+
+      // Ordenar de menor a mayor
+      for (let i = 0; i < datos.length; i++) {
+        for (let j = i; j < datos.length; j++) {
+          if (datos[i] < datos[j]) {
+            const tempDato = datos[i];
+            datos[i] = datos[j];
+            datos[j] = tempDato;
+
+            const tempEtiqueta = this.Etiquetas[i];
+            this.Etiquetas[i] = this.Etiquetas[j];
+            this.Etiquetas[j] = tempEtiqueta;
+
+            const tempDocente = this.tablaReporte[i];
+            this.tablaReporte[i] = this.tablaReporte[j];
+            this.tablaReporte[j] = tempDocente;
           }
         }
       }

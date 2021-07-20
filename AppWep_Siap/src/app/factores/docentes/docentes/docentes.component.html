@@ -73,7 +73,7 @@
                 <td>{{ id + 1 }}</td>
                 <td>{{ docente.documento | number }}</td>
                 <td>
-                    <img [src]="docente.foto | noImagen" [alt]="docente.nombre" style="width: 96px; height: 96px; border-radius: 100%;">
+                    <img (click)="verDocente(docente)" [src]="docente.foto | noImagen" [alt]="docente.nombre" style="width: 96px; height: 96px; border-radius: 100%;">
                 </td>
                 <td class="font-weight-bold">{{ docente.nombre | capitalizado }}</td>
                 <td>{{ docente.telefono }}</td>

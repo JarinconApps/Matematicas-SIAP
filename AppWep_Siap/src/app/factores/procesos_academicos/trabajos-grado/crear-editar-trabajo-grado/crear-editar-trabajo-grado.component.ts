@@ -69,41 +69,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
   director = '';
   codirector = '';
 
-  /* trabajogrado: TrabajoGrado = {
-    titulo: 'Coordenadas Polares',
-    idtrabajogrado: '',
-    estudiante1: 'Julián Andrés Rincón Penagos',
-    estudiante2: 'Leiny Yasmin Rincón Penagos',
-    estudiante3: 'Claudia Milena Tavera Montes',
-    idjurado1: '24575565',
-    jurado1: {nombre: 'pedro'},
-    jurado2: {nombre: 'pablo'},
-    jurado3: {nombre: 'lucas'},
-    idjurado2: '24575565',
-    idjurado3: '41942993',
-    iddirector: '1094883945',
-    director: {nombre: 'simon'},
-    idcodirector: '7555071',
-    codirector: {nombre: 'fernando'},
-    idmodalidad: 'nrik-fvqd-rhin-gfqf',
-    modalidad: {nombre: ''},
-    idareaprofundizacion: 'eqnt-qtsi-rxub-nyhj',
-    areaProfundizacion: {nombre: ''},
-    idgrupoinvestigacion: 'wevc-slvy-vvtu-cxqb',
-    grupoInvestigacion: {nombre: ''},
-    actanombramientojurados: 'jur-002',
-    actapropuesta: 'act-pro-001',
-    evaluacionpropuesta: '96',
-    evaluaciontrabajoescrito: '95',
-    evaluacionsustentacion: '95',
-    fechasustentacion: '2020-08-20',
-    calificacionfinal: '98',
-    estudiantecedederechos: 'si',
-    fechainicioejecucion: '2020-08-20',
-    cantidadsemestresejecucion: 1,
-    estadoavance: 100
-}; */
-
   accion: string;
   id: string;
   contIntentos = 0;
@@ -133,6 +98,7 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
     this.obtenerEstadoLectura.subscribe((rEstado: boolean) => {
       if (rEstado) {
         if (this.id !== 'Crear') {
+          console.log(rEstado);
           this.leerTrabajoGrado();
         }
       }
@@ -143,6 +109,7 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
 
   obtenerParametros() {
     this.activatedRoute.params.subscribe((rParams: any) => {
+      console.log(rParams);
 
       this.id = rParams.Id;
 
@@ -183,6 +150,7 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
     this.leyendo = true;
     this.genService.getTrabajoGrado(this.id).subscribe((rTrabajoGrado: TrabajoGrado) => {
       console.log(rTrabajoGrado);
+
       this.trabajogrado = rTrabajoGrado;
       this.verCamposEstudiantes[1] = this.trabajogrado.estudiante2.length > 0;
       this.verCamposEstudiantes[2] = this.trabajogrado.estudiante3.length > 0;

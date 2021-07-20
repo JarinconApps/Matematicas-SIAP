@@ -15,9 +15,15 @@ export class PlanMejoramientoComponent implements OnInit {
 
   Menus: Menu[] = [
     {
-      nombre: 'Factores de Calidad',
+      nombre: 'Crear factor de Calidad',
       ruta: RUTA_FACTORES_CALIDAD,
       descripcion: 'Muestra la lista de los factores de calidad para el plan de mejoramiento',
+      imagen: 'assets/Iconos/pendiente.png'
+    },
+    {
+      nombre: 'Ver oportunidades de mejora',
+      ruta: RUTA_PLAN_MEJORAMIENTO  ,
+      descripcion: 'Muestra la lista de los planes de mejoramiento',
       imagen: 'assets/Iconos/pendiente.png'
     }
   ];

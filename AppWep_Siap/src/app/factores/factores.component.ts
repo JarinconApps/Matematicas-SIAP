@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransferService } from '../services/transfer.service';
 import { MenuFactores, BotonMenu, Favorito } from '../interfaces/interfaces.interfaces';
 import { Utilidades } from '../utilidades/utilidades.class';
-import { RUTA_FACTOR_DOCENTES, RUTA_DOCENTES, RUTA_SERVICIOSPROGRAMA, RUTA_PROGRAMAS, RUTA_AGENDAS, RUTA_FACULTADES, RUTA_PERIODOS, RUTA_FUNCIONESDOCENTE, RUTA_ESTADISTICAS_FACTOR_DOCENTES, RUTA_TRABAJOSGRADO, RUTA_ACERCA, RUTA_ACTUALIZACIONES, RUTA_MANUAL_AYUDA, RUTA_TAREAS_PENDIENTES, RUTA_GESTION_ERRORES, RUTA_PLAN_MEJORAMIENTO, RUTA_ADMINISTRADOR, RUTA_ADMIN_USUARIO, RUTA_ADMIN_CONFIGURACIONES, RUTA_ADMIN_TIPO_PRODUCCION } from '../config/config';
+import { RUTA_FACTOR_DOCENTES, RUTA_DOCENTES, RUTA_SERVICIOSPROGRAMA, RUTA_PROGRAMAS, RUTA_AGENDAS, RUTA_FACULTADES, RUTA_PERIODOS, RUTA_FUNCIONESDOCENTE, RUTA_ESTADISTICAS_FACTOR_DOCENTES, RUTA_TRABAJOSGRADO, RUTA_ACERCA, RUTA_ACTUALIZACIONES, RUTA_MANUAL_AYUDA, RUTA_TAREAS_PENDIENTES, RUTA_GESTION_ERRORES, RUTA_PLAN_MEJORAMIENTO, RUTA_ADMINISTRADOR, RUTA_ADMIN_USUARIO, RUTA_ADMIN_CONFIGURACIONES, RUTA_ADMIN_TIPO_PRODUCCION, RUTA_ESTADISTICAS, RUTA_ESTADISTICAS_TRABAJOS_GRADO, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA, RUTA_ESTADISTICAS_HORAS_FACULTADES, RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO, RUTA_REPORTE_DIRECCION_JURADO, RUTA_GRUPOSINVESTIGACION, RUTA_SEMINARIO, RUTA_EVENTOS_SEMINARIO } from '../config/config';
 
 @Component({
   selector: 'app-factores',
@@ -15,42 +15,78 @@ export class FactoresComponent implements OnInit {
 
   // Crear un menu dinámico
   Menus: MenuFactores[] = [
-    // PROCESOS ACADÉMICOS
+    // Estadísticas
     {
-     Titulo: 'Procesos Académicos',
+     Titulo: 'Reportes y Estadísticas',
      Botones: [
        {
-         IdBoton: 'pro-aca-tra-gra',
-         Titulo: 'Trabajos de Grado',
-          Icono: 'trabajosgrado.png',
-          Ruta: [RUTA_TRABAJOSGRADO]
+         IdBoton: 'estadisticas-trabajos-grado',
+         Titulo: 'Estadísticas de Trabajos de Grado',
+          Icono: 'reporte.png',
+          Ruta: [RUTA_ESTADISTICAS, RUTA_ESTADISTICAS_TRABAJOS_GRADO]
        },
        {
-          Titulo: 'Plan de Mejoramiento',
-          Icono: 'pendiente.png',
-          Ruta: [RUTA_PLAN_MEJORAMIENTO],
-          IdBoton: 'pro-aca-plan-mejora'
+        IdBoton: 'reportes-trabajos-grado',
+        Titulo: 'Reportes de Trabajos de Grado',
+         Icono: 'reporte.png',
+         Ruta: [RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO]
        },
        {
-          Titulo: 'Actualización de Documentos',
-          Icono: 'pendiente.png',
-          Ruta: [''],
-          IdBoton: 'pro-aca-actualiza-doc'
+        IdBoton: 'reportes-trabajos-grado',
+        Titulo: 'Reportes de Dirección y Jurados de Trabajos de Grado',
+         Icono: 'reporte.png',
+         Ruta: [RUTA_REPORTE_DIRECCION_JURADO]
        },
        {
-          Titulo: 'Coordinación de Práctica Docente',
-          Icono: 'pendiente.png',
-          Ruta: [''],
-          IdBoton: 'pro-aca-coord-pra-doc'
+         IdBoton: 'servicios-por-programa',
+         Titulo: 'Servicios por Programa',
+          Icono: 'reporte.png',
+          Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA]
        },
        {
-          Titulo: 'Virtualización',
-          Icono: 'pendiente.png',
-          Ruta: [''],
-          IdBoton: 'pro-aca-virtualiz'
-       }
+         IdBoton: 'horas-por-facultad',
+         Titulo: 'Horas por Facultad',
+          Icono: 'reporte.png',
+          Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_HORAS_FACULTADES]
+       },
+
      ]
     },
+    {
+      Titulo: 'Procesos Académicos',
+      Botones: [
+        {
+          IdBoton: 'pro-aca-tra-gra',
+          Titulo: 'Trabajos de Grado',
+           Icono: 'trabajosgrado.png',
+           Ruta: [RUTA_TRABAJOSGRADO]
+        },
+        {
+           Titulo: 'Plan de Mejoramiento',
+           Icono: 'pendiente.png',
+           Ruta: [RUTA_PLAN_MEJORAMIENTO],
+           IdBoton: 'pro-aca-plan-mejora'
+        },
+        {
+           Titulo: 'Actualización de Documentos',
+           Icono: 'pendiente.png',
+           Ruta: [''],
+           IdBoton: 'pro-aca-actualiza-doc'
+        },
+        {
+           Titulo: 'Coordinación de Práctica Docente',
+           Icono: 'pendiente.png',
+           Ruta: [''],
+           IdBoton: 'pro-aca-coord-pra-doc'
+        },
+        {
+           Titulo: 'Virtualización',
+           Icono: 'pendiente.png',
+           Ruta: [''],
+           IdBoton: 'pro-aca-virtualiz'
+        }
+      ]
+     },
     // ESTUDIANTES
     {
       Titulo: 'Estudiantes',
@@ -191,8 +227,8 @@ export class FactoresComponent implements OnInit {
         },
         {
           Titulo: 'Grupos de Investigación',
-          Icono: 'pendiente.png',
-          Ruta: [''],
+          Icono: 'grupos_investigacion.png',
+          Ruta: [RUTA_GRUPOSINVESTIGACION],
           IdBoton: 'invest-grup-invest'
        }
       ]
@@ -221,10 +257,10 @@ export class FactoresComponent implements OnInit {
           IdBoton: 'egg-lab-didact-mat'
         },
         {
-          Titulo: 'Proyectos de Extensión del Programa',
+          Titulo: 'Seminario interno del programa',
           Icono: 'pendiente.png',
-          Ruta: [''],
-          IdBoton: 'egg-pro-ext-program'
+          Ruta: [RUTA_SEMINARIO, RUTA_EVENTOS_SEMINARIO],
+          IdBoton: 'egg-seminario-interno'
         },
         {
           Titulo: 'Graduados',

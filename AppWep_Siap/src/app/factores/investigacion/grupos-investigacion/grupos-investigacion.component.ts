@@ -1,8 +1,9 @@
 import { GeneralService } from './../../../services/general.service';
 import { Component, OnInit } from '@angular/core';
-import { GrupoInvestigacion } from '../../../interfaces/interfaces.interfaces';
+import { GrupoInvestigacion, RespuestaCRUD } from '../../../interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../services/dialogos.service';
 import { TransferService } from '../../../services/transfer.service';
+import { RUTA_GRUPO_INVESTIGACION } from '../../../config/config';
 
 @Component({
   selector: 'app-grupos-investigacion',
@@ -28,22 +29,23 @@ export class GruposInvestigacionComponent implements OnInit {
 
     this.leyendo = true;
 
-    this.genService.getGruposInvestigacion().subscribe((rGruposInvestigacion: any) => {
-      this.GruposInvestigacion = rGruposInvestigacion.GruposInvestigacion;
+    this.genService.getGruposInvestigacion().subscribe((rGruposInvestigacion: RespuestaCRUD) => {
+      console.log(rGruposInvestigacion);
+      this.GruposInvestigacion = rGruposInvestigacion.Results;
 
       this.leyendo = false;
     });
   }
 
   agregarGrupoInvestigacion() {
-    this.dlgService.DlgGrupoInvestigacion('Crear', '').subscribe((rRespuesta: any) => {
+    this.dlgService.DlgGrupoInvestigacion(null).subscribe((rRespuesta: any) => {
 
       this.leerGruposInvestigacion();
     });
   }
 
   editarGrupoInvestigacion(grupoinvestigacion: GrupoInvestigacion) {
-    this.dlgService.DlgGrupoInvestigacion('Editar', grupoinvestigacion.idgrupoinvestigacion).subscribe((rRespuesta: any) => {
+    this.dlgService.DlgGrupoInvestigacion(grupoinvestigacion).subscribe((rRespuesta: any) => {
       this.dlgService.mostrarSnackBar(rRespuesta);
       this.leerGruposInvestigacion();
     });
@@ -59,6 +61,10 @@ export class GruposInvestigacionComponent implements OnInit {
         });
       }
     });
+  }
+
+  verPagina(grupo: GrupoInvestigacion) {
+    this.genService.navegar([RUTA_GRUPO_INVESTIGACION, grupo.idgrupoinvestigacion]);
   }
 
 }

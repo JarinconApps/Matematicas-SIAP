@@ -1,0 +1,33 @@
+<div class="m-5">
+    <div class="card m-3 mb-5" *ngFor="let estadistica of Estadisticas; let id = index">
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Etiqueta</th>
+                                <th>Cantidad</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let estd of estadistica.Statistics">
+                                <td>{{ estd.Label | capitalizado}}</td>
+                                <td>{{ estd.Count}}</td>
+                                <td>{{ estd.Percent }} %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-8">
+                    <app-visor-grafica [IdGrafica]="'grafica' + id" [Titulo]="estadistica.Data.label" [Etiquetas]="estadistica.Labels" [Datos]="[estadistica.Data]"></app-visor-grafica>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

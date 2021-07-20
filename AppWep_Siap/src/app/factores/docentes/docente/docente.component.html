@@ -20,13 +20,15 @@
             <div style="width: 25%;">
                 <div class="card card-shadow">
                     <div class="card-body">
-                        <div class="circular-landscape" align="center" style="width: 250px; height: 250px;">
-                            <img [src]="docente.foto | noImagen">
+                        <div class="text-center">
+                            <div class="circular-landscape" style="width: 250px; height: 250px;">
+                                <img [src]="docente.foto | noImagen">
+                            </div>
                         </div>
 
                         <h3 class="text-center">{{ docente.nombre | capitalizado }}</h3>
 
-                        <div class="form-group">
+                        <div class="form-group" id="botonesEditarPerfilDocente">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" (change)="seleccionImagen($event.target.files[0])">
                                 <label class="custom-file-label">Cambiar Foto ...</label>
@@ -73,20 +75,24 @@
                 </select>
                 </div>
 
-                <button (click)="guardarDocente()" class="btn btn-outline-success float-right"><img src="assets/Iconos/Guardar.png" style="height: 32px;"> Guardar</button>
+                <div class="modal-footer">
+                    <button id="botonesEditarPerfilDocente" (click)="exportarPerfil()" class="btn btn-outline-danger"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+                    <button id="botonesEditarPerfilDocente" (click)="guardarDocente()" class="btn btn-outline-success"><i class="fas fa-save"></i> Guardar</button>
+
+                </div>
             </div>
         </div>
 
-        <mat-accordion>
+        <mat-accordion [multi]="expandirTodo">
 
             <!-- %%%%%%% Formación %%%%%%% -->
-            <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel [expanded]="expandFormacion">
                 <mat-expansion-panel-header>
-                    <h3>Formación</h3>
+                    <h3 class="text-info">Formación</h3>
                 </mat-expansion-panel-header>
 
                 <div class="modal-footer">
-                    <button class="btn btn-outline-success" (click)="agregarFormacion()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Formación</button>
+                    <button id="botonesEditarPerfilDocente" class="btn btn-outline-success" (click)="agregarFormacion()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Formación</button>
                 </div>
 
                 <table class="table table-hover">
@@ -97,8 +103,8 @@
                             <th class="font-size-24">Fecha de Inicio</th>
                             <th class="font-size-24">Fecha de Finalización</th>
                             <th class="font-size-24">Institución</th>
-                            <th class="font-size-24">Editar</th>
-                            <td class="font-size-24">Eliminar</td>
+                            <th class="font-size-24" id="botonesEditarPerfilDocente">Editar</th>
+                            <td class="font-size-24" id="botonesEditarPerfilDocente">Eliminar</td>
                         </tr>
                     </thead>
 
@@ -109,10 +115,10 @@
                             <td class="font-size-24">{{ formacion.fechainicio}}</td>
                             <td class="font-size-24">{{ formacion.fechafin}}</td>
                             <td class="font-size-24">{{ formacion.institucion | capitalizado}}</td>
-                            <td class="font-size-24">
+                            <td class="font-size-24" id="botonesEditarPerfilDocente">
                                 <button class="btn btn-outline-success" (click)="editarFormacion(formacion)"><img src="assets/Iconos/Editar2.png" style="width: 32px;"> Editar</button>
                             </td>
-                            <td class="font-size-24">
+                            <td class="font-size-24" id="botonesEditarPerfilDocente">
                                 <button class="btn btn-outline-danger" (click)="eliminarFormacion(formacion)"><img src="assets/Iconos/Eliminar.png" style="width: 32px;"> Eliminar</button>
                             </td>
                         </tr>
@@ -120,14 +126,84 @@
                 </table>
             </mat-expansion-panel>
 
-            <!-- %%%%%%% Grupo de Investigación %%%%%%% -->
-            <mat-expansion-panel [expanded]="true">
+            <!-- %%%%%%% Áreas de profundización %%%%%%% -->
+            <mat-expansion-panel [expanded]="expandAreasProf">
                 <mat-expansion-panel-header>
-                    <h3>Grupos de Investigación</h3>
+                    <h3 class="text-info">Áreas de Profundización</h3>
                 </mat-expansion-panel-header>
 
                 <div class="modal-footer">
-                    <button class="btn btn-outline-success" (click)="agregarGrupoInvestigacion()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Grupo</button>
+                    <button id="botonesEditarPerfilDocente" class="btn btn-outline-success" (click)="agregarAreaProfundizacion()"><i class="fas fa-plus-circle"></i> Agregar área de profundización</button>
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="font-size-24">No</th>
+                            <th class="font-size-24">Área de Profundización</th>
+                            <th id="botonesEditarPerfilDocente" class="font-size-24">Desvincular</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let areas of AreasProfundizacion let id = index">
+                            <td class="font-size-24">{{ id + 1 }}</td>
+                            <td class="font-size-24">{{ areas.nombre | capitalizado }}</td>
+                            <td id="botonesEditarPerfilDocente" class="font-size-24">
+                                <button class="btn btn-outline-danger" (click)="desvincularAreaProfundizacion(areas)"><img src="assets/Iconos/Eliminar.png" style="width: 32px;"> Desvincular</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-expansion-panel>
+
+            <!-- %%%%%%% Enlaces de divulgación %%%%%%% -->
+            <mat-expansion-panel [expanded]="expandEnlacesDiv">
+                <mat-expansion-panel-header>
+                    <h3 class="text-info">Enlaces de divulgación científico-académica</h3>
+                </mat-expansion-panel-header>
+
+                <div class="modal-footer">
+                    <button id="botonesEditarPerfilDocente" class="btn btn-outline-success" (click)="agregarEnlace()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Grupo</button>
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="font-size-24">No</th>
+                            <th class="font-size-24">Red</th>
+                            <th class="font-size-24">Enlace</th>
+                            <th id="botonesEditarPerfilDocente" class="font-size-24">Editar</th>
+                            <th id="botonesEditarPerfilDocente" class="font-size-24">Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let enlaces of EnlacesDivulgacion; let id = index">
+                            <td class="font-size-24">{{ id + 1 }}</td>
+                            <td class="font-size-24">{{ enlaces.nombre | capitalizado }}</td>
+                            <td class="font-size-24">
+                                <a [href]="enlaces.direccion" target="_blank">{{ enlaces.direccion }}</a>
+                            </td>
+                            <td id="botonesEditarPerfilDocente" class="font-size-24">
+                                <button class="btn btn-outline-warning btn-sm" (click)="editarEnlace(enlaces)"><i class="fas fa-edit"></i> Editar</button>
+                            </td>
+                            <td id="botonesEditarPerfilDocente" class="font-size-24">
+                                <button class="btn btn-outline-danger btn-sm" (click)="eliminarEnlace(enlaces)"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-expansion-panel>
+
+            <!-- %%%%%%% Grupo de Investigación %%%%%%% -->
+            <mat-expansion-panel [expanded]="expandGruposInv">
+                <mat-expansion-panel-header>
+                    <h3 class="text-info">Grupos de Investigación</h3>
+                </mat-expansion-panel-header>
+
+                <div class="modal-footer">
+                    <button id="botonesEditarPerfilDocente" class="btn btn-outline-success" (click)="agregarGrupoInvestigacion()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Grupo</button>
                 </div>
 
                 <table class="table table-hover">
@@ -136,7 +212,7 @@
                             <th class="font-size-24">No</th>
                             <th class="font-size-24">Nombre del Grupo</th>
                             <th class="font-size-24">Sigla</th>
-                            <th class="font-size-24">Desvincular</th>
+                            <th id="botonesEditarPerfilDocente" class="font-size-24">Desvincular</th>
                         </tr>
                     </thead>
 
@@ -145,7 +221,7 @@
                             <td class="font-size-24">{{ id + 1 }}</td>
                             <td class="font-size-24">{{ grupo.nombre | capitalizado }}</td>
                             <td class="font-size-24">{{ grupo.sigla | uppercase}}</td>
-                            <td class="font-size-24">
+                            <td id="botonesEditarPerfilDocente" class="font-size-24">
                                 <button class="btn btn-outline-danger" (click)="desvincularGrupo(grupo)"><img src="assets/Iconos/Eliminar.png" style="width: 32px;"> Desvincular</button>
                             </td>
                         </tr>
@@ -153,10 +229,10 @@
                 </table>
             </mat-expansion-panel>
 
-            <!-- %%%%%%% Trabajos de Grado %%%%%%% -->
-            <mat-expansion-panel [expanded]="true">
+            <!-- %%%%%%% Trabajos de Grado Dirigidos %%%%%%% -->
+            <mat-expansion-panel [expanded]="expandTrabaGradoDir">
                 <mat-expansion-panel-header>
-                    <h3>Trabajos de Grado Dirigidos</h3>
+                    <h3 class="text-info">Trabajos de Grado Dirigidos</h3>
                 </mat-expansion-panel-header>
 
                 <table class="table table-hover">
@@ -190,10 +266,10 @@
                 </table>
             </mat-expansion-panel>
 
-            <!-- %%%%%%% Trabajos de Grado %%%%%%% -->
-            <mat-expansion-panel [expanded]="true">
+            <!-- %%%%%%% Trabajos de Grado Evaluados %%%%%%% -->
+            <mat-expansion-panel [expanded]="expandTrabaGradoEva">
                 <mat-expansion-panel-header>
-                    <h3>Trabajos de Grado Evaluados</h3>
+                    <h3 class="text-info">Trabajos de Grado Evaluados</h3>
                 </mat-expansion-panel-header>
 
                 <table class="table table-hover">
@@ -227,14 +303,14 @@
                 </table>
             </mat-expansion-panel>
 
-            <!-- %%%%%%% Trabajos de Grado %%%%%%% -->
-            <mat-expansion-panel [expanded]="true">
+            <!-- %%%%%%% Produccion %%%%%%% -->
+            <mat-expansion-panel [expanded]="expandProduccion">
                 <mat-expansion-panel-header>
-                    <h3>Producción</h3>
+                    <h3 class="text-info">Producción</h3>
                 </mat-expansion-panel-header>
 
                 <div class="modal-footer">
-                    <div class="btn btn-outline-success" (click)="agregarProducto()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Producto</div>
+                    <div id="botonesEditarPerfilDocente" class="btn btn-outline-success" (click)="agregarProducto()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Producto</div>
                 </div>
 
                 <div *ngFor="let tipo of TiposProduccion">
@@ -270,87 +346,92 @@
             </mat-expansion-panel>
 
             <!-- %%%%%%% Histórico de Agendas %%%%%%% -->
-            <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel [expanded]="expandHistoricoAgendas">
                 <mat-expansion-panel-header>
-                    <h3>Histórico de Agendas</h3>
+                    <h3 class="text-info">Histórico de Agendas</h3>
                 </mat-expansion-panel-header>
 
-                <div class="card mb-5" *ngFor="let historico of HistoricoAgendas">
-                    <div class="card-header text-white bg-dark">
-                        <h3 class="card-title">Periodo {{ historico.periodo }}</h3>
-                    </div>
+                <mat-accordion [multi]="expandirTodo">
+                    <mat-expansion-panel [expanded]="expandirTodo" *ngFor="let historico of HistoricoAgendas">
+                        <mat-expansion-panel-header>
+                            <h3 class="text-info">Periodo {{ historico.periodo }}</h3>
+                        </mat-expansion-panel-header>
 
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th class="font-size-24">No</th>
-                                    <th class="font-size-24">Asignatura y Detalles</th>
-                                    <th class="font-size-24">Programa</th>
-                                    <th class="font-size-24">Aspectos Legales</th>
-                                </tr>
-                            </thead>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="font-size-24">No</th>
+                                        <th class="font-size-24">Asignatura y Detalles</th>
+                                        <th class="font-size-24">Programa</th>
+                                        <th class="font-size-24">Aspectos Legales</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                <tr *ngFor="let agenda of historico.Agendas; let id = index">
-                                    <td class="font-size-24">{{ id + 1 }}</td>
-                                    <td class="font-size-24">{{ agenda.programa | capitalizado }}</td>
-                                    <td class="font-size-24">
-                                        <table class="table table-borderless table-hover">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Asignatura</th>
-                                                    <td>{{ agenda.asignatura | capitalizado }}</td>
-                                                </tr>
+                                <tbody>
+                                    <tr *ngFor="let agenda of historico.Agendas; let id = index">
+                                        <td class="font-size-24">{{ id + 1 }}</td>
+                                        <td class="font-size-24">{{ agenda.programa | capitalizado }}</td>
+                                        <td class="font-size-24">
+                                            <table class="table table-borderless table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Asignatura</th>
+                                                        <td>{{ agenda.asignatura | capitalizado }}</td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Aulas</th>
-                                                    <td>{{ agenda.aulas }}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Aulas</th>
+                                                        <td>{{ agenda.aulas }}</td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Grupo</th>
-                                                    <td>{{ agenda.grupo }}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Grupo</th>
+                                                        <td>{{ agenda.grupo }}</td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Horas</th>
-                                                    <td>{{ agenda.horas }}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Horas</th>
+                                                        <td>{{ agenda.horas }}</td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Jornada</th>
-                                                    <td>{{ agenda.jornada | capitalizado }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                    <td class="font-size-24">
-                                        <table class="table table-borderless table-hover">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Acta de Facultad</th>
-                                                    <td>{{ agenda.actafacultad | capitalizado }}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Jornada</th>
+                                                        <td>{{ agenda.jornada | capitalizado }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td class="font-size-24">
+                                            <table class="table table-borderless table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Acta de Facultad</th>
+                                                        <td>{{ agenda.actafacultad | capitalizado }}</td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Acta de Programa</th>
-                                                    <td>{{ agenda.actaprograma | capitalizado }}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Acta de Programa</th>
+                                                        <td>{{ agenda.actaprograma | capitalizado }}</td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Número de Contrato</th>
-                                                    <td>{{ agenda.numerocontrato | capitalizado }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                                    <tr>
+                                                        <th>Número de Contrato</th>
+                                                        <td>{{ agenda.numerocontrato | capitalizado }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </mat-expansion-panel>
+
+
+                </mat-accordion>
             </mat-expansion-panel>
+
         </mat-accordion>
 
     </form>

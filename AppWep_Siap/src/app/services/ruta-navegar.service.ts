@@ -13,6 +13,7 @@ export class RutaNavegarService {
   }
 
   canActivate() {
+    return true;
     return this.genService.obtenerPermisoNavegar();
   }
 }

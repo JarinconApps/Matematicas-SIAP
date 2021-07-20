@@ -1,41 +1,58 @@
 <div class="text-center" style="margin: 20px;" *ngIf="leyendo">
     <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
-    <h3>Leyendo GruposInvestigacion ...</h3>
+    <h3>Leyendo Grupos Investigacion ...</h3>
 </div>
 
 <div class="m-3" *ngIf="!leyendo">
 
-    <button class="btn btn-outline-success float-right" (click)="agregarGrupoInvestigacion()" style="margin: 5px;"><img src="assets/Iconos/Agregar.png" style="height: 32px;"> Agregar Grupo Investigación</button>
+    <div class="modal-footer">
+        <button class="btn btn-outline-success float-right" (click)="agregarGrupoInvestigacion()" style="margin: 5px;"><i class="fas fa-plus-circle"></i> Crear Grupo Investigación</button>
+    </div>
 
-    <table class="table table-hover puntero-manito">
-        <thead class="table-dark">
-            <tr>
-                <th>No</th>
-                <th>Nombre</th>
-                <th>Sigla</th>
-                <th>Director</th>
-                <th>Misión</th>
-                <th>Visión</th>
-                <th>Editar</th>
-                <th>Eliminar</th>
-            </tr>
-        </thead>
+    <div class="card shadow m-3" *ngFor="let grupo of GruposInvestigacion">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="card-img-top" [src]="grupo.logo | noImagen">
+                </div>
 
-        <tbody>
-            <tr *ngFor="let grupoinvestigacion of GruposInvestigacion; let id = index">
-                <td>{{ id + 1 }}</td>
-                <td>{{ grupoinvestigacion.nombre | capitalizado }}</td>
-                <td>{{ grupoinvestigacion.sigla | uppercase }}</td>
-                <td>{{ grupoinvestigacion.iddirector }}</td>
-                <td>{{ grupoinvestigacion.mision }}</td>
-                <td>{{ grupoinvestigacion.vision }}</td>
-                <td>
-                    <img src="assets/Iconos/Editar.png" style="height: 32px;" (click)="editarGrupoInvestigacion(grupoinvestigacion)">
-                </td>
-                <td>
-                    <img src="assets/Iconos/Eliminar.png" style="height: 32px;" (click)="eliminarGrupoInvestigacion(grupoinvestigacion)">
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                <div class="col-md-9">
+                    <h1 class="text-info">{{ grupo.nombre | capitalizado }}</h1>
+                    <h3 class="text-info">{{ grupo.sigla | uppercase }}</h3>
+                    <hr>
+
+                    <div class="media mt-4">
+                        <img class="mr-3" src="assets/Iconos/director.png" style="width: 64px;">
+                        <div class="media-body">
+                            <h4 class="text-danger">Director</h4>
+                            <h5>{{ grupo.director.nombre | capitalizado }}</h5>
+                        </div>
+                    </div>
+
+                    <div class="media mt-4">
+                        <img class="mr-3" src="assets/Iconos/mision.png" style="width: 64px;">
+                        <div class="media-body">
+                            <h4 class="text-danger">Misión</h4>
+                            <p class="text-justify" [innerHTML]="grupo.mision"></p>
+                        </div>
+                    </div>
+
+                    <div class="media mt-4">
+                        <img class="mr-3" src="assets/Iconos/vision.png" style="width: 64px;">
+                        <div class="media-body">
+                            <h4 class="text-danger">Visión</h4>
+                            <p class="text-justify" [innerHTML]="grupo.vision"></p>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-info" (click)="verPagina(grupo)"><i class="fas fa-edit"></i> Ver página</button>
+                        <button class="btn btn-outline-info" (click)="editarGrupoInvestigacion(grupo)"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn btn-outline-danger" (click)="eliminarGrupoInvestigacion(grupo)"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

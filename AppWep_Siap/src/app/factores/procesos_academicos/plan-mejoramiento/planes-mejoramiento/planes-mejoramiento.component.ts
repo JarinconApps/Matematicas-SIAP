@@ -13,6 +13,7 @@ import { RUTA_CREAR_EDITAR_PLAN_MEJORAMIENTO, RUTA_PLAN_MEJORAMIENTO } from '../
 export class PlanesMejoramientoComponent implements OnInit {
 
   PlanesMejoramiento: PlanMejoramiento[] = [];
+  leyendo = false;
 
   constructor(private transfer: TransferService,
               private genService: GeneralService,
@@ -25,9 +26,11 @@ export class PlanesMejoramientoComponent implements OnInit {
   }
 
   obtenerPlanesMejoramiento() {
+    this.leyendo = true;
     this.genService.getPlanesMejoramiento().subscribe((rPlanes: any) => {
 
       this.PlanesMejoramiento = rPlanes.Planes;
+      this.leyendo = false;
     });
   }
 

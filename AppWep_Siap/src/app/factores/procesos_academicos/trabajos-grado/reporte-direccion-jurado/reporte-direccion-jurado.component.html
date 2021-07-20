@@ -1,0 +1,153 @@
+<div class="m-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card shadow">
+                <div class="card-header bg-dark">
+                    <h3 class="text-center text-white">Listado de Docentes</h3>
+                </div>
+
+                <div class="card-body">
+                    <div class="input-group">
+                        <input class="form-control" (keyup)="buscarDocente()" [(ngModel)]="nombreDocente" name="nombreDocente">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger" (click)="eliminarFiltro()"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="text-center" style="margin: 40px;" *ngIf="leyendo">
+                        <i class="fas fa-sync fa-8x text-success fa fa-spin"></i>
+                        <h3 class="mt-3">Buscando docentes ...</h3>
+                    </div>
+
+                    <ul class="list-group list-group-flush" *ngIf="!leyendo">
+                        <li (click)="leerTrabajoGrado(docente)" class="list-group-item-action list-group-item puntero-manito" *ngFor="let docente of bDocentes">
+                            <div class="media">
+                                <img class="mr-3" [src]="docente.foto" style="width: 48px; border-radius: 100%;">
+                                <div class="media-body">
+                                    <h5>{{ docente.nombre | capitalizado }}</h5>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="text-center" style="margin: 40px;" *ngIf="leyendoTrabajos">
+                <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
+                <h3>Buscando trabajos de grado ...</h3>
+            </div>
+
+            <div *ngIf="!leyendoTrabajos">
+                <div class="alert alert-success" *ngIf="!docenteSeleccionado">
+                    <p>Seleccione un docente para ver su respectivo informe</p>
+                </div>
+                <div class="modal-footer">
+                    <button [value]="'Informe_trabajos_de_grado_('+ docenteSeleccionado.nombre +').xls'" class="btn btn-outline-success" onclick="crearExcel('reporte-docente', value)"><i class="fas fa-file-excel"></i> Descargar cómo Excel</button>
+                    <button [value]="'Informe_trabajos_de_grado_('+ docenteSeleccionado.nombre +').doc'" class="btn btn-outline-info" onclick="crearWord('reporte-docente', value)"><i class="fas fa-file-word"></i> Descargar cómo Word</button>
+                </div>
+
+                <div class="" id="reporte-docente" *ngIf="docenteSeleccionado">
+                    <p class="text-center font-weight-bold">EL DIRECTOR DEL PROGRAMA DE LICENCIATURA EN MATEMÁTICAS INFORMA</p>
+
+                    <p>Que el docente {{ docenteSeleccionado.nombre | capitalizado}} con C.C {{ docenteSeleccionado.documento }}, ha sido director de varios trabajos de grado correspondiente a los estudiantes de Licenciatura en Matemáticas, denominados así:
+                    </p>
+
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Estudiantes</th>
+                                <th style="width: 300px;">Título</th>
+                                <th>Fecha Sustentación</th>
+                                <th>Calificación Final</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let dirigidos of TrabajosGrado.Dirigidos.Terminados; let id = index">
+                                <td>{{ id + 1 }}</td>
+                                <td>
+                                    <ul>
+                                        <li>{{ dirigidos.estudiante1 | capitalizado }}</li>
+                                        <li *ngIf="dirigidos.estudiante2">{{ dirigidos.estudiante2 | capitalizado }}</li>
+                                        <li *ngIf="dirigidos.estudiante3">{{ dirigidos.estudiante3 | capitalizado}}</li>
+                                    </ul>
+                                </td>
+                                <td>{{ dirigidos.titulo | capitalizado}}</td>
+                                <td>{{ dirigidos.fechasustentacion }}</td>
+                                <td>{{ dirigidos.calificacionfinal | capitalizado}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>Que el docente {{ docenteSeleccionado.nombre | capitalizado}} con C.C {{ docenteSeleccionado.documento }}, ha sido jurado evaluador de varios trabajos de grado correspondiente a los estudiantes de Licenciatura en Matemáticas, denominados
+                        así:
+                    </p>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Estudiantes</th>
+                                <th style="width: 300px;">Título</th>
+                                <th>Fecha Sustentación</th>
+                                <th>Calificación Final</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let dirigidos of TrabajosGrado.Jurado let id = index">
+                                <td>{{ id + 1 }}</td>
+                                <td>
+                                    <ul>
+                                        <li>{{ dirigidos.estudiante1 | capitalizado }}</li>
+                                        <li *ngIf="dirigidos.estudiante2">{{ dirigidos.estudiante2 | capitalizado }}</li>
+                                        <li *ngIf="dirigidos.estudiante3">{{ dirigidos.estudiante3 | capitalizado}}</li>
+                                    </ul>
+                                </td>
+                                <td>{{ dirigidos.titulo | capitalizado}}</td>
+                                <td>{{ dirigidos.fechasustentacion }}</td>
+                                <td>{{ dirigidos.calificacionfinal | capitalizado}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>Que el docente {{ docenteSeleccionado.nombre | capitalizado}} con C.C {{ docenteSeleccionado.documento }}, se encuentra dirigiendo varios trabajos de grado correspondiente a los estudiantes de Licenciatura en Matemáticas, denominados
+                        así:
+                    </p>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Estudiantes</th>
+                                <th style="width: 300px;">Título</th>
+                                <th>Fecha Sustentación</th>
+                                <th>Calificación Final</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let dirigidos of TrabajosGrado.Dirigidos.NoTerminados; let id = index">
+                                <td>{{ id + 1 }}</td>
+                                <td>
+                                    <ul>
+                                        <li>{{ dirigidos.estudiante1 | capitalizado }}</li>
+                                        <li *ngIf="dirigidos.estudiante2">{{ dirigidos.estudiante2 | capitalizado }}</li>
+                                        <li *ngIf="dirigidos.estudiante3">{{ dirigidos.estudiante3 | capitalizado}}</li>
+                                    </ul>
+                                </td>
+                                <td>{{ dirigidos.titulo | capitalizado}}</td>
+
+                                <td>{{ dirigidos.fechasustentacion }}</td>
+                                <td>{{ dirigidos.calificacionfinal | capitalizado}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

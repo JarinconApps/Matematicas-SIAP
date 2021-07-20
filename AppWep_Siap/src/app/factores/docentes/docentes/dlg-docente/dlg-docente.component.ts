@@ -16,13 +16,16 @@ export class DlgDocenteComponent implements OnInit {
 
 
   docente: Docente = {
+    documento: '',
     nombre: '',
     telefono: '',
     correo: '',
+    activo: 'si',
+    institucion: '',
+    vinculacion: 'docente',
     idcategoriadocente: '',
     idtipocontrato: '',
     foto: '',
-    activo: 'si'
   };
 
   accion: string;

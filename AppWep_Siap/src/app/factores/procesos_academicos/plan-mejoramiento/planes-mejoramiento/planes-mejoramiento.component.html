@@ -1,7 +1,12 @@
 <div class="m-3">
-    <button class="btn btn-outline-success mb-3" (click)="agregarPlanMejoramiento()"><img src="assets/Iconos/Agregar.png" style="width: 32px;"> Agregar Plan Mejoramiento</button>
+    <button class="btn btn-outline-success mb-3" (click)="agregarPlanMejoramiento()"><i class="fas fa-check-circle"></i> Crear oportunidad de mejora</button>
 
-    <table class="table table-hover">
+    <div class="text-center" style="margin: 40px;" *ngIf="leyendo">
+        <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
+        <h3>Buscando oportunidades de mejora ...</h3>
+    </div>
+
+    <table class="table table-hover" *ngIf="!leyendo">
         <thead class="table-dark">
             <tr>
                 <th>No</th>

@@ -18,11 +18,10 @@
 
                     <div class="input-group">
                         <input class="form-control input-group-prepend" (keyup)="buscarProgramas()" [(ngModel)]="filtroProgrma" name="filtroPrograma" placeholder="Buscar Programa">
-                        <button class="btn btn-outline-success input-group-append" (click)="borrarBusqueda()">...</button>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger" (click)="borrarBusqueda()"><i class="fas fa-trash-alt"></i></button>
+                        </div>
                     </div>
-
-                    <button class="btn btn-outline-success mb-2 btn-block" (click)="vista = [true, false]">Tablas</button>
-                    <button class="btn btn-outline-success mb-2 btn-block" (click)="vista = [false, true]">Gráficas</button>
 
                     <div class="list-group list-group-flush">
                         <a *ngFor="let programa of bProgramas" (click)="seleccionarPrograma(programa)" class="puntero-manito list-group-item list-group-item-action">{{ programa.programa | capitalizado }}</a>
@@ -34,9 +33,19 @@
         <!-- %%%%%%% Reporte del Programa %%%%%%% -->
         <div class="col-md-9">
 
+            <div class="row">
+                <button class="btn btn-outline-success mb-2 btn-block m-3" style="width: 250px;" (click)="vista = [false, true]"><i class="fas fa-chart-bar"></i> Ver Gráfica</button>
+                <button class="btn btn-outline-success mb-2 btn-block m-3" style="width: 250px;" (click)="vista = [true, false]"><i class="fas fa-table"></i> Ver Tabla</button>
+
+                <button *ngIf="vista[0]" [value]="nombreExcel" class="btn btn-outline-success m-3" style="width: 250px;" onclick="crearExcel('reporte-servicios-programas', value)"><i class="fas fa-file-excel"></i> Exportar como Excel</button>
+                <button *ngIf="vista[0]" [value]="nombreDoc" class="btn btn-outline-info m-3" style="width: 250px;" onclick="crearWord('reporte-word', value)"><i class="fas fa-file-word"></i> Exportar como Word</button>
+
+                <button *ngIf="vista[1]" [value]="'Estadisticas-Servicios-Por-Programa.xls'" class="btn btn-outline-success m-3" style="width: 250px;" onclick="crearExcel('reporte-estadistica-programas', value)"><i class="fas fa-file-excel"></i> Exportar como Excel</button>
+                <button *ngIf="vista[1]" [value]="'Estadisticas-Servicios-Por-Programa.doc'" class="btn btn-outline-info m-3" style="width: 250px;" onclick="crearWord('reporte-estadistica-programas', value)"><i class="fas fa-file-word"></i> Exportar como Word</button>
+            </div>
+
+
             <div *ngIf="vista[0]">
-                <button [value]="nombreExcel" class="btn btn-outline-success m-3" onclick="crearExcel('reporte-servicios-programas', value)">Exportar como Excel</button>
-                <button [value]="nombreDoc" class="btn btn-outline-success m-3" onclick="crearWord('reporte-word', value)">Exportar como Word</button>
 
                 <div id="reporte-word">
                     <table class="table table-bordered" id="reporte-servicios-programas">
@@ -87,13 +96,11 @@
             </div>
 
             <div *ngIf="vista[1]">
+                <app-visor-grafica [Datos]="datosGeneral" [Etiquetas]="lbDatosGeneral"></app-visor-grafica>
                 <div style="display: block;">
                     <canvas baseChart [datasets]="datosGeneral" [colors]="generalChartColors" [labels]="lbDatosGeneral" [options]="generalChartOptions" [legend]="generalChartLegend" [chartType]="generalChartType">
                 </canvas>
                 </div>
-
-                <button [value]="'Estadisticas-Servicios-Por-Programa.xls'" class="btn btn-outline-success m-3" onclick="crearExcel('reporte-estadistica-programas', value)">Exportar como Excel</button>
-                <button [value]="'Estadisticas-Servicios-Por-Programa.doc'" class="btn btn-outline-success m-3" onclick="crearWord('reporte-estadistica-programas', value)">Exportar como Word</button>
 
                 <table class="table table-hover" id="reporte-estadistica-programas">
                     <thead class="table-dark">

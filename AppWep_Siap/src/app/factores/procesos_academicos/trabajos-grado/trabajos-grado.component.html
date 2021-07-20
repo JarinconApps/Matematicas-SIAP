@@ -17,27 +17,32 @@
             <div class="card-body">
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Título</label>
-                    <input (keydown.enter)="buscarTrabajosGrado_porTitulo()" class="form-control" [(ngModel)]="tituloTrabajo" name="tituloTrabajo">
+                    <input class="form-control" [(ngModel)]="filtroBusqueda.titulo" name="titulo">
                 </div>
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Director</label>
-                    <input (keydown.enter)="buscarTrabajosGrado_porDirector()" class="form-control" [(ngModel)]="nombreDirector" name="nombreDirector">
-                </div>
-
-                <div class="form-group">
-                    <label class="font-weight-bold text-info">Jurado</label>
-                    <input (keydown.enter)="buscarTrabajosGrado_porJurado()" class="form-control" [(ngModel)]="nombreDocente" name="nombreDocente">
+                    <input class="form-control" [(ngModel)]="filtroBusqueda.director" name="director">
                 </div>
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Estudiante</label>
-                    <input (keydown.enter)="buscarTrabajosGrado_porNombreEstudiante()" class="form-control" [(ngModel)]="nombreEstudiante" name="nombreEstudiante">
+                    <input class="form-control" [(ngModel)]="filtroBusqueda.estudiante" name="estudiante">
+                </div>
+
+                <div class="form-group">
+                    <label class="font-weight-bold text-info">Fecha de Inicio</label>
+                    <app-date-picker [Fecha]="filtroBusqueda.fechaInicio" (CambioFecha)="filtroBusqueda.fechaInicio = $event"></app-date-picker>
+                </div>
+
+                <div class="form-group">
+                    <label class="font-weight-bold text-info">Fecha de Finalización</label>
+                    <app-date-picker [Fecha]="filtroBusqueda.fechaFin" (CambioFecha)="filtroBusqueda.fechaFin = $event"></app-date-picker>
                 </div>
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Filtrar por Estado del Trabajo de Grado</label>
-                    <select (change)="buscarTrabajosGrado_porEstadoProyecto()" [(ngModel)]="estadoTrabajo" name="estadoTrabajo" class="custom-select">
+                    <select [(ngModel)]="filtroBusqueda.estadoProyecto" name="estadoProyecto" class="custom-select">
                       <option value="proceso">En Proceso</option>
                       <option value="terminado">Terminado</option>
                     </select>
@@ -45,24 +50,30 @@
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Modalidad</label>
-                    <select (change)="buscarTrabajosGrado_porModalidad()" [(ngModel)]="modalidad.nombre" name="modalidad" class="custom-select">
-                      <option [value]="modalidad.nombre" *ngFor="let modalidad of Modalidades">{{ modalidad.nombre }}</option>
+                    <select [(ngModel)]="filtroBusqueda.idModalidad" name="idModalidad" class="custom-select">
+                      <option value="">Todas</option>
+                      <option [value]="modalidad.idmodalidad" *ngFor="let modalidad of Modalidades">{{ modalidad.nombre | capitalizado }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Área de Profundización</label>
-                    <select (change)="buscarTrabajosGrado_porAreaProfundizacion()" [(ngModel)]="areaProfundizacion.nombre" name="areaProfundizacion" class="custom-select">
-                      <option [value]="area.nombre" *ngFor="let area of AreasProfundizacion">{{ area.nombre }}</option>
+                    <select [(ngModel)]="filtroBusqueda.idAreaProfundizacion" name="idAreaProfundizacion" class="custom-select">
+                      <option value="">Todas</option>
+                      <option [value]="area.nombre" *ngFor="let area of AreasProfundizacion">{{ area.nombre | capitalizado }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Grupo de Investigación</label>
-                    <select (change)="buscarTrabajosGrado_porGrupoInvestigacion()" [(ngModel)]="grupoInvestigacion.nombre" name="grupoInvestigacion" class="custom-select">
-                      <option [value]="grupo.nombre" *ngFor="let grupo of GruposInvestigacion">{{ grupo.nombre }}</option>
+                    <select [(ngModel)]="filtroBusqueda.idGrupoInvestigacion" name="idGrupoInvestigacion" class="custom-select">
+                      <option value="">Todos</option>
+                      <option [value]="grupo.nombre" *ngFor="let grupo of GruposInvestigacion">{{ grupo.nombre | capitalizado }}</option>
                     </select>
                 </div>
+
+                <button class="btn btn-outline-success btn-block" (click)="leerTrabajosGrado()"><i class="fas fa-search"></i> Buscar</button>
+                <button class="btn btn-outline-danger btn-block" (click)="eliminarFiltro()"><i class="fas fa-trash-alt"></i> Eliminar Filtro</button>
             </div>
         </div>
 
@@ -75,7 +86,7 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item-action list-group-item puntero-manito" *ngFor="let menu of Menus" (click)="abrirMenu(menu)">
                         <div class="media">
-                            <img class="mr-3" [src]="menu.imagen" style="width: 64px;">
+                            <img class="mr-3" [src]="menu.imagen" style="width: 48px;">
                             <div class="media-body">
                                 <h5 class="text-info">{{ menu.nombre | capitalizado }}</h5>
                                 <p>{{ menu.descripcion }}</p>
@@ -90,30 +101,41 @@
     <div class="col-md-9">
         <div class="m-3" *ngIf="!leyendo">
 
-            <div class="modal-footer">
-                <button class="btn btn-outline-success" (click)="agregarTrabajoGrado()" style="margin: 5px;"><img src="assets/Iconos/Agregar.png" style="height: 32px;"> Crear Trabajo Grado</button>
+            <div class="row">
+                <div style="width: 96px; margin: 7px;" class="card shadow puntero-manito" *ngFor="let menu of Menus" (click)="abrirMenu(menu)">
+                    <div class="card-body">
+                        <img class="card-img-top" [src]="menu.imagen">
+                    </div>
+                    <p class="text-info text-center m-1" style="font-size: 12px;">{{ menu.nombre | capitalizado | reducirTexto:'20' }}</p>
+                </div>
             </div>
 
-            <h2 class="text-info">Se encontraron {{ bTrabajosGrado.length }} resultados de {{ paginacion.total }}</h2>
+            <div class="modal-footer">
+                <button class="btn btn-outline-success" (click)="agregarTrabajoGrado()" style="margin: 5px;"><i class="fas fa-plus-circle"></i> Crear Trabajo Grado</button>
+            </div>
+
+            <h2 class="text-info">Se encontraron {{ bTrabajosGrado.length }} resultados de {{ filtroBusqueda.paginacion.total}}</h2>
+            <h6 class="text-info">tiempo de búsqueda {{ tiempo | tiempo }}</h6>
             <hr>
 
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <button class="btn btn-outline-success" (click)="cambiarPagina(-1)">Anterior</button>
+                    <button class="btn btn-outline-success" (click)="cambiarPagina(-1)"><i class="fas fa-backward"></i> Anterior</button>
                 </div>
-                <input [value]="paginacion.resultado" disabled class="form-control">
-                <select class="custom-select" [(ngModel)]="paginacion.cantidad" (change)="leerTrabajosGrado()">
+                <input [value]="filtroBusqueda.paginacion.resultado" disabled class="form-control">
+                <select class="custom-select" [(ngModel)]="filtroBusqueda.paginacion.cantidad" (change)="leerTrabajosGrado()">
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="15">15</option>
-                  <option [value]="paginacion.total">{{ paginacion.total}}</option>
-                </select>
-                <select class="custom-select" [(ngModel)]="paginacion.ordenarPor" name="ordenarPor" (change)="leerTrabajosGrado()">
-                  <option [value]="orden" *ngFor="let orden of paginacion.attrOrdenar">{{ orden }}</option>
+                  <option [value]="filtroBusqueda.paginacion.total">Todos</option>
                 </select>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-success" (click)="cambiarPagina(1)">Siguiente</button>
+                    <button class="btn btn-outline-success" (click)="cambiarPagina(1)"><i class="fas fa-forward"></i> Siguiente</button>
                 </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-success" (click)="verExcel()"><i class="fas fa-file-excel"></i> Descargar como Excel</button>
             </div>
 
             <ul class="list-group" *ngIf="verDescripciones">
@@ -125,7 +147,7 @@
                             <hr>
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col">
                                     <h5 class="text-info">Autor(es)</h5>
                                     <hr>
                                     <ul>
@@ -135,7 +157,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col">
                                     <h5 class="text-info">Dirección</h5>
                                     <hr>
                                     <ul>
@@ -144,7 +166,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col">
                                     <h5 class="text-info">Jurados</h5>
                                     <hr>
                                     <ul>
@@ -153,11 +175,8 @@
                                         <li>{{ trabajogrado.jurado3.nombre | capitalizado}}</li>
                                     </ul>
                                 </div>
-                            </div>
-                            <hr>
 
-                            <div class="row">
-                                <div class="col-md-4">
+                                <div class="col">
                                     <h5 class="text-info">Tipología</h5>
                                     <hr>
                                     <ul>
@@ -166,8 +185,13 @@
                                         <li><b>Grupo Investigación: </b>{{ trabajogrado.grupoInvestigacion.nombre| capitalizado}}</li>
                                     </ul>
                                 </div>
+                            </div>
+                            <hr>
 
-                                <div class="col-md-4">
+                            <div class="row">
+
+
+                                <div class="col">
                                     <h5 class="text-info">Evaluación</h5>
                                     <hr>
                                     <ul>
@@ -178,7 +202,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col">
                                     <h5 class="text-info">Estado</h5>
                                     <hr>
                                     <ul>
@@ -187,12 +211,23 @@
                                         <li><b>Fecha de Sustentación: </b>{{ trabajogrado.fechasustentacion}}</li>
                                     </ul>
                                 </div>
+
+                                <div class="col">
+                                    <h5 class="text-info">Duración</h5>
+                                    <hr>
+                                    <ul>
+                                        <li><b>Días: </b>{{ trabajogrado.cantidadsemestresejecucion.Dias}}</li>
+                                        <li><b>Meses: </b>{{ trabajogrado.cantidadsemestresejecucion.Meses}}</li>
+                                        <li><b>Semestres: </b>{{ trabajogrado.cantidadsemestresejecucion.Semestres}}</li>
+                                        <li><b>Años: </b>{{ trabajogrado.cantidadsemestresejecucion.Anos}}</li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-outline-info" (click)="verTrabajoGrado(trabajogrado)"><img src="assets/Iconos/Ver.png" style="height: 32px;" > Ver</button>
-                                <button class="btn btn-outline-success" (click)="editarTrabajoGrado(trabajogrado)"><img src="assets/Iconos/Editar.png" style="height: 32px;" > Editar</button>
-                                <button class="btn btn-outline-danger" (click)="eliminarTrabajoGrado(trabajogrado)"><img src="assets/Iconos/Eliminar.png" style="height: 32px;"> Eliminar</button>
+                                <button class="btn btn-outline-info" (click)="verTrabajoGrado(trabajogrado)"><i class="fas fa-search"></i> Ver</button>
+                                <button class="btn btn-outline-success" (click)="editarTrabajoGrado(trabajogrado)"><i class="fas fa-edit"></i> Editar</button>
+                                <button class="btn btn-outline-danger" (click)="eliminarTrabajoGrado(trabajogrado)"><i class="fas fa-trash-alt"></i> Eliminar</button>
                             </div>
 
 
@@ -202,10 +237,6 @@
             </ul>
 
             <div *ngIf="verLista">
-                <div class="modal-footer">
-                    <button [value]="'Trabajos_de_Grado_con_Filtro_.xls'" class="input-group-append btn btn-outline-success" onclick="crearExcel('trabajos-grado', value)"><img class="mr-3" src="assets/Iconos/Excel.png" style="width: 32px;">  Descargar en Excel</button>
-                </div>
-
                 <table class="table table-hover table-responsive puntero-manito" id="trabajos-grado">
                     <thead>
                         <tr>
@@ -239,7 +270,7 @@
                     <tbody>
                         <tr *ngFor="let trabajo of bTrabajosGrado; let id = index">
                             <td>{{ id + 1 }}</td>
-                            <td>{{ trabajo.titulo | capitalizado }}</td>
+                            <td>{{ trabajo.titulo }}</td>
                             <td>
                                 <table>
                                     <tr>
@@ -256,15 +287,15 @@
                             <td>{{ trabajo.director.nombre | capitalizado }}</td>
                             <td>{{ trabajo.codirector.nombre | capitalizado }}</td>
                             <td>
-                                <button class="btn btn-outline-info" (click)="verTrabajoGrado(trabajogrado)"><img src="assets/Iconos/Ver.png" style="height: 32px;" > Ver</button>
+                                <button class="btn btn-outline-info" (click)="verTrabajoGrado(trabajo)"><img src="assets/Iconos/Ver.png" style="height: 32px;" > Ver</button>
                             </td>
                             <td>
-                                <button class="btn btn-outline-success" (click)="editarTrabajoGrado(trabajogrado)">
+                                <button class="btn btn-outline-success" (click)="editarTrabajoGrado(trabajo)">
                               <img src="assets/Iconos/Editar.png" style="height: 32px;"> Editar
                             </button>
                             </td>
                             <td>
-                                <button class="btn btn-outline-danger" (click)="eliminarTrabajoGrado(trabajogrado)">
+                                <button class="btn btn-outline-danger" (click)="eliminarTrabajoGrado(trabajo)">
                               <img src="assets/Iconos/Eliminar.png" style="height: 32px;" > Eliminar
                             </button>
                             </td>
@@ -297,7 +328,7 @@
                             <h4 class="card-title text-center">{{ trabajogrado.modalidad.nombre | capitalizado }}</h4>
                         </div>
                         <div class="card-body" style="height: 430px;">
-                            <h2 class="text-info text-center">{{ trabajogrado.titulo | reducirTexto:'50' | capitalizado}}</h2>
+                            <h2 class="text-info text-center">{{ trabajogrado.titulo | reducirTexto:'50'}}</h2>
                             <hr>
                             <ul>
                                 <li>{{ trabajogrado.estudiante1 | capitalizado}}</li>

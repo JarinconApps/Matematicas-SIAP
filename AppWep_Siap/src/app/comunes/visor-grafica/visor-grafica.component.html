@@ -1,15 +1,36 @@
-<h1 class="text-info text-center">{{ Titulo | capitalizado }}</h1>
-<hr>
-
-<div class="input-group">
-    <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">Tipo de Gráfica</span>
+<div class="row mb-3">
+    <div class="input-group col">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Tipo de Gráfica</span>
+        </div>
+        <select class="custom-select" [(ngModel)]="tipo" (change)="cambiarTipoGrafica()">
+          <option [value]="tipo" *ngFor="let tipo of tiposGrafica">{{ tipo }}</option>
+        </select>
     </div>
-    <select class="custom-select" [(ngModel)]="tipo" (change)="cambiarTipoGrafica()">
-      <option [value]="tipo" *ngFor="let tipo of tiposGrafica">{{ tipo }}</option>
-    </select>
+
+    <div class="input-group col">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Ordenar de ...</span>
+        </div>
+        <select class="custom-select" [(ngModel)]="tipoOrden" name="tipoOrden" (change)="ordenar(tipoOrden)">
+          <option value="MenToMay">menor a mayor</option>
+          <option value="MayToMen">mayor a menor</option>
+        </select>
+    </div>
+
+    <div class="input-group col">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Cambiar colores ...</span>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-info" (click)="cambiarColores()"><i class="fas fa-sync-alt"></i></button>
+        </div>
+    </div>
+
+    <a [id]="IdGrafica" class="btn btn-outline-success col" (click)="descargarGrafica()"><i class="fas fa-cloud-download-alt"></i> Descargar</a>
 </div>
 
+
 <div style="display: block">
-    <canvas baseChart [datasets]="Datos" [labels]="Etiquetas" [colors]="Colores" [options]="opciones" [legend]="leyendas" [chartType]="tipo">
+    <canvas [id]="'canvas-' + IdGrafica" baseChart [datasets]="Datos" [labels]="Etiquetas" [colors]="Colores" [options]="opciones" [legend]="leyendas" [chartType]="tipo">
 </canvas>

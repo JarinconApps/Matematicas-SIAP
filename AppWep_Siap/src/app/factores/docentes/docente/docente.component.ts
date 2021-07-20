@@ -2,9 +2,10 @@ import { PerfilDocente } from './../../../interfaces/interfaces.interfaces';
 import { GeneralService } from './../../../services/general.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Docente, CategoriaDocente, TipoContrato, HistoricoAgenda, Formacion, GrupoInvestigacion, GrupoDocente, TipoProduccion, Producto } from '../../../interfaces/interfaces.interfaces';
+import { Docente, CategoriaDocente, TipoContrato, HistoricoAgenda, Formacion, GrupoInvestigacion, GrupoDocente, TipoProduccion, Producto, AreaProfundizacion, RespuestaCRUD, EnlaceDivulgacion } from '../../../interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../services/dialogos.service';
 import { TransferService } from '../../../services/transfer.service';
+import { CapitalizadoPipe } from '../../../pipes/capitalizado.pipe';
 
 @Component({
   selector: 'app-docente',
@@ -23,9 +24,21 @@ export class DocenteComponent implements OnInit {
     foto: ''
   };
 
+  expandirTodo = false;
+  expandFormacion = false;
+  expandAreasProf = false;
+  expandEnlacesDiv = false;
+  expandGruposInv = false;
+  expandTrabaGradoDir = false;
+  expandTrabaGradoEva = false;
+  expandProduccion = false;
+  expandHistoricoAgendas = false;
+
   Categorias: CategoriaDocente[] = [];
   TiposContrato: TipoContrato[] = [];
   TiposProduccion: TipoProduccion[] = [];
+  AreasProfundizacion: AreaProfundizacion[] = [];
+  EnlacesDivulgacion: EnlaceDivulgacion[] = [];
 
   imagenSubir: File;
 
@@ -50,6 +63,7 @@ export class DocenteComponent implements OnInit {
     this.leerFormacion();
     this.leerGruposInvestigacion();
     this.obtenerProductosDocente();
+    this.obtenerEnlacesDivulgacionDocente();
 
     this.transfer.enviarTituloAplicacion('Perfil del Docente');
   }
@@ -60,6 +74,8 @@ export class DocenteComponent implements OnInit {
     this.activatedRoute.params.subscribe((rParam: any) => {
       this.docente.iddocente = rParam.id;
 
+      this.leerAreasProfundizacion();
+
       this.genService.getDocente(this.docente.iddocente).subscribe((rDocente: Docente) => {
         this.docente = rDocente;
 
@@ -69,6 +85,37 @@ export class DocenteComponent implements OnInit {
           this.leyendo = false;
         });
       });
+    });
+  }
+
+  /** ### agregarAreaProfundizacion
+   * Agrega un área de profundización al docente
+   */
+   agregarAreaProfundizacion() {
+    this.dlgService.crearEditarAreaDocente(this.docente.iddocente).subscribe((rAreaDocente: RespuestaCRUD) => {
+      console.log(rAreaDocente);
+      this.leerAreasProfundizacion();
+    });
+   }
+
+  /** ### leerAreasProfundizacion
+   * Leer las áreas de profundización del docente
+   */
+  leerAreasProfundizacion() {
+    this.genService.getAreasDocente(this.docente.iddocente).subscribe((rAreas: RespuestaCRUD) => {
+      console.log(rAreas);
+      this.AreasProfundizacion = rAreas.Results;
+    });
+  }
+
+  /** ## desvincularAreaProfundizacion
+   * Eliminar el área de profundización del docente
+   */
+  desvincularAreaProfundizacion(area: AreaProfundizacion) {
+    this.genService.deleteAreaDocente(area.idareadocente).subscribe((rArea: RespuestaCRUD) => {
+      console.log(rArea);
+      this.dlgService.mostrarSnackBar(rArea.Response);
+      this.leerAreasProfundizacion();
     });
   }
 
@@ -241,5 +288,55 @@ export class DocenteComponent implements OnInit {
       }
     });
   }
+
+  obtenerEnlacesDivulgacionDocente() {
+    this.genService.getEnlacesDivulgacion(this.docente.iddocente).subscribe((rEnlaces: RespuestaCRUD) => {
+      this.EnlacesDivulgacion = rEnlaces.Results;
+    });
+  }
+
+  agregarEnlace() {
+    this.dlgService.crearEditarEnlaceDocente(this.docente.iddocente, null).subscribe((rEnlace: RespuestaCRUD) => {
+      this.dlgService.mostrarSnackBar(rEnlace.Response);
+      this.obtenerEnlacesDivulgacionDocente();
+    });
+  }
+
+  editarEnlace(enlaces: EnlaceDivulgacion) {
+    this.dlgService.crearEditarEnlaceDocente(this.docente.iddocente, enlaces).subscribe((rEnlace: RespuestaCRUD) => {
+      this.dlgService.mostrarSnackBar(rEnlace.Response);
+      this.obtenerEnlacesDivulgacionDocente();
+    });
+  }
+
+  eliminarEnlace(enlaces: EnlaceDivulgacion) {
+    this.dlgService.confirmacion('¿Está seguro de eliminar éste enlace?').subscribe((rEliminar: boolean) => {
+      if (rEliminar) {
+        this.genService.deleteEnlaceDivulgalcion(enlaces.iddivulgacion).subscribe((rEnlaces: RespuestaCRUD) => {
+          this.dlgService.mostrarSnackBar(rEnlaces.Response);
+          this.obtenerEnlacesDivulgacionDocente();
+        });
+      }
+    });
+  }
+
+  exportarPerfil() {
+    document.title = new CapitalizadoPipe().transform(this.docente.nombre);
+
+    this.expandirTodo = true;
+    this.expandFormacion = true;
+    this.expandAreasProf = true;
+    this.expandEnlacesDiv = true;
+    this.expandGruposInv = true;
+    this.expandTrabaGradoDir = true;
+    this.expandTrabaGradoEva = true;
+    this.expandProduccion = true;
+    this.expandHistoricoAgendas = true;
+
+    setTimeout(() => {
+      window.print();
+    }, 100);
+  }
+
 
 }

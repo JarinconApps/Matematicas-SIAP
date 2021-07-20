@@ -11,7 +11,7 @@ import { EsperaComponent } from '../dialogos/espera/espera.component';
 import { MostrarParticipanteComponent } from '../dialogos/mostrar-participante/mostrar-participante.component';
 import { EvaluarResumenEmemComponent } from '../dialogos/evaluar-resumen-emem/evaluar-resumen-emem.component';
 import { SnackBarComponent } from '../dialogos/snack-bar/snack-bar.component';
-import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto } from '../interfaces/interfaces.interfaces';
+import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario } from '../interfaces/interfaces.interfaces';
 import { DlgTipoContratoComponent } from '../factores/docentes/tipos-contrato/dlg-tipo-contrato/dlg-tipo-contrato.component';
 import { DlgCategoriaDocenteComponent } from '../factores/docentes/categorias-docentes/dlg-categoria-docente/dlg-categoria-docente.component';
 import { DlgDocenteComponent } from '../factores/docentes/docentes/dlg-docente/dlg-docente.component';
@@ -42,6 +42,11 @@ import { CrearEditarFormacionComponent } from '../factores/docentes/docente/crea
 import { SeleccionarGrupoComponent } from '../factores/investigacion/grupos-investigacion/seleccionar-grupo/seleccionar-grupo.component';
 import { CrearEditarTipoProduccionComponent } from '../administrador/admin-tipos-produccion/crear-editar-tipo-produccion/crear-editar-tipo-produccion.component';
 import { CrearEditarProductoComponent } from '../factores/docentes/docente/crear-editar-producto/crear-editar-producto.component';
+import { ExportarTrabajosGradoComponent } from '../factores/procesos_academicos/trabajos-grado/exportar-trabajos-grado/exportar-trabajos-grado.component';
+import { VerTrabajoGradoComponent } from '../factores/procesos_academicos/trabajos-grado/ver-trabajo-grado/ver-trabajo-grado.component';
+import { CrearEditarAreaDocenteComponent } from '../factores/docentes/docente/crear-editar-area-docente/crear-editar-area-docente.component';
+import { CrearEditarEnlaceDivulgacionComponent } from '../factores/docentes/docente/crear-editar-enlace-divulgacion/crear-editar-enlace-divulgacion.component';
+import { CrearEditarEventoSeminarioComponent } from '../factores/extension/seminario/eventos-seminario/crear-editar-evento-seminario/crear-editar-evento-seminario.component';
 
 @Injectable({
   providedIn: 'root'
@@ -240,10 +245,10 @@ export class DialogosService {
     return dialogRef.afterClosed();
   }
 
-  DlgGrupoInvestigacion(accion: string, idgrupoinvestigacion: string) {
+  DlgGrupoInvestigacion(grupoInvestigacion: GrupoInvestigacion) {
     const dialogRef = this.dialog.open(DlgGrupoInvestigacionComponent, {
-      width: '60%', height: '80%',
-      data: {accion, idgrupoinvestigacion}
+      width: '80%', height: '80%',
+      data: {grupoInvestigacion}
     });
 
     return dialogRef.afterClosed();
@@ -357,6 +362,51 @@ export class DialogosService {
     const dialogRef = this.dialog.open(CrearEditarProductoComponent, {
       width: '90%', height: '80%',
       data: {producto}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  exportarTrabajosGrado(TrabajosGrado: TrabajoGrado[]) {
+    const dialogRef = this.dialog.open(ExportarTrabajosGradoComponent, {
+      width: '90%', height: '90%',
+      data: {TrabajosGrado}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  verTrabajoGrado(trabajoGrado: TrabajoGrado) {
+    const dialogRef = this.dialog.open(VerTrabajoGradoComponent, {
+      width: '90%', height: '90%',
+      data: {trabajoGrado}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarAreaDocente(iddocente: string) {
+    const dialogRef = this.dialog.open(CrearEditarAreaDocenteComponent, {
+      width: '600px',
+      data: {iddocente}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarEnlaceDocente(iddocente: string, enlace: EnlaceDivulgacion) {
+    const dialogRef = this.dialog.open(CrearEditarEnlaceDivulgacionComponent, {
+      width: '600px',
+      data: {iddocente, enlace}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarEventoSeminario(evento: Seminario) {
+    const dialogRef = this.dialog.open(CrearEditarEventoSeminarioComponent, {
+      width: '80%', height: '80%',
+      data: {evento}
     });
 
     return dialogRef.afterClosed();
