@@ -31,6 +31,14 @@ export class VerPlanMejoraComponent implements OnInit {
 
   ngOnInit() {
     this.planMejoramiento = this.data.planMejoramiento;
+    console.log(this.planMejoramiento);
+
+    let suma = 0;
+    for (const presupuesto of this.planMejoramiento.presupuestos) {
+      suma = suma + Number(presupuesto.valor);
+      console.log(suma);
+    }
+    this.planMejoramiento.totalPresupuesto = suma;
   }
 
 }

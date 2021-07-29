@@ -1,5 +1,8 @@
 <div class="m-3">
-    <button class="btn btn-outline-success mb-3" (click)="agregarPlanMejoramiento()"><i class="fas fa-check-circle"></i> Crear oportunidad de mejora</button>
+    <div class="modal-footer">
+        <button class="btn btn-outline-success mb-3" (click)="exportarPlanMejoramiento()"><i class="fas fa-file-excel"></i> Exportar a Excel</button>
+        <button class="btn btn-outline-success mb-3" (click)="agregarPlanMejoramiento()"><i class="fas fa-check-circle"></i> Crear oportunidad de mejora</button>
+    </div>
 
     <div class="text-center" style="margin: 40px;" *ngIf="leyendo">
         <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
@@ -11,9 +14,9 @@
             <tr>
                 <th>No</th>
                 <th>Descripción de la Oportunidad de Mejora</th>
-                <th>Ver Más ...</th>
-                <th>Editar</th>
-                <th>Eliminar</th>
+                <th style="width: 120px;">Ver Más ...</th>
+                <th style="width: 120px;">Editar</th>
+                <th style="width: 120px;">Eliminar</th>
             </tr>
         </thead>
 
@@ -22,13 +25,13 @@
                 <td>{{ plan.orden }}</td>
                 <td [innerHTML]="plan.descripcion_mejora"></td>
                 <td>
-                    <img src="assets/Iconos/Ver.png" style="height: 32px;" (click)="verPlan(plan)">
+                    <button class="btn btn-outline-success btn-sm" (click)="verPlan(plan)"><i class="fas fa-search"></i> Ver</button>
                 </td>
                 <td>
-                    <img src="assets/Iconos/Editar.png" style="height: 32px;" (click)="editarPlan(plan)">
+                    <button class="btn btn-outline-info btn-sm" (click)="editarPlan(plan)"><i class="fas fa-edit"></i> Editar</button>
                 </td>
                 <td>
-                    <img src="assets/Iconos/Eliminar.png" style="height: 32px;" (click)="eliminarPlan(plan)">
+                    <button class="btn btn-outline-danger btn-sm" (click)="eliminarPlan(plan)"><i class="fas fa-trash-alt"></i> Eliminar</button>
                 </td>
             </tr>
         </tbody>

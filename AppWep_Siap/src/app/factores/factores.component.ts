@@ -63,7 +63,7 @@ export class FactoresComponent implements OnInit {
         },
         {
            Titulo: 'Plan de Mejoramiento',
-           Icono: 'pendiente.png',
+           Icono: 'plan_mejoramiento.png',
            Ruta: [RUTA_PLAN_MEJORAMIENTO],
            IdBoton: 'pro-aca-plan-mejora'
         },

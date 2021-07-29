@@ -79,21 +79,57 @@
         </div>
 
         <div class="row">
-            <div class="form-group col-md-4">
-                <label class="font-weight-bold">Presupuesto en Miles de $ u Otros Recursos</label>
-                <input class="form-control" type="text">
-            </div>
-
-            <div class="form-group col-md-4">
+            <div class="form-group col">
                 <label class="font-weight-bold">Responsable de la Ejecución Principal</label>
                 <input class="form-control" type="text" [(ngModel)]="planMejoramiento.responsable_ejecucion" name="responsable_ejecucion">
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col">
                 <label class="font-weight-bold">Responsable del Seguimiento</label>
                 <input class="form-control" type="text" [(ngModel)]="planMejoramiento.responsable_seguimiento" name="responsable_seguimiento">
             </div>
         </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-outline-success" type="button" (click)="crearPresupuesto()"><i class="fas fa-plus-circle"></i> Crear presupuesto</button>
+        </div>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Valor</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let presupuesto of planMejoramiento.presupuestos; let id = index">
+                    <td>{{ id + 1 }}</td>
+                    <td>{{ presupuesto.fecha }}</td>
+                    <td [innerHTML]="presupuesto.descripcion"></td>
+                    <td>{{ presupuesto.valor | currency }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-info" type="button" (click)="editarPresupuesto(presupuesto)"><i class="fas fa-edit"></i> Editar</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-danger" type="button" (click)="eliminarPresupuesto(presupuesto)"><i class="fas fa-edit"></i> Eliminar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <th>Total</th>
+                    <th>{{ planMejoramiento.totalPresupuesto | currency }}</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
 
         <h3 class="text-info">Observaciones y Avances</h3>
         <hr>

@@ -410,6 +410,19 @@ create table if not exists siap_plan_mejoramiento(
 	estado_actual_accion text	
 );
 
+create table if not exists siap_fechas_plan_mejoramiento(
+	idfecha text primary key not null,
+	fecha text 
+);
+
+create table if not exists siap_presupuesto_pm(
+	idpresupuesto text primary key not null,
+	idplan text references siap_plan_mejoramiento(idplan),
+	idfecha text references siap_fechas_plan_mejoramiento(idfecha),
+	descripcion text,
+	valor integer
+);
+
 create table if not exists siap_grupos_docente(
 	idgrupodocente text primary key not null,
 	iddocente integer references siap_docentes(iddocente),

@@ -57,4 +57,8 @@ export class PlanesMejoramientoComponent implements OnInit {
     });
   }
 
+  exportarPlanMejoramiento() {
+    this.dlgService.exportarPlanesMejoramiento();
+  }
+
 }

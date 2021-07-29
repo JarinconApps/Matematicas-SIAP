@@ -1,0 +1,24 @@
+<app-titulo-dialogo [Titulo]="'Creando/Editando presupuesto ...'"></app-titulo-dialogo>
+
+<form ngNativeValidated (ngSubmit)="guardar()">
+    <div class="form-group">
+        <label class="font-weight-bold">Descripción</label>
+        <angular-editor [placeholder]="" [config]="genService.editorConfig" [(ngModel)]="presupuestoPm.descripcion" name="descripcion"></angular-editor>
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Valor ( {{ presupuestoPm.valor | currency }} )</label>
+        <input class="form-control" required [(ngModel)]="presupuestoPm.valor" name="valor" type="number">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Fecha</label>
+        <select class="form-control" [(ngModel)]="presupuestoPm.idfecha" required name="idfecha" type="text">
+        <option [value]="fecha.idfecha" *ngFor="let fecha of fechas">{{ fecha.fecha }}</option>
+      </select>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-sm btn-outline-success" type="submit"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+</form>

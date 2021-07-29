@@ -3,6 +3,7 @@ import { Seminario } from 'src/app/interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../../services/dialogos.service';
 import { RespuestaCRUD } from '../../../../interfaces/interfaces.interfaces';
 import { GeneralService } from '../../../../services/general.service';
+import { SeminarioComponent } from '../seminario.component';
 
 @Component({
   selector: 'app-eventos-seminario',
@@ -48,6 +49,10 @@ export class EventosSeminarioComponent implements OnInit {
         });
       }
     });
+  }
+
+  verEvento(evento: Seminario) {
+    this.dlgService.verSeminario(evento);
   }
 
 }

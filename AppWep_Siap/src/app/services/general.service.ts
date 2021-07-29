@@ -122,6 +122,10 @@ export class GeneralService {
   private URL_ENLACES_DIVULGACION = 'EnlacesDivulgacion';
   private URL_SEMINARIO = 'Seminario';
   private URL_SEMINARIOS = 'Seminarios';
+  private URL_FECHA_PRESUPUESTO_SM = 'FechaPresupuestoPm';
+  private URL_FECHAS_PRESUPUESTO_SM = 'FechasPresupuestoPm';
+  private URL_PRESUPUESTO_PM = 'PresupuestoPm';
+  private URL_PRESUPUESTOS_PM = 'presupuestosPm';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -1909,6 +1913,70 @@ export class GeneralService {
 
   putSeminario(datos: string) {
     const url = this.dataSnap_Path(this.URL_SEMINARIO);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
+  }
+
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     CRUD
+     Eventos del Seminario del programa
+  =========================================================================================================================*/
+
+  getFechaPresupuestoPm(IdSeminario: string) {
+    const url = this.dataSnap_Path(this.URL_FECHA_PRESUPUESTO_SM) + this.parametro(IdSeminario);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  getFechasPresupuestoPm() {
+    const url = this.dataSnap_Path(this.URL_FECHAS_PRESUPUESTO_SM);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  deleteFechaPresupuestoPm(IdSeminario: string) {
+    const url = this.dataSnap_Path(this.URL_FECHA_PRESUPUESTO_SM) + this.parametro(IdSeminario);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
+  }
+
+  postFechaPresupuestoPm(datos: string) {
+    const url = this.dataSnap_Path(this.URL_FECHA_PRESUPUESTO_SM);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  putFechaPresupuestoPm(datos: string) {
+    const url = this.dataSnap_Path(this.URL_FECHA_PRESUPUESTO_SM);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
+  }
+
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     CRUD
+     Eventos del Seminario del programa
+  =========================================================================================================================*/
+
+  getPresupuestoPm(IdPlan: string) {
+    const url = this.dataSnap_Path(this.URL_PRESUPUESTOS_PM)  + this.parametro(IdPlan);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  deletePresupuestoPm(IdPresupuesto: string) {
+    const url = this.dataSnap_Path(this.URL_PRESUPUESTO_PM) + this.parametro(IdPresupuesto);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
+  }
+
+  postPresupuestoPm(datos: string) {
+    const url = this.dataSnap_Path(this.URL_PRESUPUESTO_PM);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  putPresupuestoPm(datos: string) {
+    const url = this.dataSnap_Path(this.URL_PRESUPUESTO_PM);
     const headers = this.headers;
     return this.http.put(url, datos, {headers});
   }

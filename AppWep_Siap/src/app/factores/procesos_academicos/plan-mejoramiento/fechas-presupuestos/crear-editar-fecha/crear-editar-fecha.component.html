@@ -1,0 +1,12 @@
+<app-titulo-dialogo [Titulo]="'Creando/Editando fecha de presupuesto ...'"></app-titulo-dialogo>
+
+<form ngNativeValidated (ngSubmit)="guardar()">
+    <div class="form-group">
+        <label class="font-weight-bold">Fecha</label>
+        <input class="form-control" required type="text" [(ngModel)]="fechaPresupuestoPm.fecha" name="fecha">
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-success" type="submit"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+</form>

@@ -163,6 +163,8 @@ type
     { Pruebas }
     function pruebaExcel: TJSONObject;
 
+    function validarTokenHeader: boolean;
+
     { CRUD: concurrencias }
     function concurrencia(idClave: string): TJSONObject;
     function updateconcurrencia(const token: string; const datos: TJSONObject)
@@ -592,6 +594,19 @@ type
     function acceptSeminario(datos: TJSONObject): TJSONObject;
     function cancelSeminario(IdSeminario: string): TJSONObject;
 
+    function updateFechaPresupuestoPm(datos: TJSONObject): TJSONObject;
+    function FechasPresupuestoPm: TJSONObject;
+    function FechaPresupuestoPm(IdFecha: string): TJSONObject;
+    function acceptFechaPresupuestoPm(datos: TJSONObject): TJSONObject;
+    function cancelFechaPresupuestoPm(IdFecha: string): TJSONObject;
+
+    function updatePresupuestoPm(datos: TJSONObject): TJSONObject;
+    function presupuestosPm(IdPlan: string): TJSONObject;
+    function getPresupuestosPm(IdPlan: string): TJSONArray;
+    function getPrespuestoByFechaPlan(IdPlan: string): TJSONArray;
+    function acceptPresupuestoPm(datos: TJSONObject): TJSONObject;
+    function cancelPresupuestoPm(idpresupuesto: string): TJSONObject;
+
   end;
 {$METHODINFO OFF}
 
@@ -686,6 +701,47 @@ begin
 
   Result := Json;
   escribirMensaje('updateFavorito', Json.toString);
+  Query.Free;
+end;
+
+function TMatematicas.updateFechaPresupuestoPm(datos: TJSONObject): TJSONObject;
+var
+  Json: TJSONObject;
+  Query: TFDQuery;
+begin
+  try
+    Json := TJSONObject.create;
+
+    if validarTokenHeader then
+    begin
+      Query := TFDQuery.create(nil);
+      Query.Connection := Conexion;
+
+      Query.Close;
+      Query.SQL.Text :=
+        'INSERT INTO siap_fechas_plan_mejoramiento (idfecha, fecha)' +
+        ' VALUES (:idfecha, :fecha)';
+      Query.Params.ParamByName('idfecha').Value := generarID;
+      Query.Params.ParamByName('fecha').Value := datos.GetValue('fecha').Value;
+      Query.ExecSQL;
+
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, 'La fecha se creo correctamente');
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
   Query.Free;
 end;
 
@@ -836,6 +892,113 @@ begin
   Query.Free;
 end;
 
+function TMatematicas.FechaPresupuestoPm(IdFecha: string): TJSONObject;
+var
+  Json, JsonFecha: TJSONObject;
+  Query: TFDQuery;
+  Fechas: TJSONArray;
+  i: integer;
+begin
+  try
+    Json := TJSONObject.create;
+
+    if validarTokenHeader then
+    begin
+      Query := TFDQuery.create(nil);
+      Query.Connection := Conexion;
+
+      Query.Close;
+      Query.SQL.Text :=
+        'SELECT * FROM siap_fechas_plan_mejoramiento WHERE idfecha=' + #39 +
+        IdFecha + #39;
+      Query.Open;
+      Query.Next;
+
+      Fechas := TJSONArray.create;
+      for i := 1 to Query.RecordCount do
+      begin
+        JsonFecha := TJSONObject.create;
+        JsonFecha.AddPair('idfecha', Query.FieldByName('idfecha').AsString);
+        JsonFecha.AddPair('fecha', Query.FieldByName('fecha').AsString);
+
+        Fechas.AddElement(JsonFecha);
+        Query.Next;
+      end;
+
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, 'Las fechas se obtuvieron correctamente');
+      Json.AddPair(JSON_RESULTS, Fechas);
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
+  Query.Free;
+end;
+
+function TMatematicas.FechasPresupuestoPm: TJSONObject;
+var
+  Json, JsonFecha: TJSONObject;
+  Query: TFDQuery;
+  Fechas: TJSONArray;
+  i: integer;
+begin
+  try
+    Json := TJSONObject.create;
+
+    if validarTokenHeader then
+    begin
+      Query := TFDQuery.create(nil);
+      Query.Connection := Conexion;
+
+      Query.Close;
+      Query.SQL.Text :=
+        'SELECT * FROM siap_fechas_plan_mejoramiento ORDER BY fecha';
+      Query.Open;
+      Query.First;
+
+      Fechas := TJSONArray.create;
+      for i := 1 to Query.RecordCount do
+      begin
+        JsonFecha := TJSONObject.create;
+        JsonFecha.AddPair('idfecha', Query.FieldByName('idfecha').AsString);
+        JsonFecha.AddPair('fecha', Query.FieldByName('fecha').AsString);
+
+        Fechas.AddElement(JsonFecha);
+        Query.Next;
+      end;
+
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, 'Las fechas se obtuvieron correctamente');
+      Json.AddPair(JSON_RESULTS, Fechas);
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
+  Query.Free;
+end;
+
 function TMatematicas.formacion(IdDocente: string): TJSONObject;
 var
   QFormacion: TFDQuery;
@@ -919,6 +1082,45 @@ begin
 
   Result := Json;
   escribirMensaje('cancelFavorito', Json.toString);
+  Query.Free;
+end;
+
+function TMatematicas.cancelFechaPresupuestoPm(IdFecha: string): TJSONObject;
+var
+  Json: TJSONObject;
+  Query: TFDQuery;
+begin
+  try
+    Json := TJSONObject.create;
+
+    if validarTokenHeader then
+    begin
+      Query := TFDQuery.create(nil);
+      Query.Connection := Conexion;
+
+      Query.Close;
+      Query.SQL.Text :=
+        'DELETE FROM siap_fechas_plan_mejoramiento WHERE idfecha=' + #39 +
+        IdFecha + #39;
+      Query.ExecSQL;
+
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, 'La fecha se eliminó correctamente');
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
   Query.Free;
 end;
 
@@ -1015,6 +1217,46 @@ begin
 
   Result := Json;
   escribirMensaje('updateFavorito', Json.toString);
+  Query.Free;
+end;
+
+function TMatematicas.acceptFechaPresupuestoPm(datos: TJSONObject): TJSONObject;
+var
+  Json: TJSONObject;
+  Query: TFDQuery;
+begin
+  try
+    Json := TJSONObject.create;
+
+    if validarTokenHeader then
+    begin
+      Query := TFDQuery.create(nil);
+      Query.Connection := Conexion;
+
+      Query.Close;
+      Query.SQL.Text := 'UPDATE siap_fechas_plan_mejoramiento SET fecha=:fecha '
+        + ' WHERE idfecha=' + #39 + datos.GetValue('idfecha').Value + #39;
+
+      Query.Params.ParamByName('fecha').Value := datos.GetValue('fecha').Value;
+      Query.ExecSQL;
+
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, 'La fecha se actualizó correctamente');
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
   Query.Free;
 end;
 
@@ -5923,6 +6165,129 @@ begin
   Query.Free;
 end;
 
+function TMatematicas.getPrespuestoByFechaPlan(IdPlan: string): TJSONArray;
+var
+  Fechas, presupuestos: TJSONArray;
+  JsonFecha, jsonpresupuesto, Json: TJSONObject;
+  QFecha, QPres: TFDQuery;
+  i: integer;
+  j: integer;
+begin
+  try
+    Json := TJSONObject.create;
+    QFecha := TFDQuery.create(nil);
+    QFecha.Connection := Conexion;
+    QPres := TFDQuery.create(nil);
+    QPres.Connection := Conexion;
+
+    QFecha.Close;
+    QFecha.SQL.Text := 'SELECT * FROM siap_fechas_plan_mejoramiento ORDER BY fecha';
+    QFecha.Open;
+    QFecha.First;
+
+    Fechas := TJSONArray.create;
+    for j := 1 to QFecha.RecordCount do
+    begin
+      JsonFecha := TJSONObject.create;
+      JsonFecha.AddPair('idfecha', QFecha.FieldByName('idfecha').AsString);
+      JsonFecha.AddPair('fecha', QFecha.FieldByName('fecha').AsString);
+
+      QPres.Close;
+      QPres.SQL.Text := 'SELECT * FROM siap_presupuesto_pm WHERE' + ' idplan=' +
+        #39 + IdPlan + #39 + ' AND idfecha=' + #39 +
+        QFecha.FieldByName('idfecha').AsString + #39;
+      QPres.Open;
+      QPres.First;
+
+      presupuestos := TJSONArray.create;
+      for i := 1 to QPres.RecordCount do
+      begin
+        jsonpresupuesto := TJSONObject.create;
+        jsonpresupuesto.AddPair('idpresupuesto',
+          QPres.FieldByName('idpresupuesto').Value);
+        jsonpresupuesto.AddPair('idplan', QPres.FieldByName('idplan').Value);
+        jsonpresupuesto.AddPair('idfecha', QPres.FieldByName('idfecha').Value);
+        jsonpresupuesto.AddPair('descripcion',
+          QPres.FieldByName('descripcion').Value);
+        jsonpresupuesto.AddPair('valor', QPres.FieldByName('valor').Value);
+
+        presupuestos.AddElement(jsonpresupuesto);
+        QPres.Next;
+      end;
+
+      JsonFecha.AddPair('presupuestos', presupuestos);
+      Fechas.AddElement(JsonFecha);
+
+      QFecha.Next;
+    end;
+
+    Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    Json.AddPair(JSON_RESPONSE, 'Los presupuestos se obtuvieron correctamente');
+    Json.AddPair(JSON_RESULTS, presupuestos);
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Fechas;
+  QPres.Free;
+  QFecha.Free;
+end;
+
+function TMatematicas.getPresupuestosPm(IdPlan: string): TJSONArray;
+var
+  Json, jsonpresupuesto: TJSONObject;
+  Query: TFDQuery;
+  presupuestos: TJSONArray;
+  i: integer;
+begin
+  try
+    Json := TJSONObject.create;
+    Query := TFDQuery.create(nil);
+    Query.Connection := Conexion;
+
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM siap_presupuesto_pm as ppm INNER JOIN' +
+      ' siap_fechas_plan_mejoramiento as fpm ON ppm.idfecha=fpm.idfecha WHERE' +
+      ' ppm.idplan=' + #39 + IdPlan + #39;
+    Query.Open;
+    Query.First;
+
+    presupuestos := TJSONArray.create;
+    for i := 1 to Query.RecordCount do
+    begin
+      jsonpresupuesto := TJSONObject.create;
+      jsonpresupuesto.AddPair('idpresupuesto',
+        Query.FieldByName('idpresupuesto').Value);
+      jsonpresupuesto.AddPair('idplan', Query.FieldByName('idplan').Value);
+      jsonpresupuesto.AddPair('idfecha', Query.FieldByName('idfecha').Value);
+      jsonpresupuesto.AddPair('descripcion',
+        Query.FieldByName('descripcion').Value);
+      jsonpresupuesto.AddPair('valor', Query.FieldByName('valor').Value);
+      jsonpresupuesto.AddPair('fecha', Query.FieldByName('fecha').Value);
+
+      presupuestos.AddElement(jsonpresupuesto);
+      Query.Next;
+    end;
+
+    Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    Json.AddPair(JSON_RESPONSE, 'Los presupuestos se obtuvieron correctamente');
+    Json.AddPair(JSON_RESULTS, presupuestos);
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := presupuestos;
+  Query.Free;
+end;
+
 { Método DELETE - FuncionDocente }
 function TMatematicas.cancelFuncionDocente(const token, ID: string)
   : TJSONObject;
@@ -6776,7 +7141,7 @@ begin
           sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
           horasFactor := horasSemestre * 2.5;
         end
-        else if (Jornada = 'posgrado') then
+        else if (Jornada = 'posgrado') or (tipo = 'posgrado') then
         begin
           horasSemestre := horas * semanasSemestre;
           reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
@@ -7280,7 +7645,8 @@ begin
       + ID + #39;
     Query.Open;
 
-    JsonResp.AddPair('idfactorcalidad', Query.FieldByName('idfuente').AsString);
+    JsonResp.AddPair('idfactorcalidad', Query.FieldByName('idfactorcalidad')
+      .AsString);
     JsonResp.AddPair('factor', Query.FieldByName('factor').AsString);
     JsonResp.AddPair('orden', Query.FieldByName('orden').AsString);
 
@@ -8551,6 +8917,63 @@ begin
 end;
 
 { Método INSERT - Programa }
+function TMatematicas.updatePresupuestoPm(datos: TJSONObject): TJSONObject;
+var
+  Json: TJSONObject;
+  Query: TFDQuery;
+begin
+  try
+    Json := TJSONObject.create;
+    Query := TFDQuery.create(nil);
+    Query.Connection := Conexion;
+
+    if validarTokenHeader then
+    begin
+      Query.Close;
+      Query.SQL.Clear;
+      Query.SQL.Add('INSERT INTO siap_presupuesto_pm (');
+      Query.SQL.Add('idpresupuesto, ');
+      Query.SQL.Add('idplan, ');
+      Query.SQL.Add('idfecha, ');
+      Query.SQL.Add('descripcion, ');
+      Query.SQL.Add('valor) VALUES (');
+      Query.SQL.Add(':idpresupuesto, ');
+      Query.SQL.Add(':idplan, ');
+      Query.SQL.Add(':idfecha, ');
+      Query.SQL.Add(':descripcion, ');
+      Query.SQL.Add(':valor)');
+
+      Query.Params.ParamByName('idpresupuesto').Value := generarID;
+      Query.Params.ParamByName('idplan').Value :=
+        datos.GetValue('idplan').Value;
+      Query.Params.ParamByName('idfecha').Value :=
+        datos.GetValue('idfecha').Value;
+      Query.Params.ParamByName('descripcion').Value :=
+        datos.GetValue('descripcion').Value;
+      Query.Params.ParamByName('valor').Value :=
+        StrToInt(datos.GetValue('valor').Value);
+      Query.ExecSQL;
+
+      Json.AddPair(JSON_RESPONSE, 'El presupuesto se creo correctamente');
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
+  Query.Free;
+end;
+
 function TMatematicas.updateProducto(ProduccionDocente: TJSONObject)
   : TJSONObject;
 var
@@ -8777,6 +9200,12 @@ begin
       JsonPlan.AddPair('estado_actual_accion',
         QPlanes.FieldByName('estado_actual_accion').AsString);
 
+      JsonPlan.AddPair('presupuestos',
+        getPresupuestosPm(QPlanes.FieldByName('idplan').AsString));
+
+      JsonPlan.AddPair('fechas',
+        getPrespuestoByFechaPlan(QPlanes.FieldByName('idplan').AsString));
+
       Planes.AddElement(JsonPlan);
       QPlanes.Next;
     end;
@@ -8859,14 +9288,39 @@ begin
     JsonPlan.AddPair('estado_actual_accion',
       QPlan.FieldByName('estado_actual_accion').AsString);
 
+    JsonPlan.AddPair('presupuestos',
+      getPresupuestosPm(QPlan.FieldByName('idplan').AsString));
+    JsonPlan.AddPair('fechas',
+      getPrespuestoByFechaPlan(QPlan.FieldByName('idplan').AsString));
+
   except
     on E: Exception do
       JsonPlan.AddPair('Error', E.Message);
-
   end;
 
   Result := JsonPlan;
   QPlan.Free;
+end;
+
+function TMatematicas.presupuestosPm(IdPlan: string): TJSONObject;
+var
+  Json, jsonpresupuesto: TJSONObject;
+begin
+  try
+    Json := TJSONObject.create;
+
+    Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    Json.AddPair(JSON_RESPONSE, 'Los presupuestos se obtuvieron correctamente');
+    Json.AddPair(JSON_RESULTS, getPresupuestosPm(IdPlan));
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
 end;
 
 function TMatematicas.Productos: TJSONObject;
@@ -9196,6 +9650,43 @@ begin
 end;
 
 { Método DELETE - Programa }
+function TMatematicas.cancelPresupuestoPm(idpresupuesto: string): TJSONObject;
+var
+  Json: TJSONObject;
+  Query: TFDQuery;
+begin
+  try
+    Json := TJSONObject.create;
+    Query := TFDQuery.create(nil);
+    Query.Connection := Conexion;
+
+    if validarTokenHeader then
+    begin
+      Query.Close;
+      Query.SQL.Text := 'DELETE FROM siap_presupuesto_pm WHERE idpresupuesto=' +
+        #39 + idpresupuesto + #39;
+      Query.ExecSQL;
+
+      Json.AddPair(JSON_RESPONSE, 'El presupuesto se eliminó correctamente');
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
+  Query.Free;
+end;
+
 function TMatematicas.cancelProducto(IdProducto: string): TJSONObject;
 var
   QProduccionDocente: TFDQuery;
@@ -9278,6 +9769,57 @@ begin
 end;
 
 { Método UPDATE - Programa }
+function TMatematicas.acceptPresupuestoPm(datos: TJSONObject): TJSONObject;
+var
+  Json: TJSONObject;
+  Query: TFDQuery;
+begin
+  try
+    Json := TJSONObject.create;
+    Query := TFDQuery.create(nil);
+    Query.Connection := Conexion;
+
+    if validarTokenHeader then
+    begin
+      Query.Close;
+      Query.SQL.Clear;
+      Query.SQL.Add('UPDATE siap_presupuesto_pm SET');
+      Query.SQL.Add('idplan=:idplan, ');
+      Query.SQL.Add('idfecha=:idfecha, ');
+      Query.SQL.Add('descripcion=:descripcion, ');
+      Query.SQL.Add('valor=:valor WHERE idpresupuesto=' + #39 +
+        datos.GetValue('idpresupuesto').Value + #39);
+
+      Query.Params.ParamByName('idplan').Value :=
+        datos.GetValue('idplan').Value;
+      Query.Params.ParamByName('idfecha').Value :=
+        datos.GetValue('idfecha').Value;
+      Query.Params.ParamByName('descripcion').Value :=
+        datos.GetValue('descripcion').Value;
+      Query.Params.ParamByName('valor').Value :=
+        StrToInt(datos.GetValue('valor').Value);
+      Query.ExecSQL;
+
+      Json.AddPair(JSON_RESPONSE, 'El presupuesto se actualizó correctamente');
+      Json.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    end
+    else
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, AccesoDenegado);
+    end;
+  except
+    on E: Exception do
+    begin
+      Json.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      Json.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Result := Json;
+  Query.Free;
+end;
+
 function TMatematicas.acceptProducto(ProduccionDocente: TJSONObject)
   : TJSONObject;
 var
@@ -13499,6 +14041,17 @@ begin
   Result := Json;
 end;
 
+function TMatematicas.validarTokenHeader: boolean;
+var
+  objWebModule: TWebModule;
+  token: string;
+begin
+  objWebModule := GetDataSnapWebModule;
+  token := objWebModule.Request.GetFieldByName('Autorizacion');
+
+  Result := token = FDataSnapMatematicas.obtenerToken;
+end;
+
 function TMatematicas.updateusuario(const token: string;
   const datos: TJSONObject): TJSONObject;
 var
@@ -15068,7 +15621,7 @@ begin
     Query.Connection := Conexion;
 
     Query.Close;
-    Query.SQL.Text := 'SELECT * FROM siap_seminario ORDER BY fecha';
+    Query.SQL.Text := 'SELECT * FROM siap_seminario ORDER BY fecha asc';
     Query.Open;
 
     Eventos := TJSONArray.create;

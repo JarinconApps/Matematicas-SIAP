@@ -169,6 +169,11 @@ import { CrearEditarEnlaceDivulgacionComponent } from './factores/docentes/docen
 import { SeminarioComponent } from './factores/extension/seminario/seminario.component';
 import { EventosSeminarioComponent } from './factores/extension/seminario/eventos-seminario/eventos-seminario.component';
 import { CrearEditarEventoSeminarioComponent } from './factores/extension/seminario/eventos-seminario/crear-editar-evento-seminario/crear-editar-evento-seminario.component';
+import { VerSeminarioComponent } from './factores/extension/seminario/eventos-seminario/ver-seminario/ver-seminario.component';
+import { ExportarPlanMejoramientoComponent } from './factores/procesos_academicos/plan-mejoramiento/exportar-plan-mejoramiento/exportar-plan-mejoramiento.component';
+import { FechasPresupuestosComponent } from './factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/fechas-presupuestos.component';
+import { CrearEditarFechaComponent } from './factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/crear-editar-fecha/crear-editar-fecha.component';
+import { CrearEditarPresupuestoComponent } from './factores/procesos_academicos/plan-mejoramiento/crear-editar-plan-mejoramiento/crear-editar-presupuesto/crear-editar-presupuesto.component';
 
 
 
@@ -409,6 +414,16 @@ import { CrearEditarEventoSeminarioComponent } from './factores/extension/semina
 
     CrearEditarEventoSeminarioComponent,
 
+    VerSeminarioComponent,
+
+    ExportarPlanMejoramientoComponent,
+
+    FechasPresupuestosComponent,
+
+    CrearEditarFechaComponent,
+
+    CrearEditarPresupuestoComponent,
+
 
   ],
   imports: [
@@ -467,7 +482,11 @@ import { CrearEditarEventoSeminarioComponent } from './factores/extension/semina
     VerTrabajoGradoComponent,
     CrearEditarAreaDocenteComponent,
     CrearEditarEnlaceDivulgacionComponent,
-    CrearEditarEventoSeminarioComponent
+    CrearEditarEventoSeminarioComponent,
+    VerSeminarioComponent,
+    ExportarPlanMejoramientoComponent,
+    CrearEditarFechaComponent,
+    CrearEditarPresupuestoComponent
   ],
   bootstrap: [AppComponent]
 })

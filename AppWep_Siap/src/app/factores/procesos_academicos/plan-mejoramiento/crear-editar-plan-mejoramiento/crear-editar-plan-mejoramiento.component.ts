@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlanMejoramiento } from 'src/app/interfaces/interfaces.interfaces';
 import { TransferService } from '../../../../services/transfer.service';
-import { FactorCalidad, Requisito, TipoAccion, Fuente } from '../../../../interfaces/interfaces.interfaces';
+import { FactorCalidad, Requisito, TipoAccion, Fuente, PresupuestoPm, RespuestaCRUD } from '../../../../interfaces/interfaces.interfaces';
 import { GeneralService } from '../../../../services/general.service';
 import { RUTA_PLAN_MEJORAMIENTO, RUTA_INICIO } from '../../../../config/config';
 import { DialogosService } from '../../../../services/dialogos.service';
@@ -30,7 +30,8 @@ export class CrearEditarPlanMejoramientoComponent implements OnInit {
     observaciones: '',
     estado_actual_accion: '',
     fecha_inicio: '1900-01-01',
-    fecha_fin: '1900-01-01'
+    fecha_fin: '1900-01-01',
+    presupuestos: []
   };
 
   FactoresCalidad: FactorCalidad[] = [];
@@ -66,6 +67,8 @@ export class CrearEditarPlanMejoramientoComponent implements OnInit {
 
           this.planMejoramiento = rPlan;
           this.Accion = 'Editar';
+
+          this.actualizarTotalPresupuesto();
         });
       }
     });
@@ -120,5 +123,50 @@ export class CrearEditarPlanMejoramientoComponent implements OnInit {
       });
     }
   }
+
+  obtenerPresupuestos() {
+    this.genService.getPresupuestoPm(this.planMejoramiento.idplan).subscribe((rPresupuestos: RespuestaCRUD) => {
+      console.log(rPresupuestos);
+      this.planMejoramiento.presupuestos = rPresupuestos.Results;
+
+      this.actualizarTotalPresupuesto();
+    });
+  }
+
+  actualizarTotalPresupuesto() {
+    let suma = 0;
+    for (const presupuesto of this.planMejoramiento.presupuestos) {
+      suma = suma + Number(presupuesto.valor);
+      console.log(suma);
+    }
+    this.planMejoramiento.totalPresupuesto = suma;
+  }
+
+  crearPresupuesto() {
+    this.dlgService.crearEditarPresupuestoPm(null, this.planMejoramiento).subscribe((rPresupuesto: RespuestaCRUD) => {
+      this.dlgService.mostrarSnackBar(rPresupuesto.Response);
+      this.obtenerPresupuestos();
+    });
+  }
+
+  editarPresupuesto(presupuesto: PresupuestoPm) {
+    this.dlgService.crearEditarPresupuestoPm(presupuesto, this.planMejoramiento).subscribe((rPresupuesto: RespuestaCRUD) => {
+      this.dlgService.mostrarSnackBar(rPresupuesto.Response);
+
+      this.actualizarTotalPresupuesto();
+    });
+  }
+
+  eliminarPresupuesto(presupuesto: PresupuestoPm) {
+    this.dlgService.confirmacion('¿Está seguro de eliminar éste presupuesto?').subscribe((rEliminar: boolean) => {
+      if (rEliminar) {
+        this.genService.deletePresupuestoPm(presupuesto.idpresupuesto).subscribe((rPresupuesto: RespuestaCRUD) => {
+          this.dlgService.mostrarSnackBar(rPresupuesto.Response);
+          this.obtenerPresupuestos();
+        });
+      }
+    });
+  }
+
 
 }

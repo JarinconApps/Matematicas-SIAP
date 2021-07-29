@@ -1,0 +1,26 @@
+<div class="modal-footer">
+    <button class="btn btn-sm btn-outline-success" (click)="crearFecha()"><i class="fas fa-plus-circle"></i> Crear fecha</button>
+</div>
+
+<table class="table-hover table">
+    <thead class="table-dark">
+        <tr>
+            <th>No</th>
+            <th>Fecha</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let fecha of Fechas; let id = index">
+            <td>{{ id + 1 }}</td>
+            <td>{{ fecha.fecha }}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-info" (click)="editarFecha(fecha)"><i class="fas fa-edit"></i> Editar</button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-danger" (click)="eliminarFecha(fecha)"><i class="fas fa-trash-alt"></i> Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

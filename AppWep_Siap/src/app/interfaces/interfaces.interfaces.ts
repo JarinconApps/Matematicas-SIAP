@@ -555,6 +555,9 @@ export interface PlanMejoramiento {
   seguimiento?: string;
   observaciones?: string;
   estado_actual_accion?: string;
+  presupuestos?: PresupuestoPm[];
+  totalPresupuesto?: number;
+  fechas?: FechaPresupuestoPm[];
 }
 
 export interface EstadisticaPrograma {
@@ -735,4 +738,20 @@ export interface Seminario {
   lugar?: string;
   youtube?: string;
   evidencias?: string;
+}
+
+export interface FechaPresupuestoPm {
+  idfecha?: string;
+  fecha?: string;
+  presupuestos?: PresupuestoPm[];
+  total?: number;
+}
+
+export interface PresupuestoPm {
+  idfecha?: string;
+  fecha?: string;
+  idpresupuesto?: string;
+  idplan?: string;
+  descripcion?: string;
+  valor?: number;
 }

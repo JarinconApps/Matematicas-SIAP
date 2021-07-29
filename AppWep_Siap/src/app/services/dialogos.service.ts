@@ -11,7 +11,7 @@ import { EsperaComponent } from '../dialogos/espera/espera.component';
 import { MostrarParticipanteComponent } from '../dialogos/mostrar-participante/mostrar-participante.component';
 import { EvaluarResumenEmemComponent } from '../dialogos/evaluar-resumen-emem/evaluar-resumen-emem.component';
 import { SnackBarComponent } from '../dialogos/snack-bar/snack-bar.component';
-import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario } from '../interfaces/interfaces.interfaces';
+import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario, FechaPresupuestoPm, PresupuestoPm } from '../interfaces/interfaces.interfaces';
 import { DlgTipoContratoComponent } from '../factores/docentes/tipos-contrato/dlg-tipo-contrato/dlg-tipo-contrato.component';
 import { DlgCategoriaDocenteComponent } from '../factores/docentes/categorias-docentes/dlg-categoria-docente/dlg-categoria-docente.component';
 import { DlgDocenteComponent } from '../factores/docentes/docentes/dlg-docente/dlg-docente.component';
@@ -47,6 +47,10 @@ import { VerTrabajoGradoComponent } from '../factores/procesos_academicos/trabaj
 import { CrearEditarAreaDocenteComponent } from '../factores/docentes/docente/crear-editar-area-docente/crear-editar-area-docente.component';
 import { CrearEditarEnlaceDivulgacionComponent } from '../factores/docentes/docente/crear-editar-enlace-divulgacion/crear-editar-enlace-divulgacion.component';
 import { CrearEditarEventoSeminarioComponent } from '../factores/extension/seminario/eventos-seminario/crear-editar-evento-seminario/crear-editar-evento-seminario.component';
+import { VerSeminarioComponent } from '../factores/extension/seminario/eventos-seminario/ver-seminario/ver-seminario.component';
+import { ExportarPlanMejoramientoComponent } from '../factores/procesos_academicos/plan-mejoramiento/exportar-plan-mejoramiento/exportar-plan-mejoramiento.component';
+import { CrearEditarFechaComponent } from '../factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/crear-editar-fecha/crear-editar-fecha.component';
+import { CrearEditarPresupuestoComponent } from '../factores/procesos_academicos/plan-mejoramiento/crear-editar-plan-mejoramiento/crear-editar-presupuesto/crear-editar-presupuesto.component';
 
 @Injectable({
   providedIn: 'root'
@@ -407,6 +411,42 @@ export class DialogosService {
     const dialogRef = this.dialog.open(CrearEditarEventoSeminarioComponent, {
       width: '80%', height: '80%',
       data: {evento}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  verSeminario(seminario: Seminario) {
+    const dialogRef = this.dialog.open(VerSeminarioComponent, {
+      width: '80%', height: '80%',
+      data: {seminario}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  exportarPlanesMejoramiento() {
+    const dialogRef = this.dialog.open(ExportarPlanMejoramientoComponent, {
+      width: '90%', height: '90%',
+      data: {}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarFechaPresupuestoPm(fechaPresupuestoPm: FechaPresupuestoPm) {
+    const dialogRef = this.dialog.open(CrearEditarFechaComponent, {
+      width: '600px',
+      data: {fechaPresupuestoPm}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarPresupuestoPm(presupuestoPm: PresupuestoPm, plan: PlanMejoramiento) {
+    const dialogRef = this.dialog.open(CrearEditarPresupuestoComponent, {
+      width: '600px',
+      data: {presupuestoPm, plan}
     });
 
     return dialogRef.afterClosed();

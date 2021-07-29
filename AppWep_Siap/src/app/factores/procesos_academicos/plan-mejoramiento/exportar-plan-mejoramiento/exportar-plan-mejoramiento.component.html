@@ -1,0 +1,204 @@
+<div class="modal-footer">
+    <button [value]="'plan-mejoramiento.xls'" class="btn btn-outline-success btn-sm" onclick="crearExcel('plan-mejoramiento', value)"><i class="fas fa-file-excel"></i> Descargar como excel</button>
+</div>
+<table id="plan-mejoramiento" class="table table-hover" style="border-collapse: collapse;">
+    <thead class="table-dark">
+        <tr>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px;">No</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Fuente</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 300px;">Factor/Estándares de Calidad/Normatividad</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Característica / Requisito</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Descripción Oportunidad de Mejora (Debilidad o Fortaleza a Consolidad)</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 100px;">Tipo de Acción</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Causas Principales</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Metas</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Fecha de Inicio Programada</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Fecha de Finalización Programada</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 600px;">Actividades</th>
+
+            <th *ngFor="let fecha of Fechas" style="color: black; background-color: #FFFF99; border-style: solid; border-width: 1px; width: 200px;">Presupuesto en Miles de $ u otros recursos {{ fecha.fecha }}</th>
+
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Responsable / Ejecución Principal</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 400px;">Responsable / Seguimiento</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 400px;">Indicador para la meta (Cuantificable y Medible)</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Formulas de Indicadores</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 600px;">Resultado de los Indicadores</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 700px;">Avance por metas (acumulado)</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 600px;">Seguimiento</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 400px;">Observaciones / Verificación de la Eficacia</th>
+            <th style="color: black; background-color: #DAEEF3; border-style: solid; border-width: 1px; width: 200px;">Estado actual de la acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let plan of planesMejoramiento; let id = index">
+            <td style="font-weight: bold; font-size: 24; background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">{{ id + 1 }}</td>
+            <td style="font-weight: bold; font-size: 24; background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">{{ id + 1 }}</td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">{{ plan.fuente.fuente | uppercase }}</td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">{{ plan.fuente.fuente | uppercase }}</td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.factorCalidad.factor"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.factorCalidad.factor"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.requisito.requisito"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.requisito.requisito"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.descripcion_mejora"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.descripcion_mejora"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.tipoAccion.tipo_accion"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.tipoAccion.tipo_accion"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.causas_principales"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.causas_principales"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.metas"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.metas"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.fecha_inicio"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.fecha_inicio"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.fecha_fin"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.fecha_fin"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.actividades"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.actividades"></p>
+            </td>
+
+            <td *ngFor="let fecha of plan.fechas" style="background-color: #FFFF99; border-style: solid; border-width: 1px;">
+                <table>
+                    <tbody>
+                        <tr *ngFor="let presupuesto of fecha.presupuestos">
+                            <td [innerHTML]="presupuesto.descripcion"></td>
+                            <td>{{ presupuesto.valor | currency }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.responsable_ejecucion"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.responsable_ejecucion"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.responsable_seguimiento"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.responsable_seguimiento"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.indicador_meta"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.indicador_meta"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.formula_indicador"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.formula_indicador"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.resultado_indicador"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.resultado_indicador"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.avance_meta"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.avance_meta"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.seguimiento"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.seguimiento"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.observaciones"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.observaciones"></p>
+            </td>
+
+            <td style="background-color: #CCFFCC; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 0">
+                <p [innerHTML]="plan.estado_actual_accion"></p>
+            </td>
+            <td style="background-color: #CCCCFF; border-style: solid; border-width: 1px;" *ngIf="id % 2 === 1">
+                <p [innerHTML]="plan.estado_actual_accion"></p>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <th style="background-color: #CCCCCC; border-style: solid; border-width: 1px;">Totales</th>
+
+            <th *ngFor="let fecha of Fechas" style="background-color: #CCCCCC; border-style: solid; border-width: 1px;">{{ fecha.total | currency }}</th>
+
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+            <td style="background-color: #CCCCCC; border-style: solid; border-width: 1px;"></td>
+        </tr>
+    </tbody>
+</table>

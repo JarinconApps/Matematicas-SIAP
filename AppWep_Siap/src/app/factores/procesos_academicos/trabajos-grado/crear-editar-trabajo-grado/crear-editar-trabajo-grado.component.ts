@@ -1,6 +1,6 @@
 import { GeneralService } from '../../../../services/general.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { TrabajoGrado, Docente, Modalidad, AreaProfundizacion, GrupoInvestigacion, ActaConsejoCurricular } from '../../../../interfaces/interfaces.interfaces';
+import { TrabajoGrado, Docente, Modalidad, AreaProfundizacion, GrupoInvestigacion, ActaConsejoCurricular, RespuestaCRUD } from '../../../../interfaces/interfaces.interfaces';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Utilidades } from '../../../../utilidades/utilidades.class';
@@ -138,9 +138,10 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
   }
 
   leerGruposInvestigacion() {
-    this.genService.getGruposInvestigacion().subscribe((RespGruposInvestigacion: any) => {
+    this.genService.getGruposInvestigacion().subscribe((RespGruposInvestigacion: RespuestaCRUD) => {
 
-      this.GruposInvestigacion = RespGruposInvestigacion.GruposInvestigacion;
+      console.log(RespGruposInvestigacion);
+      this.GruposInvestigacion = RespGruposInvestigacion.Results;
       this.estadoLectura++;
       this.bsLecturaTerminada.next(this.estadoLectura === 3);
     });

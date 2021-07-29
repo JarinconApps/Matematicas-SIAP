@@ -58,6 +58,7 @@ export const RUTA_PLAN_MEJORAMIENTO = 'plan-mejoramiento';
 export const RUTA_CREAR_EDITAR_PLAN_MEJORAMIENTO = 'crear-editar-plan-mejoramiento';
 export const RUTA_INICIO = 'inicio';
 export const RUTA_FACTORES_CALIDAD = 'factores-calidad';
+export const RUTA_FECHAS_PRESUPUESTOS = 'fechas-presupuestos';
 export const RUTA_ADMIN_USUARIO = 'usuario';
 export const RUTA_ADMIN_WORKSHOP_EMEM = 'workshop-emem';
 export const RUTA_ADMIN_CONFIGURACIONES = 'configuraciones';

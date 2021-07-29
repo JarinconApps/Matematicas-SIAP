@@ -10,12 +10,12 @@
 
         <tr>
             <th>Factor/Estándares de Calidad/Normatividad</th>
-            <td>{{ planMejoramiento.factorCalidad.factor }}</td>
+            <td [innerHTML]="planMejoramiento.factorCalidad.factor"></td>
         </tr>
 
         <tr>
             <th>Característica Requisito</th>
-            <td>{{ planMejoramiento.requisito.requisito }}</td>
+            <td [innerHTML]="planMejoramiento.requisito.requisito"></td>
         </tr>
 
         <tr>
@@ -25,27 +25,27 @@
 
         <tr>
             <th>Tipo de Acción</th>
-            <td>{{ planMejoramiento.tipoAccion.tipo_accion}}</td>
+            <td [innerHTML]="planMejoramiento.tipoAccion.tipo_accion"></td>
         </tr>
 
         <tr>
             <th>Causas Principales</th>
-            <td>{{ planMejoramiento.causas_principales}}</td>
+            <td [innerHTML]="planMejoramiento.causas_principales"></td>
         </tr>
 
         <tr>
             <th>Metas</th>
-            <td>{{ planMejoramiento.metas }}</td>
+            <td [innerHTML]="planMejoramiento.metas"></td>
         </tr>
 
         <tr>
             <th>Fecha de Inicio Programada</th>
-            <td>{{ planMejoramiento.fecha_inicio }}</td>
+            <td [innerHTML]="planMejoramiento.fecha_inicio"></td>
         </tr>
 
         <tr>
             <th>Fecha de Finalización Programada</th>
-            <td>{{ planMejoramiento.fecha_fin }}</td>
+            <td [innerHTML]="planMejoramiento.fecha_fin"></td>
         </tr>
 
         <tr>
@@ -55,17 +55,44 @@
 
         <tr>
             <th>Presupuesto en Miles de $ u otros Recursos</th>
-            <td></td>
+            <td>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let presupuesto of planMejoramiento.presupuestos; let id = index">
+                            <td>{{ id + 1 }}</td>
+                            <td>{{ presupuesto.fecha }}</td>
+                            <td [innerHTML]="presupuesto.descripcion"></td>
+                            <td>{{ presupuesto.valor | currency }}</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <th>Total</th>
+                            <th>{{ planMejoramiento.totalPresupuesto | currency }}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
         </tr>
 
         <tr>
             <th>Responsable de la Ejecución Principal</th>
-            <td>{{ planMejoramiento.responsable_ejecucion }}</td>
+            <td [innerHTML]="planMejoramiento.responsable_ejecucion"></td>
         </tr>
 
         <tr>
             <th>Responsable del Seguimiento</th>
-            <td>{{ planMejoramiento.responsable_seguimiento }}</td>
+            <td [innerHTML]="planMejoramiento.responsable_seguimiento"></td>
         </tr>
 
         <tr>
@@ -75,17 +102,17 @@
 
         <tr>
             <th>Fórmulas de Indicadores</th>
-            <td>{{ planMejoramiento.formula_indicador }}</td>
+            <td [innerHTML]="planMejoramiento.formula_indicador"></td>
         </tr>
 
         <tr>
             <th>Resultado de los Indicadores</th>
-            <td>{{ planMejoramiento.resultado_indicador}}</td>
+            <td [innerHTML]="planMejoramiento.resultado_indicador"></td>
         </tr>
 
         <tr>
             <th>Avance por Metas (Acumulado)</th>
-            <td>{{ planMejoramiento.avance_meta }}</td>
+            <td [innerHTML]="planMejoramiento.avance_meta"></td>
         </tr>
 
         <tr>
@@ -100,7 +127,7 @@
 
         <tr>
             <th>Estado Actual de la Acción</th>
-            <td>{{ planMejoramiento.responsable_ejecucion }}</td>
+            <td [innerHTML]="planMejoramiento.estado_actual_accion"></td>
         </tr>
     </tbody>
 </table>
