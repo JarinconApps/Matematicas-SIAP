@@ -13,7 +13,29 @@
         <h3>Preinscripciones</h3>
         <hr>
 
-        <p class="text-justify">El proceso de preinscripción lo deben realizar todos los participantes del evento y se hace ingresando en la página web: http://workshopemem.jprincon.com/. Se preinscriben diligenciando la información que solicita el formulario (según su categoría
+        <div class="card shadow">
+            <div class="card-body">
+                <button class="btn btn-outline-success btn-block" (click)="inscribirUsuario()">Inscribirme</button>
+
+                <hr>
+
+                <div class="alert-success alert" role="alert" *ngIf="mensajeInscripcion">
+                    {{ mensajeInscripcion }}
+                </div>
+
+                <h5 class="text-info">Verificar Inscripción</h5>
+                <div class="form-group">
+                    <label class="font-weight-bold">Número de Documento</label>
+                    <input class="form-control" [(ngModel)]="documento" name="documento">
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-success btn-sm" (click)="buscarUsuario()"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-justify mt-3">El proceso de preinscripción lo deben realizar todos los participantes del evento y se hace ingresando en la página web: http://workshopemem.jprincon.com/. Se preinscriben diligenciando la información que solicita el formulario (según su categoría
             de Conferencista, Ponente, Estudiante con avance de trabajo de grado o Asistente). Luego de iniciar sesión tendrán acceso a la sección de resúmenes donde podrán ingresar la información detallada. </p>
 
         <h3>Inscripción</h3>

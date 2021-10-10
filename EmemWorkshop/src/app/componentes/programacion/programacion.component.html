@@ -1,33 +1,39 @@
-<div class="card shadow mb-5" *ngFor="let dia of Programacion">
-    <div class="card-header bg-dark text-white">
-        <h3 class="card-title">{{ dia.dia }}</h3>
-    </div>
+<mat-accordion>
+    <mat-expansion-panel [expanded]="id === 0" *ngFor="let dia of Programacion; let id = index">
+        <mat-expansion-panel-header>
+            <h4>{{ dia.Dia }}</h4>
+        </mat-expansion-panel-header>
 
-    <div class="card-body">
-        <table class="table table-bordered">
-            <tbody>
-                <tr *ngFor="let hora of dia.horas">
-                    <td>{{ hora.hora }}</td>
-                    <td>
-                        <p class="text-info text-justify mb-2 font-weight-bold">{{ hora.titulo }}</p>
-                        <p class="text-justify mb-2">{{ hora.descripcion }}</p>
-                        <a [href]="hora.enlace" class="mb-2 btn btn-outline-info" *ngIf="hora.enlace">{{ hora.enlace }}</a>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr *ngFor="let hora of dia.Horas">
+                        <td>{{ hora.Hora }}</td>
+                        <td>
+                            <h4 class="text-info text-justify mb-2 font-weight-bold">{{ hora.Titulo }}</h4>
+                            <p class="text-justify mb-2" [innerHTML]="hora.Descripcion"></p>
+                            <a [href]="hora.Enlace" target="_blank" class="mb-2 btn btn-outline-info" *ngIf="hora.Enlace">{{ hora.Enlace }}</a>
 
-                        <table class="table table-hover table-borderless" *ngIf="hora.ponencias">
-                            <tbody>
-                                <tr *ngFor="let ponencia of hora.ponencias">
-                                    <td>
-                                        <p class="text-info text-justify mb-2 font-weight-bold">{{ ponencia.titulo }}</p>
-                                        <p class="text-justify mb-2">{{ ponencia.descripcion }}</p>
-                                        <a [href]="hora.enlace" class="mb-2 btn btn-outline-info">{{ ponencia.enlace }}</a>
-                                        <hr style="border-width: 2px; border-color: dimgray;">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+                            <table class="table table-hover table-borderless" *ngIf="hora.Ponencias">
+                                <tbody>
+                                    <tr *ngFor="let ponencia of hora.Ponencias">
+                                        <td>
+                                            <h5 class="text-justify mb-2 font-weight-bold"><span class="font-weight-bold text-info">{{ ponencia.Modalidad.Modalidad }}:</span> {{ ponencia.Titulo | capitalizado }}</h5>
+                                            <ul>
+                                                <li>{{ ponencia.Conferencista.Nombre }}</li>
+                                                <li>{{ ponencia.Conferencista.Institucion }}</li>
+                                                <li class="text-primary">{{ ponencia.Conferencista.Correo }}</li>
+                                            </ul>
+                                            <a [href]="hora.Enlace" class="mb-2 btn btn-outline-info">{{ ponencia.Enlace }}</a>
+                                            <hr style="border-width: 2px; border-color: dimgray;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ServiciosService } from './servicios.service';
-import { Usuario } from '../Interfaces/interfaces.interface';
+import { GeneralService } from './general.service';
+import { Usuario, EventoEMEM } from '../Interfaces/interfaces.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -36,13 +36,20 @@ export class TransferenciaService {
   private bsNombreUsuario = new BehaviorSubject<string>('');
   public obtenerNombreUsuario = this.bsNombreUsuario.asObservable();
 
-  constructor(private servicio: ServiciosService) { }
+  // %%%%%%% MÉTODO PARA ENVIAR EL EVENTO SELECCIONADO  %%%%%%%
+  private bsEvento =  new BehaviorSubject<EventoEMEM>(undefined);
+  public obtenerEventoEMEM = this.bsEvento.asObservable();
+
+
+  constructor(private servicio: GeneralService) { }
 
   actualizarUsuario(usuario: Usuario) {
     this.bsUsuario.next(usuario);
   }
 
-
+  enviarEvento(evento: EventoEMEM) {
+    this.bsEvento.next(evento);
+  }
 
   enviarEsAdministrador(bb: boolean) {
     this.bsEsAdministrador.next(bb);

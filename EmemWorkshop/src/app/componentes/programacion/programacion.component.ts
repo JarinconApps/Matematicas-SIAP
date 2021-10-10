@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiciosService } from '../../Servicios/servicios.service';
+import { GeneralService } from '../../Servicios/general.service';
+import { RespuestaCRUD, EventoEMEM } from '../../Interfaces/interfaces.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-programacion',
@@ -9,17 +11,28 @@ import { ServiciosService } from '../../Servicios/servicios.service';
 export class ProgramacionComponent implements OnInit {
 
   Programacion: any[] = [];
+  Evento: EventoEMEM = {
+    IdEvento: 'evento-2020'
+  };
 
-  constructor(private genService: ServiciosService) { }
+  constructor(private genService: GeneralService,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.obtenerProgramacion();
+    this.obtenerParametros();
+  }
+
+  obtenerParametros() {
+    this.activatedRoute.params.subscribe((rParams: any) => {
+      this.Evento.IdEvento = rParams.IdEvento;
+      this.obtenerProgramacion();
+    });
   }
 
   obtenerProgramacion() {
-    this.genService.getCronograma().subscribe((rProgramacion: any[]) => {
-      console.log(rProgramacion);
-      this.Programacion = rProgramacion;
+    this.genService.getCronogramaEMEM(this.Evento.IdEvento).subscribe((rProgramacion: RespuestaCRUD) => {
+
+      this.Programacion = rProgramacion.Results;
     });
   }
 

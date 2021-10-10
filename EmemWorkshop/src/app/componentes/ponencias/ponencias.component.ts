@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiciosService } from '../../Servicios/servicios.service';
+import { ActivatedRoute } from '@angular/router';
+import { GeneralService } from '../../Servicios/general.service';
+import { Modalidad, RespuestaCRUD } from '../../Interfaces/interfaces.interface';
 
 @Component({
   selector: 'app-ponencias',
@@ -8,35 +10,46 @@ import { ServiciosService } from '../../Servicios/servicios.service';
 })
 export class PonenciasComponent implements OnInit {
 
-  Conferencias: any[] = [];
-  TiposPonencias: any[] = [];
+  Conferencias: Modalidad[] = [];
+  Ponencias: Modalidad[] = [];
   Contacto: any[] = [];
 
-  constructor(private genService: ServiciosService) { }
+  constructor(private genService: GeneralService,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.obtenerConferencias();
-    this.obtenerPonencias();
+    this.obtenerParametro();
     this.obtenerContacto();
   }
 
-  obtenerConferencias() {
-    this.genService.getConferencias().subscribe((rConferencias: any) => {
-      console.log(rConferencias);
-      this.Conferencias = rConferencias;
+  obtenerParametro() {
+    this.activatedRoute.params.subscribe((rParams: any) => {
+
+      this.obtenerConferencias(rParams.IdEvento);
     });
   }
 
-  obtenerPonencias() {
-    this.genService.getPonencias().subscribe((rPonencias: any) => {
-      console.log(rPonencias);
-      this.TiposPonencias = rPonencias;
+  obtenerConferencias(IdEvento: string) {
+
+    this.genService.getConferenciasEMEM(IdEvento).subscribe((rConferencias: RespuestaCRUD) => {
+
+      this.Conferencias = rConferencias.Results;
+
+      this.obtenerPonencias(IdEvento);
+    });
+  }
+
+  obtenerPonencias(IdEvento: string) {
+
+    this.genService.getPonenciasEMEM(IdEvento).subscribe((rPonencias: RespuestaCRUD) => {
+
+      this.Ponencias = rPonencias.Results;
     });
   }
 
   obtenerContacto() {
     this.genService.getContacto().subscribe((rContacto: any) => {
-      console.log(rContacto);
+
       this.Contacto = rContacto;
     });
   }

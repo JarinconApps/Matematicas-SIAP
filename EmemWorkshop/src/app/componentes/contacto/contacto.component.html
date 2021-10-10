@@ -3,12 +3,12 @@
         <div class="media">
             <img src="assets/Iconos/Organizador.png" style="width: 60px;" class="align-self-start mr-3">
             <div class="media-body">
-                <h5 class="mt-0">{{ contacto.nombre }}</h5>
+                <h5 class="mt-0">{{ contacto.Organizador.Nombre }}</h5>
                 <ul>
-                    <li *ngFor="let funcion of contacto.funciones">{{ funcion.funcion }}</li>
+                    <li *ngFor="let funcion of contacto.Organizador.Funciones">{{ funcion.Funcion }}</li>
                 </ul>
 
-                <p><a>{{ contacto.correo }}</a></p>
+                <p><a>{{ contacto.Organizador.Correo }}</a></p>
             </div>
         </div>
     </div>

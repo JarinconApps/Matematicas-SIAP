@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ParticipanteEmem } from 'src/app/Interfaces/interfaces.interface';
-import { ServiciosService } from '../../../Servicios/servicios.service';
+import { GeneralService } from '../../../Servicios/general.service';
 import { DialogService } from '../../../Servicios/dialog.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class ParticipantesEmemComponent implements OnInit {
   leyendo = false;
   contIntentos = 1;
 
-  constructor(private genService: ServiciosService,
+  constructor(private genService: GeneralService,
               private dlgService: DialogService) { }
 
   ngOnInit() {
@@ -27,20 +27,20 @@ export class ParticipantesEmemComponent implements OnInit {
 
     this.genService.getParticipantesEmem().subscribe((rParticipantesEmem: any) => {
       this.ParticipantesEmem = rParticipantesEmem.ParticipantesEmem;
-      console.log(rParticipantesEmem);
+
       this.leyendo = false;
     });
   }
 
   agregarParticipanteEmem() {
     this.dlgService.DlgParticipanteEmem('Crear', '').subscribe((rRespuesta: any) => {
-      console.log(rRespuesta);
+
       this.leerParticipantesEmem();
     });
   }
 
   editarParticipanteEmem(participanteemem: ParticipanteEmem) {
-    this.dlgService.DlgParticipanteEmem('Editar', participanteemem.idparticipante).subscribe((rRespuesta: any) => {
+    this.dlgService.DlgParticipanteEmem(participanteemem.IdParticipante).subscribe((rRespuesta: any) => {
       this.dlgService.mostrarSnackBar('Información', rRespuesta);
       this.leerParticipantesEmem();
     });
@@ -49,8 +49,8 @@ export class ParticipantesEmemComponent implements OnInit {
   eliminarParticipanteEmem(participanteemem: ParticipanteEmem) {
     this.dlgService.confirmacion('¿Está seguro de eliminar este ParticipanteEmem?').subscribe((rConfirmacion: any) => {
       if (rConfirmacion) {
-        this.genService.deleteParticipanteEmem(participanteemem.idparticipante).subscribe((rRespuesta: any) => {
-          console.log(rRespuesta);
+        this.genService.deleteParticipanteEmem(participanteemem.IdParticipante).subscribe((rRespuesta: any) => {
+
           this.dlgService.mostrarSnackBar('Información', rRespuesta.Respuesta || rRespuesta.Error);
           this.leerParticipantesEmem();
         });

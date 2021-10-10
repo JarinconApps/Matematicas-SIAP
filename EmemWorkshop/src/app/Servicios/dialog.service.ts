@@ -5,6 +5,8 @@ import { DlgAfiliacionComponent } from '../componentes/administrar/afiliaciones/
 import { SnackbarComponent } from '../dialogos/snackbar/snackbar.component';
 import { ConfirmacionComponent } from '../dialogos/confirmacion/confirmacion.component';
 import { DlgParticipanteEmemComponent } from '../componentes/administrar/participantes-emem/dlg-participante-emem/dlg-participante-emem.component';
+import { ParticipanteEmem } from '../Interfaces/interfaces.interface';
+import { VerParticipanteComponent } from '../componentes/inscripciones/ver-participante/ver-participante.component';
 
 @Injectable({
   providedIn: 'root'
@@ -39,10 +41,19 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  DlgParticipanteEmem(accion: string, idparticipante: string) {
+  DlgParticipanteEmem(IdEvento: string) {
     const dialogRef = this.dialog.open(DlgParticipanteEmemComponent, {
       width: '60%',
-      data: {accion, idparticipante}
+      data: {IdEvento}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  verParticipante(Participante: any) {
+    const dialogRef = this.dialog.open(VerParticipanteComponent, {
+      width: '600px', height: '600px',
+      data: {Participante}
     });
 
     return dialogRef.afterClosed();

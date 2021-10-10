@@ -1,0 +1,31 @@
+<div *ngIf="Participante.IdParticipante">
+    <h3 class="text-danger">Evento</h3>
+    <hr>
+
+    <p><span class="font-weight-bold text-info">Nombre del Evento: </span> {{ Participante.Evento.Nombre }}</p>
+    <p><span class="font-weight-bold text-info">Fecha: </span> {{ Participante.Evento.Dias }}</p>
+
+    <h3 class="text-danger">Participante</h3>
+    <hr>
+
+    <p><span class="font-weight-bold text-info">Documento: </span> {{ Participante.Participante.Documento }}</p>
+    <p><span class="font-weight-bold text-info">Nombre: </span> {{ Participante.Participante.Nombre }}</p>
+    <p><span class="font-weight-bold text-info">Correo: </span> {{ Participante.Participante.Correo }}</p>
+    <p><span class="font-weight-bold text-info">Institución: </span> {{ Participante.Participante.Institucion }}</p>
+    <p><span class="font-weight-bold text-info">Título: </span> {{ Participante.Participante.Titulo }}</p>
+
+    <h3 class="text-danger">Tipo de Participación</h3>
+    <hr>
+
+    <p><span class="font-weight-bold text-info">Tipo: </span> {{ Participante.TipoParticipacion.Nombre }}</p>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-info" (click)="cerrar()"><i class="fas fa-times-circle"></i> Cerrar</button>
+    </div>
+</div>
+
+<div *ngIf="!Participante.IdParticipante">
+    <div class="alert-danger alert" role="alert">
+        El participante no esta inscripto en el evento
+    </div>
+</div>

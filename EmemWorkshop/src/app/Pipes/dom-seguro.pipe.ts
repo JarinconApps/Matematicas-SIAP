@@ -11,7 +11,6 @@ export class DomSeguroPipe implements PipeTransform {
   }
 
   transform(value: string, url: string): any {
-    console.log(url + value);
 
     if (url !== undefined) {
       return this.domSanitizier.bypassSecurityTrustResourceUrl(url + value);

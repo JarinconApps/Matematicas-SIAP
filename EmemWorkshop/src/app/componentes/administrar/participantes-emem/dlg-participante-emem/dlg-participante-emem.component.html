@@ -1,4 +1,4 @@
-<h1>Crear/Editar un Participante</h1>
+<h1 class="text-info">Registrarme en el Workshop EMEM</h1>
 <hr>
 
 <div class="text-center" style="margin: 20px;" *ngIf="guardando">
@@ -6,53 +6,38 @@
     <h3>Guardando Participante ...</h3>
 </div>
 
-<div class="text-center" style="margin: 20px;" *ngIf="leyendo">
-    <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
-    <h3>Leyendo Participantes ...</h3>
-</div>
-
-<form *ngIf="!guardando && !leyendo" ngNativeValidate (ngSubmit)="guardarParticipanteEmem()">
+<form *ngIf="!guardando" ngNativeValidate (ngSubmit)="guardarParticipanteEmem()">
     <div class="form-group">
         <label style="font-weight: bold;">Documento</label>
-        <input type="text" required class="form-control" [(ngModel)]="participanteemem.idparticipante" name="idparticipante">
+        <input type="text" required class="form-control" [(ngModel)]="participanteEMEM.Documento" name="Documento">
     </div>
 
     <div class="form-group">
-        <label style="font-weight: bold;">Primer Nombre</label>
-        <input type="text" required class="form-control" [(ngModel)]="participanteemem.primernombre" name="primernombre">
-    </div>
-
-    <div class="form-group">
-        <label style="font-weight: bold;">Segundo Nombre</label>
-        <input type="text" required class="form-control" [(ngModel)]="participanteemem.segundonombre" name="segundonombre">
-    </div>
-
-    <div class="form-group">
-        <label style="font-weight: bold;">Primer Apellido</label>
-        <input type="text" required class="form-control" [(ngModel)]="participanteemem.primerapellido" name="primerapellido">
-    </div>
-
-    <div class="form-group">
-        <label style="font-weight: bold;">Segundo Apellido</label>
-        <input type="text" required class="form-control" [(ngModel)]="participanteemem.segundoapellido" name="segundoapellido">
+        <label style="font-weight: bold;">Nombre</label>
+        <input type="text" required class="form-control" [(ngModel)]="participanteEMEM.Nombre" name="Nombre">
     </div>
 
     <div class="form-group">
         <label style="font-weight: bold;">Correo</label>
-        <input type="text" required class="form-control" [(ngModel)]="participanteemem.correo" name="correo">
+        <input type="email" required class="form-control" [(ngModel)]="participanteEMEM.Correo" name="Correo">
     </div>
 
     <div class="form-group">
-        <label style="font-weight: bold;">Contra</label>
-        <input type="password" required class="form-control" [(ngModel)]="participanteemem.contra" name="contra">
+        <label style="font-weight: bold;">Institución (Institución Educativa o Universidad)</label>
+        <input type="text" required class="form-control" [(ngModel)]="participanteEMEM.Institucion" name="Institucion">
     </div>
 
     <div class="form-group">
-        <label style="font-weight: bold;">Afiliación</label>
-        <select [(ngModel)]="participanteemem.idafiliacion" required name="idafiliacion" class="custom-select">
-          <option *ngFor="let afiliacion of Afiliaciones" [value]="afiliacion.idafiliacion">{{ afiliacion.afiliacion | capitalizado }}</option>
+        <label style="font-weight: bold;">Título (Formación)</label>
+        <input type="text" required class="form-control" [(ngModel)]="participanteEMEM.Titulo" name="Titulo">
+    </div>
+
+    <div class="form-group">
+        <label style="font-weight: bold;">Tipo de Participación</label>
+        <select [(ngModel)]="participanteEMEM.IdTipoParticipante" required name="IdTipoParticipante" class="custom-select" (change)="cambioTipo(participanteEMEM.IdTipoParticipante)">
+          <option *ngFor="let tipoParticipante of TiposParticipantes" [value]="tipoParticipante.IdTipoParticipante">{{ tipoParticipante.Nombre }}</option>
         </select>
     </div>
 
-    <button class="btn btn-outline-success float-right"><img src="assets/Iconos/Guardar.png" style="height: 32px;"> Guardar</button>
+    <button class="btn btn-outline-success float-right" type="submit"><i class="fas fa-save"></i> Guardar</button>
 </form>

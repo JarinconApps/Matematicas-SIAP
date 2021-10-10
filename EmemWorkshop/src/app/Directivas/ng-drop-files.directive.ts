@@ -41,14 +41,13 @@ export class NgDropFilesDirective {
   }
 
   private extraerArchivos(listaArchivo: FileList) {
-    console.log(listaArchivo);
 
     // tslint:disable-next-line:forin
     for (const propiedad in Object.getOwnPropertyNames(listaArchivo)) {
       const archivoTemporal = listaArchivo[propiedad];
 
       if (this.cargarImagen(archivoTemporal)) {
-        console.log(archivoTemporal);
+
       }
     }
   }

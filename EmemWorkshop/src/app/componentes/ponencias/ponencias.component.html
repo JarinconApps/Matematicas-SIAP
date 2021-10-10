@@ -1,73 +1,59 @@
-<h2 class="display-4 text-info">Conferencias</h2>
+<h1 class="text-info display-4">Conferencias</h1>
 <hr>
 
-<div class="card card-shadow m-2" *ngFor="let conferencia of Conferencias">
-    <div class="card-header text-white bg-dark">
-        <h3 class="card-title text-center">{{ conferencia.tipo }}</h3>
-    </div>
+<mat-accordion>
 
-    <div class="card-body">
-        <h4 class="card-title text-center">{{ conferencia.titulo }}</h4>
+    <mat-expansion-panel [expanded]="id === 0" *ngFor="let modalidad of Conferencias; let id = index">
+        <mat-expansion-panel-header>
+            <h5 class="font-weight-bold">{{ modalidad.Modalidad }}</h5>
+        </mat-expansion-panel-header>
 
-        <p>{{ conferencia.conferencista }}</p>
-        <p>{{ conferencia.correo }}</p>
-        <p><b>Biografía</b></p>
-        <ul>
-            <li *ngFor="let item of conferencia.biografia">{{ item.item }}</li>
-        </ul>
+        <div class="card shadow m-3" *ngFor="let conferencia of modalidad.Conferencias">
+            <div class="card-body">
+                <h5 class="text-info text-center">{{ conferencia.Titulo }}</h5>
+                <hr>
 
-        <p><b>Resumen:</b></p>
-        <p class="text-justify">{{ conferencia.resumen }}</p>
-    </div>
-</div>
+                <h4 class="text-center">{{ conferencia.Conferencista.Nombre }} ({{ conferencia.Conferencista.Institucion }})</h4>
+                <h6 class="text-center text-info">{{ conferencia.Conferencista.Correo }}</h6>
 
-<div *ngFor="let tipoPonencia of TiposPonencias">
-    <h2 class="display-4 text-info">{{ tipoPonencia.titulo }}</h2>
-    <hr>
+                <ul>
+                    <li *ngFor="let biografia of conferencia.Conferencista.Biografia">{{ biografia.Biografia }}}</li>
+                </ul>
 
-    <div class="card card-shadow m-2" *ngFor="let ponencia of tipoPonencia.ponencias">
-
-        <div class="card-body">
-            <h4 class="card-title text-center">{{ ponencia.titulo }}</h4>
-
-            <p>{{ ponencia.conferencista }}</p>
-            <p>{{ ponencia.correo }}</p>
-            <p><b>Biografía</b></p>
-            <ul>
-                <li *ngFor="let item of ponencia.biografia">{{ item.item }}</li>
-            </ul>
-
-            <p><b>Resumen:</b></p>
-            <p class="text-justify">{{ ponencia.resumen }}</p>
+                <h6 class="text-info font-weight-bold">Resumen</h6>
+                <p class="text-justify" [innerHTML]="conferencia.Resumen"></p>
+            </div>
         </div>
-    </div>
-</div>
 
+    </mat-expansion-panel>
+</mat-accordion>
 
-<h2>Información de Contacto:</h2>
+<h1 class="text-info display-4 mt-5">Ponencias</h1>
 <hr>
 
-<p><b>HERNÁN DARÍO TORO ZAPATA</b></p>
-<p>Director de Licenciatura en Matemáticas </p>
-<p>Email: licenciaturaenmatemáticas@uniquindio.edu.co</p>
-<p></p>
+<mat-accordion>
 
-<p></p>
-<p></p>
-<p></p>
-<p></p>
+    <mat-expansion-panel *ngFor="let modalidad of Ponencias; let id = index">
+        <mat-expansion-panel-header>
+            <h5 class="font-weight-bold">{{ modalidad.Modalidad }}</h5>
+        </mat-expansion-panel-header>
 
-<p></p>
-<p></p>
-<p></p>
-<p></p>
+        <div class="card shadow m-3" *ngFor="let conferencia of modalidad.Conferencias">
+            <div class="card-body">
+                <h5 class="text-info text-center">{{ conferencia.Titulo }}</h5>
+                <hr>
 
-<p></p>
-<p></p>
-<p></p>
-<p></p>
+                <h4 class="text-center">{{ conferencia.Conferencista.Nombre }} ({{ conferencia.Conferencista.Institucion }})</h4>
+                <h6 class="text-center text-info">{{ conferencia.Conferencista.Correo }}</h6>
 
-<p></p>
-<p></p>
-<p></p>
-<p></p>
+                <ul>
+                    <li *ngFor="let biografia of conferencia.Conferencista.Biografia">{{ biografia.Biografia }}</li>
+                </ul>
+
+                <h6 class="text-info font-weight-bold">Resumen</h6>
+                <p class="text-justify" [innerHTML]="conferencia.Resumen"></p>
+            </div>
+        </div>
+
+    </mat-expansion-panel>
+</mat-accordion>

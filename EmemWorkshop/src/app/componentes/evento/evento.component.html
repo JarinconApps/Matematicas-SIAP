@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow">
+            <ul class="list-group-flush list-group puntero-manito">
+
+                <!-- Ir al menú inicio -->
+                <li class="list-group-item list-group-item-action" (click)="irInicio()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Inicio.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Inicio</h5>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Modalidades -->
+                <li class="list-group-item list-group-item-action" (click)="irModalidades()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Modalidades.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Modalidades</h5>
+                            <p>Educacion Matemática, Matemática y Estadística</p>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Ponencias y Conferencias -->
+                <li class="list-group-item list-group-item-action" (click)="irPonenciasConferencias()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Conferencias.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Ponencias y Conferencias</h5>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Concurso MATG10M -->
+                <li class="list-group-item list-group-item-action" (click)="irConcurso()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Concurso.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Concurso MATG10M</h5>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Programación -->
+                <li class="list-group-item list-group-item-action" (click)="irProgramacion()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Cronograma.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Programación</h5>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Preinscripciones -->
+                <li class="list-group-item list-group-item-action" (click)="irPreinscripciones()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Inscripcion.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Preinscripciones</h5>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Contacto -->
+                <li class="list-group-item list-group-item-action" (click)="irContacto()">
+                    <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Contacto.png" style="width: 32px;">
+                        <div class="media-body">
+                            <h5>Contacto</h5>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <router-outlet></router-outlet>
+    </div>
+</div>

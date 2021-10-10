@@ -8,7 +8,7 @@ import { retry } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ServiciosService {
+export class GeneralService {
 
   letras: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
                       's', 't', 'u', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -20,11 +20,22 @@ export class ServiciosService {
   private GENERAL = '/datasnap/rest/tmatematicas/';
 
   private URL_AFILIACION = 'Afiliacion';
-  private URL_AFILIACIONES = 'Afiliaciones';
+  private URL_TIPOS_PARTICIPACION = 'tipoParticipacion';
   private URL_PARTICIPANTEEMEM = 'ParticipanteEmem';
   private URL_PARTICIPANTESEMEM = 'ParticipantesEmem';
+  private URL_EVENTOS_EMEM = 'eventosEMEM';
+  private URL_EVENTO_EMEM = 'eventoEMEM';
+  private URL_CONFERENCIAS_EMEM = 'conferenciasEMEM';
+  private URL_PONENCIAS_EMEM = 'ponenciasEMEM';
+  private URL_CRONOGRAMA_EMEM = 'cronogramaEMEM';
+  private URL_ORGANIZADORES_EVENTO = 'organizadoresEvento';
+  private URL_PARTICIPANTE_EVENTO = 'participanteEvento';
 
   private URL_TOKEN = 'token';
+
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
 
   constructor(private http: HttpClient,
@@ -32,7 +43,7 @@ export class ServiciosService {
 
     this.postToken().subscribe((respuesta: any) => {
       this.token = respuesta.token;
-      // console.log(respuesta);
+
     });
   }
 
@@ -135,8 +146,8 @@ export class ServiciosService {
     return this.http.post(url, datos, {headers}).pipe(retry(10));
   }
 
-  getAfiliaciones() {
-    const url = this.dataSnap_Path(this.URL_AFILIACIONES);
+  getTiposParticipacion() {
+    const url = this.dataSnap_Path(this.URL_TIPOS_PARTICIPACION);
     return this.http.get(url).pipe(retry(10));
   }
 
@@ -155,7 +166,7 @@ export class ServiciosService {
 
   deleteAfiliacion(id: string) {
     const url = this.dataSnap_Path(this.URL_AFILIACION) + this.parametro(this.token) + this.parametro(id);
-    console.log(url);
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
@@ -165,7 +176,7 @@ export class ServiciosService {
   /* ParticipanteEmem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
   postParticipanteEmem(datos: string) {
-    const url = this.dataSnap_Path(this.URL_PARTICIPANTEEMEM) + this.parametro(this.token);
+    const url = this.dataSnap_Path(this.URL_PARTICIPANTEEMEM);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
@@ -192,11 +203,51 @@ export class ServiciosService {
 
   deleteParticipanteEmem(id: string) {
     const url = this.dataSnap_Path(this.URL_PARTICIPANTEEMEM) + this.parametro(this.token) + this.parametro(id);
-    console.log(url);
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
     return this.http.delete(url, {headers}).pipe(retry(10));
+  }
+
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     Servicios Eventos
+     Obtiene la lista de eventos del EMEM
+  =========================================================================================================================*/
+
+  getEventosEMEM() {
+    const url = this.dataSnap_Path(this.URL_EVENTOS_EMEM);
+    return this.http.get(url, {headers: this.headers});
+  }
+
+  getEventoEMEM(IdEvento: string) {
+    const url = this.dataSnap_Path(this.URL_EVENTO_EMEM) + this.parametro(IdEvento);
+    return this.http.get(url, {headers: this.headers});
+  }
+
+  getConferenciasEMEM(IdEvento: string) {
+    const url = this.dataSnap_Path(this.URL_CONFERENCIAS_EMEM) + this.parametro(IdEvento);
+    return this.http.get(url, {headers: this.headers});
+  }
+
+  getPonenciasEMEM(IdEvento: string) {
+    const url = this.dataSnap_Path(this.URL_PONENCIAS_EMEM) + this.parametro(IdEvento);
+    return this.http.get(url, {headers: this.headers});
+  }
+
+  getCronogramaEMEM(IdEvento: string) {
+    const url = this.dataSnap_Path(this.URL_CRONOGRAMA_EMEM) + this.parametro(IdEvento);
+    return this.http.get(url, {headers: this.headers});
+  }
+
+  getOrganizadoresEvento(IdEvento: string) {
+    const url = this.dataSnap_Path(this.URL_ORGANIZADORES_EVENTO) + this.parametro(IdEvento);
+    return this.http.get(url, {headers: this.headers});
+  }
+
+  getParticipanteEvento(Documento: string, IdEvento: string) {
+    const url = this.dataSnap_Path(this.URL_PARTICIPANTE_EVENTO) + this.parametro(Documento) + this.parametro(IdEvento);
+    return this.http.get(url, {headers: this.headers});
   }
 
 }

@@ -1,41 +1,15 @@
-<h1 class="display-4 text-center">6 Workshop EMEM 2020</h1>
-<h2 class="text-center">Universidad del Quindío</h2>
-<h3 class="text-center">Facultad de Ciencias de la Educación</h3>
-<h4 class="text-center">Programa de Licenciatura en Matemáticas</h4>
+<h1 class="text-center text-info display-1">Bienvenido</h1>
+<h1 class="text-center text-info">Workshop EMEM - Eventos</h1>
 <hr>
 
 <div class="row">
+    <div class="card shadow puntero-manito m-3" style="width: 250px;" *ngFor="let evento of Eventos" (click)="verEvento(evento)">
+        <div class="card-header bg-dark text-white text-center">
+            <h3 class="card-title">EMEM {{ evento.Fecha }}</h3>
+        </div>
 
-    <div class="col-md-8">
-
-
-        <h1>Información del Evento</h1>
-
-        <p class="text-justify">La Licenciatura en Matemáticas de la Universidad del Quindío tiene el gusto de invitarlos al 6 Workshop en Educación Matemática, Estadística y Matemáticas Aplicadas los días 14, 15 y 16 de octubre de 2020
-        </p>
-
-        <p class="text-justify">El Workshop EMEM es un evento académico que desde el año 2015 promueve la integración de estudiantes, profesores y graduados del Programa de Licenciatura en Matemáticas de la Universidad del Quindío, con el objeto de propiciar el intercambio de
-            experiencias académicas entre sus participantes. En su primera versión el Workshop EMEM logró reunir a más de 200 personas de la comunidad académica del Programa y para este año se espera contar con un número igual de significativo de participantes,
-            tanto de nuestra institución como de otras instituciones a nivel nacional. Este año, en su sexta versión, el evento mantiene el objetivo de difundir temas de Educación Matemática, Estadística y Matemáticas Aplicadas, así como de propiciar
-            espacios que permitan el intercambio del conocimiento y fomente la participación de nuestros estudiantes, profesores y graduados en eventos académicos.</p>
-    </div>
-
-    <div class="col-md-4">
-        <div align="center">
-            <img class="img-fluid mb-5" src="assets/Imagenes/Evento.jpeg">
+        <div class="card-body">
+            <img class="card-img-top" src="assets/Imagenes/Logo_EMEM_General.png">
         </div>
     </div>
 </div>
-
-<div align="center">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Uniquindio.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Facultad_Educacion.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Licenciatura.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Estadistica.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Gedes.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Gemauq.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Gemme.jpg">
-    <img style="height: 96px; margin: 5px;" src="assets/Imagenes/Logo_Sigma.jpg">
-</div>
-
-<div style="height: 100px;"></div>

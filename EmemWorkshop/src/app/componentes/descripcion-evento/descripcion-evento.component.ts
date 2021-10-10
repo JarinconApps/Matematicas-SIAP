@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventoEMEM, RespuestaCRUD } from '../../Interfaces/interfaces.interface';
 import { GeneralService } from '../../Servicios/general.service';
+import { TransferenciaService } from '../../Servicios/transferencia.service';
 
 @Component({
-  selector: 'app-modalidades',
-  templateUrl: './modalidades.component.html',
+  selector: 'app-descripcion-evento',
+  templateUrl: './descripcion-evento.component.html',
   styles: []
 })
-export class ModalidadesComponent implements OnInit {
+export class DescripcionEventoComponent implements OnInit {
 
   Evento: EventoEMEM = {
     Titulo: '',
@@ -17,7 +18,8 @@ export class ModalidadesComponent implements OnInit {
   };
 
   constructor(private genService: GeneralService,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private transfer: TransferenciaService) { }
 
   ngOnInit() {
     this.obtenerParametro();
@@ -25,6 +27,7 @@ export class ModalidadesComponent implements OnInit {
 
   obtenerParametro() {
     this.activatedRoute.params.subscribe((rParam: any) => {
+
 
       this.obtenerEvento(rParam.IdEvento);
     });
@@ -34,6 +37,8 @@ export class ModalidadesComponent implements OnInit {
     this.genService.getEventoEMEM(IdEvento).subscribe((rEvento: RespuestaCRUD) => {
 
       this.Evento = rEvento.Results[0];
+
+      this.transfer.enviarEvento(this.Evento);
     });
   }
 

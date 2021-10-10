@@ -83,8 +83,6 @@ export class JpCanvas {
       document.write('<div class="alert alert-warning" role="alert"><h3>El Navegador no soporta canvas</h3><hr></div>');
     }
 
-    /* console.log(window.innerWidth);
-    console.log(window.innerHeight); */
   }
 
   dibujarRectangulo(x1: number, y1: number, wx: number, wy: number) {
@@ -131,8 +129,6 @@ export class JpCanvas {
 
   graficarFuncion(puntos: Puntos[]) {
 
-    // console.log(puntos);
-
     this.tempX = puntos[0].x;
     this.tempY = puntos[0].y;
     let x1 = Math.abs(this.minX) * this.dx + this.tempX * this.dx + this.margenX;
@@ -161,7 +157,6 @@ export class JpCanvas {
 
   crearPlano(configuracion: DatosPlano) {
 
-    // console.log(configuracion);
 
     let x1 = 0;
     let y1 = 0;

@@ -12,3 +12,5 @@ export const RUTA_INICIO = 'inicio';
 export const RUTA_INSCRIPCION = 'inscripcion';
 export const RUTA_CONTACTO = 'contacto';
 export const RUTA_PROGRAMACION = 'programacion';
+export const RUTA_EVENTO = 'evento';
+export const RUTA_DESCRIPCION = 'descripcion';

@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 // Graficos
 import { ChartsModule } from 'ng2-charts';
@@ -34,9 +35,11 @@ import { ParticipantesEmemComponent } from './componentes/administrar/participan
 import { DlgParticipanteEmemComponent } from './componentes/administrar/participantes-emem/dlg-participante-emem/dlg-participante-emem.component';
 import { ConcursoComponent } from './componentes/concurso/concurso.component';
 import { PonenciasComponent } from './componentes/ponencias/ponencias.component';
-import { PonenciaConferenciaComponent } from './componentes/ponencias/ponencia-conferencia/ponencia-conferencia.component';
 import { ContactoComponent } from './componentes/contacto/contacto.component';
 import { ProgramacionComponent } from './componentes/programacion/programacion.component';
+import { EventoComponent } from './componentes/evento/evento.component';
+import { DescripcionEventoComponent } from './componentes/descripcion-evento/descripcion-evento.component';
+import { VerParticipanteComponent } from './componentes/inscripciones/ver-participante/ver-participante.component';
 
 
 @NgModule({
@@ -60,9 +63,11 @@ import { ProgramacionComponent } from './componentes/programacion/programacion.c
     DlgParticipanteEmemComponent,
     ConcursoComponent,
     PonenciasComponent,
-    PonenciaConferenciaComponent,
     ContactoComponent,
-    ProgramacionComponent
+    ProgramacionComponent,
+    EventoComponent,
+    DescripcionEventoComponent,
+    VerParticipanteComponent
   ],
   imports: [
     BrowserModule,
@@ -73,11 +78,14 @@ import { ProgramacionComponent } from './componentes/programacion/programacion.c
     MatDialogModule,
     MatSnackBarModule,
     ChartsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   entryComponents: [
     DlgAfiliacionComponent,
-    DlgParticipanteEmemComponent
+    DlgParticipanteEmemComponent,
+    SnackbarComponent,
+    VerParticipanteComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

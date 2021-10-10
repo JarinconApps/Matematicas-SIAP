@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransferenciaService } from '../../Servicios/transferencia.service';
 import { Router } from '@angular/router';
-import { ServiciosService } from '../../Servicios/servicios.service';
+import { GeneralService } from '../../Servicios/general.service';
 import { RUTA_CONCURSO, RUTA_PONENCIAS_CONFERENCIAS, RUTA_PARTICIPANTESEMEM, RUTA_MODALIDADES, RUTA_INSCRIPCION, RUTA_INICIO, RUTA_CONTACTO, RUTA_PROGRAMACION } from '../../config/config';
 
 @Component({
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private router: Router,
               private transferencia: TransferenciaService,
-              private genService: ServiciosService) { }
+              private genService: GeneralService) { }
 
 
   ngOnInit() {

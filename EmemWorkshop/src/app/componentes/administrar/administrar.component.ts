@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiciosService } from '../../Servicios/servicios.service';
+import { GeneralService } from '../../Servicios/general.service';
 import { RUTA_AFILIACIONES, RUTA_PARTICIPANTESEMEM } from '../../config/config';
 
 @Component({
@@ -19,7 +19,7 @@ export class AdministrarComponent implements OnInit {
      Imagen: 'assets/Iconos/Participante.png',
      Ruta: RUTA_PARTICIPANTESEMEM}
   ];
-  constructor(private genService: ServiciosService) { }
+  constructor(private genService: GeneralService) { }
 
   ngOnInit() {
   }
