@@ -1,133 +1,143 @@
-<h2 class="text-info">Plan de Mejoramiento {{ planMejoramiento.orden }}</h2>
-<hr>
+<div class="modal-footer">
+    <button [value]="'Plan_mejoramiento_' + planMejoramiento.orden + '.doc'" onclick="crearWord('reporte-oportunidad', value)" class="btn btn-outline-info btn-sm"><i class="fas fa-file-word"></i> Descargar como word</button>
+</div>
 
-<table class="table table-hover">
-    <tbody>
-        <tr>
-            <th>No</th>
-            <td>{{ planMejoramiento.orden }}</td>
-        </tr>
+<div id="reporte-oportunidad">
+    <h2 class="text-info">Plan de Mejoramiento {{ planMejoramiento.orden }}</h2>
+    <table class="table table-hover" style="border-width: 1px; border-style: solid;">
+        <thead>
+            <tr>
+                <td style="border-width: 1px; border-style: solid; width: 300px; border-collapse: collapse;"></td>
+                <td style="border-width: 1px; border-style: solid; width: 400px; border-collapse: collapse;"></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">No</th>
+                <td style="border-width: 1px; border-style: solid;">{{ planMejoramiento.orden }}</td>
+            </tr>
 
-        <tr>
-            <th>Factor/Estándares de Calidad/Normatividad</th>
-            <td [innerHTML]="planMejoramiento.factorCalidad.factor"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Factor/Estándares de Calidad/Normatividad</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.factorCalidad.factor"></td>
+            </tr>
 
-        <tr>
-            <th>Característica Requisito</th>
-            <td [innerHTML]="planMejoramiento.requisito.requisito"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Característica Requisito</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.requisito.requisito"></td>
+            </tr>
 
-        <tr>
-            <th>Descripción Oportunidad de Mejora (Debilidad o Fortaleza a Consolidar)</th>
-            <td [innerHTML]="planMejoramiento.descripcion_mejora"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Descripción Oportunidad de Mejora (Debilidad o Fortaleza a Consolidar)</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.descripcion_mejora"></td>
+            </tr>
 
-        <tr>
-            <th>Tipo de Acción</th>
-            <td [innerHTML]="planMejoramiento.tipoAccion.tipo_accion"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Tipo de Acción</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.tipoAccion.tipo_accion"></td>
+            </tr>
 
-        <tr>
-            <th>Causas Principales</th>
-            <td [innerHTML]="planMejoramiento.causas_principales"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Causas Principales</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.causas_principales"></td>
+            </tr>
 
-        <tr>
-            <th>Metas</th>
-            <td [innerHTML]="planMejoramiento.metas"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Metas</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.metas"></td>
+            </tr>
 
-        <tr>
-            <th>Fecha de Inicio Programada</th>
-            <td [innerHTML]="planMejoramiento.fecha_inicio"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Fecha de Inicio Programada</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.fecha_inicio"></td>
+            </tr>
 
-        <tr>
-            <th>Fecha de Finalización Programada</th>
-            <td [innerHTML]="planMejoramiento.fecha_fin"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Fecha de Finalización Programada</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.fecha_fin"></td>
+            </tr>
 
-        <tr>
-            <th>Actividades</th>
-            <td [innerHTML]="planMejoramiento.actividades"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Actividades</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.actividades"></td>
+            </tr>
 
-        <tr>
-            <th>Presupuesto en Miles de $ u otros Recursos</th>
-            <td>
-                <table class="table table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>No</th>
-                            <th>Fecha</th>
-                            <th>Descripción</th>
-                            <th>Valor</th>
-                        </tr>
-                    </thead>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Presupuesto en Miles de $ u otros Recursos</th>
+                <td style="border-width: 1px; border-style: solid;">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th style="border-width: 1px; border-style: solid; border-collapse: collapse;">No</th>
+                                <th style="border-width: 1px; border-style: solid; border-collapse: collapse;">Fecha</th>
+                                <th style="border-width: 1px; border-style: solid; border-collapse: collapse;">Descripción</th>
+                                <th style="border-width: 1px; border-style: solid; border-collapse: collapse;">Valor</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr *ngFor="let presupuesto of planMejoramiento.presupuestos; let id = index">
-                            <td>{{ id + 1 }}</td>
-                            <td>{{ presupuesto.fecha }}</td>
-                            <td [innerHTML]="presupuesto.descripcion"></td>
-                            <td>{{ presupuesto.valor | currency }}</td>
-                        </tr>
+                        <tbody>
+                            <tr *ngFor="let presupuesto of planMejoramiento.presupuestos; let id = index">
+                                <td style="border-width: 1px; border-style: solid;">{{ id + 1 }}</td>
+                                <td style="border-width: 1px; border-style: solid;">{{ presupuesto.fecha }}</td>
+                                <td style="border-width: 1px; border-style: solid;" [innerHTML]="presupuesto.descripcion"></td>
+                                <td style="border-width: 1px; border-style: solid;">{{ presupuesto.valor | currency }}</td>
+                            </tr>
 
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <th>Total</th>
-                            <th>{{ planMejoramiento.totalPresupuesto | currency }}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+                            <tr>
+                                <td style="border-width: 1px; border-style: solid;"></td>
+                                <td style="border-width: 1px; border-style: solid;"></td>
+                                <th style="border-width: 1px; border-style: solid;">Total</th>
+                                <th style="border-width: 1px; border-style: solid;">{{ planMejoramiento.totalPresupuesto | currency }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
 
-        <tr>
-            <th>Responsable de la Ejecución Principal</th>
-            <td [innerHTML]="planMejoramiento.responsable_ejecucion"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Responsable de la Ejecución Principal</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.responsable_ejecucion"></td>
+            </tr>
 
-        <tr>
-            <th>Responsable del Seguimiento</th>
-            <td [innerHTML]="planMejoramiento.responsable_seguimiento"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Responsable del Seguimiento</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.responsable_seguimiento"></td>
+            </tr>
 
-        <tr>
-            <th>Indicador para la Meta</th>
-            <td [innerHTML]="planMejoramiento.indicador_meta"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Indicador para la Meta</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.indicador_meta"></td>
+            </tr>
 
-        <tr>
-            <th>Fórmulas de Indicadores</th>
-            <td [innerHTML]="planMejoramiento.formula_indicador"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Fórmulas de Indicadores</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.formula_indicador"></td>
+            </tr>
 
-        <tr>
-            <th>Resultado de los Indicadores</th>
-            <td [innerHTML]="planMejoramiento.resultado_indicador"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Resultado de los Indicadores</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.resultado_indicador"></td>
+            </tr>
 
-        <tr>
-            <th>Avance por Metas (Acumulado)</th>
-            <td [innerHTML]="planMejoramiento.avance_meta"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Avance por Metas (Acumulado)</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.avance_meta"></td>
+            </tr>
 
-        <tr>
-            <th>Seguimiento</th>
-            <td [innerHTML]="planMejoramiento.seguimiento"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Seguimiento</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.seguimiento"></td>
+            </tr>
 
-        <tr>
-            <th>Observaciones/Verificación de la Eficacia</th>
-            <td [innerHTML]="planMejoramiento.observaciones"></td>
-        </tr>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Observaciones/Verificación de la Eficacia</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.observaciones"></td>
+            </tr>
 
-        <tr>
-            <th>Estado Actual de la Acción</th>
-            <td [innerHTML]="planMejoramiento.estado_actual_accion"></td>
-        </tr>
-    </tbody>
-</table>
+            <tr>
+                <th style="border-width: 1px; border-style: solid;">Estado Actual de la Acción</th>
+                <td style="border-width: 1px; border-style: solid;" [innerHTML]="planMejoramiento.estado_actual_accion"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

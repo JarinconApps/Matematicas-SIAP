@@ -7,21 +7,25 @@
 
     <h3 class="float-left">{{ resultados }}</h3>
 
-    <div class="dropdown">
-        <button class="btn btn-outline-info dropdown-toggle float-right m-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="assets/Iconos/Ordenar.png" class="icono32h"> Ordenar Lista por
-        </button>
-        <div class="dropdown-menu puntero-manito" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" (click)="cambiarTipoOrden('documento')">Documento</a>
-            <a class="dropdown-item" (click)="cambiarTipoOrden('nombre')">Nombre</a>
-            <a class="dropdown-item" (click)="cambiarTipoOrden('correo')">Correo</a>
-            <a class="dropdown-item" (click)="cambiarTipoOrden('telefono')">Teléfono</a>
-            <a class="dropdown-item" (click)="cambiarTipoOrden('contrato')">Tipo Contrato</a>
-            <a class="dropdown-item" (click)="cambiarTipoOrden('categoria')">Categoria</a>
-        </div>
-    </div>
 
-    <button class="btn btn-outline-success float-right m-1" (click)="agregarDocente()"><img src="assets/Iconos/Agregar.png" class="icono32h"> Agregar Docente</button>
+
+    <div class="modal-footer">
+        <div class="dropdown">
+            <button class="btn btn-outline-info dropdown-toggle float-right m-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-sort-alpha-up-alt"></i> Ordenar Lista por
+        </button>
+            <div class="dropdown-menu puntero-manito" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" (click)="cambiarTipoOrden('documento')">Documento</a>
+                <a class="dropdown-item" (click)="cambiarTipoOrden('nombre')">Nombre</a>
+                <a class="dropdown-item" (click)="cambiarTipoOrden('correo')">Correo</a>
+                <a class="dropdown-item" (click)="cambiarTipoOrden('telefono')">Teléfono</a>
+                <a class="dropdown-item" (click)="cambiarTipoOrden('contrato')">Tipo Contrato</a>
+                <a class="dropdown-item" (click)="cambiarTipoOrden('categoria')">Categoria</a>
+            </div>
+        </div>
+
+        <button class="btn btn-outline-success m-1" (click)="agregarDocente()"><i class="fas fa-plus-circle"></i> Agregar Docente</button>
+    </div>
 
     <table class="table table-hover puntero-manito">
         <thead class="table-dark">

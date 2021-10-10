@@ -57,7 +57,7 @@ export class GrupoInvestigacionComponent implements OnInit {
   }
 
   agregarDocente() {
-    this.dlgService.SeleccionarDocente().subscribe((rDocente: Docente) => {
+    this.dlgService.SeleccionarDocente('Agregar Integrante', 'integrante-grupo').subscribe((rDocente: Docente) => {
       console.log(rDocente);
       const integrante: GrupoDocente = {
         idgrupoinvestigacion: this.grupo.idgrupoinvestigacion,

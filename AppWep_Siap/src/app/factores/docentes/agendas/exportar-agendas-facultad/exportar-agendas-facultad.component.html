@@ -3,86 +3,93 @@
     <h3>Obteniendo el Estado de las Agendas ...</h3>
 </div>
 
-<div class="m-3" *ngIf="!Leyendo">
-    <div class="" *ngFor="let contrato of Contratos">
-        <h1>{{contrato.TipoContrato | capitalizado}}</h1>
-        <hr>
+<div class="modal-footer">
+    <button [value]="'reporte-agendas'" class="btn btn-outline-success m-3" id="botonesDescargar" style="width: 250px;" onclick="crearExcel(value, value+ '.xls')"><i class="fas fa-file-excel"></i> Exportar como Excel</button>
+    <button [value]="'reporte-agendas'" class="btn btn-outline-info m-3" id="botonesDescargar" style="width: 250px;" onclick="crearWord(value, value+ '.doc')"><i class="fas fa-file-word"></i> Exportar como Word</button>
+</div>
 
-        <table class="table table-bordered">
+<div class="m-3" *ngIf="!Leyendo" id="reporte-agendas">
+    <div class="" *ngFor="let contrato of Contratos; let id = index">
+        <h1>{{contrato.TipoContrato | capitalizado}}</h1>
+
+
+        <table class="table" style="border-width: 1px; border-style: solid; border-collapse: collapse;">
             <tbody *ngFor="let agenda of contrato.Agendas">
                 <tr style="background-color: #b2b2b2;">
-                    <th>Nombre</th>
-                    <td>{{ agenda.nombre | capitalizado }}</td>
-                    <th>Cédula</th>
-                    <td>{{ agenda.documento }}</td>
-                    <th>Categoría</th>
-                    <td>{{ agenda.categoria | capitalizado }}</td>
+                    <th style="border-style: solid; border-width: 1px;">Nombre</th>
+                    <td style="border-style: solid; border-width: 1px;">{{ agenda.nombre | capitalizado }}</td>
+                    <th style="border-style: solid; border-width: 1px;">Cédula</th>
+                    <td style="border-style: solid; border-width: 1px;">{{ agenda.documento }}</td>
+                    <th style="border-style: solid; border-width: 1px;">Categoría</th>
+                    <td style="border-style: solid; border-width: 1px;">{{ agenda.categoria | capitalizado }}</td>
                 </tr>
 
                 <!-- Encabezado de los Servicios/Materias -->
                 <tr>
-                    <th>Asignatura</th>
-                    <th>Grupo</th>
-                    <th colspan="2">Programa</th>
-                    <th>I/H</th>
-                    <th>I/S</th>
+                    <th style="border-style: solid; border-width: 1px;">Asignatura</th>
+                    <th style="border-style: solid; border-width: 1px;">Grupo</th>
+                    <th style="border-style: solid; border-width: 1px;" colspan="2">Programa</th>
+                    <th style="border-style: solid; border-width: 1px;">
+                        <!-- I/H -->
+                    </th>
+                    <th style="border-style: solid; border-width: 1px;">I/S</th>
                 </tr>
 
                 <tr *ngFor="let servicio of agenda.AgendasServicios">
-                    <td>{{ servicio.asignatura | capitalizado }}</td>
-                    <td>{{ servicio.grupo | uppercase }}</td>
-                    <td colspan="2">{{ servicio.programa | capitalizado }}</td>
-                    <td>
-                        <p *ngIf="(servicio.jornada !== 'virtual') &&
-                                (servicio.jornada !== 'distancia')">{{servicio.horas}}</p>
+                    <td style="border-style: solid; border-width: 1px;">{{ servicio.asignatura | capitalizado }}</td>
+                    <td style="border-style: solid; border-width: 1px;">{{ servicio.grupo | uppercase }}</td>
+                    <td style="border-style: solid; border-width: 1px;" colspan="2">{{ servicio.programa | capitalizado }}</td>
+                    <td style="border-style: solid; border-width: 1px;">
+                        <!-- <p *ngIf="(servicio.jornada !== 'virtual') &&
+                                (servicio.jornada !== 'distancia')">{{servicio.horas}}</p> -->
                     </td>
-                    <td>{{ servicio.horassemestre }}</td>
+                    <td style="border-style: solid; border-width: 1px;">{{ servicio.horasfactor }}</td>
                 </tr>
 
                 <!-- Total de Docencia -->
                 <tr *ngIf="agenda.reconocimientoPosgrado.length > 1">
-                    <td colspan="4" rowspan="2"></td>
-                    <th>Reconocimiento Posgrado</th>
-                    <th>{{ agenda.reconocimientoPosgrado }}</th>
+                    <td style="border-style: solid; border-width: 1px;" colspan="4" rowspan="2"></td>
+                    <th style="border-style: solid; border-width: 1px;">Reconocimiento Posgrado</th>
+                    <th style="border-style: solid; border-width: 1px;">{{ agenda.reconocimientoPosgrado }}</th>
                 </tr>
 
                 <tr>
-                    <td *ngIf="agenda.reconocimientoPosgrado.length === 1" colspan="4"></td>
-                    <th>Total Docencia Directa</th>
-                    <th>{{ agenda.horasSemestrales }}</th>
+                    <td style="border-style: solid; border-width: 1px;" *ngIf="agenda.reconocimientoPosgrado.length === 1" colspan="4"></td>
+                    <th style="border-style: solid; border-width: 1px;">Total Docencia Directa</th>
+                    <th style="border-style: solid; border-width: 1px;">{{ agenda.horasSemestrales }}</th>
                 </tr>
 
                 <!-- Funciones Complementarias -->
                 <tr *ngIf="agenda.contrato !== 'catedrático'">
-                    <th>Función</th>
-                    <th>Actividad</th>
-                    <th>Subactividad</th>
-                    <th>Descripción</th>
-                    <th>I/H</th>
-                    <th>I/S</th>
+                    <th style="border-style: solid; border-width: 1px;">Función</th>
+                    <th style="border-style: solid; border-width: 1px;">Actividad</th>
+                    <th style="border-style: solid; border-width: 1px;">Subactividad</th>
+                    <th style="border-style: solid; border-width: 1px;">Descripción</th>
+                    <th style="border-style: solid; border-width: 1px;"></th>
+                    <th style="border-style: solid; border-width: 1px;">I/S</th>
                 </tr>
 
                 <tr *ngFor="let actividad of agenda.ActividadesFuncionesDocente">
-                    <td>{{ actividad.funcion | capitalizado }}</td>
-                    <td>{{ actividad.actividad | capitalizado }}</td>
-                    <td>{{ actividad.subactividad | capitalizado }}</td>
-                    <td>{{ actividad.actividadprograma | capitalizado }}</td>
-                    <td>
-                        <p *ngIf="actividad.calculada !== 'semestrales'">{{ actividad.horas }}</p>
+                    <td style="border-style: solid; border-width: 1px;">{{ actividad.funcion | capitalizado }}</td>
+                    <td style="border-style: solid; border-width: 1px;">{{ actividad.actividad | capitalizado }}</td>
+                    <td style="border-style: solid; border-width: 1px;">{{ actividad.subactividad | capitalizado }}</td>
+                    <td style="border-style: solid; border-width: 1px;">{{ actividad.actividadprograma | capitalizado }}</td>
+                    <td style="border-style: solid; border-width: 1px;">
+                        <!-- <p *ngIf="actividad.calculada !== 'semestrales'">{{ actividad.horas }}</p> -->
                     </td>
-                    <td>{{ actividad.horassemestre }}</td>
+                    <td style="border-style: solid; border-width: 1px;">{{ actividad.horassemestre }}</td>
                 </tr>
 
                 <!-- Total de Funciones -->
                 <tr *ngIf="agenda.contrato !== 'catedrático'">
-                    <td colspan="4" rowspan="2"></td>
-                    <th>Actividad Complementaria</th>
-                    <th>{{ agenda.horasFunciones }}</th>
+                    <td style="border-style: solid; border-width: 1px;" colspan="4" rowspan="2"></td>
+                    <th style="border-style: solid; border-width: 1px;">Actividad Complementaria</th>
+                    <th style="border-style: solid; border-width: 1px;">{{ agenda.horasFunciones }}</th>
                 </tr>
 
                 <tr *ngIf="agenda.contrato !== 'catedrático'">
-                    <th>Total Horas Actividad</th>
-                    <th>{{ agenda.horasMaxContrato }}</th>
+                    <th style="border-style: solid; border-width: 1px;">Total Horas Actividad</th>
+                    <th style="border-style: solid; border-width: 1px;">{{ agenda.horasMaxContrato }}</th>
                 </tr>
 
 

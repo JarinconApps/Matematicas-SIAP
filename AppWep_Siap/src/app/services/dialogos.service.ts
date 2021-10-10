@@ -51,6 +51,7 @@ import { VerSeminarioComponent } from '../factores/extension/seminario/eventos-s
 import { ExportarPlanMejoramientoComponent } from '../factores/procesos_academicos/plan-mejoramiento/exportar-plan-mejoramiento/exportar-plan-mejoramiento.component';
 import { CrearEditarFechaComponent } from '../factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/crear-editar-fecha/crear-editar-fecha.component';
 import { CrearEditarPresupuestoComponent } from '../factores/procesos_academicos/plan-mejoramiento/crear-editar-plan-mejoramiento/crear-editar-presupuesto/crear-editar-presupuesto.component';
+import { NuevosCambiosComponent } from '../general/menu/nuevos-cambios/nuevos-cambios.component';
 
 @Injectable({
   providedIn: 'root'
@@ -294,10 +295,10 @@ export class DialogosService {
     return dialogRef.afterClosed();
   }
 
-  SeleccionarDocente() {
+  SeleccionarDocente(tituloBoton: string, vinculacion: string) {
     const dialogRef = this.dialog.open(SeleccionarDocenteComponent, {
       width: '80%',
-      data: {}
+      data: {tituloBoton, vinculacion}
     });
 
     return dialogRef.afterClosed();
@@ -447,6 +448,15 @@ export class DialogosService {
     const dialogRef = this.dialog.open(CrearEditarPresupuestoComponent, {
       width: '600px',
       data: {presupuestoPm, plan}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  nuevosCambios(nuevosCambios: string) {
+    const dialogRef = this.dialog.open(NuevosCambiosComponent, {
+      width: '800px', height: '600px',
+      data: {nuevosCambios}
     });
 
     return dialogRef.afterClosed();

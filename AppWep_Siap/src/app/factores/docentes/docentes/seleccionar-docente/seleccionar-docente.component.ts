@@ -17,6 +17,9 @@ export class SeleccionarDocenteComponent implements OnInit {
   leyendo = false;
   termino = '';
 
+  tituloBoton = '';
+  vinculacion = '';
+
   constructor(public dialogRef: MatDialogRef<SeleccionarDocenteComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private genService: GeneralService,
@@ -24,6 +27,9 @@ export class SeleccionarDocenteComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerDocentes();
+
+    this.vinculacion = this.data.vinculacion;
+    this.tituloBoton = this.data.tituloBoton;
   }
 
   obtenerDocentes() {
@@ -57,7 +63,7 @@ export class SeleccionarDocenteComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CrearDirectorJuradoComponent, {
       width: '60%',
-      data: {accion, docente}
+      data: {accion, docente, tituloBoton: this.tituloBoton, vinculacion: this.vinculacion}
     });
 
     dialogRef.afterClosed().subscribe((rDocente: Docente) => {

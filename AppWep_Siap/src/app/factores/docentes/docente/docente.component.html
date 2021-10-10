@@ -15,7 +15,7 @@
         <h3>Datos Básicos</h3>
         <hr>
 
-        <div class="row">
+        <div class="row mb-4">
 
             <div style="width: 25%;">
                 <div class="card card-shadow">
@@ -39,40 +39,44 @@
             </div>
 
             <div class="col-md-9">
-                <div class="form-group">
-                    <label style="font-weight: bold;">Documento de Identidad</label>
-                    <input type="text" class="form-control" [(ngModel)]="docente.documento" name="iddocente">
-                </div>
+                <div class="row">
 
-                <div class="form-group">
-                    <label style="font-weight: bold;">Nombre</label>
-                    <input type="text" class="form-control" [(ngModel)]="docente.nombre" name="nombre">
-                </div>
+                    <div class="form-group col-6">
+                        <label style="font-weight: bold;">Documento de Identidad</label>
+                        <input type="text" class="form-control" [(ngModel)]="docente.documento" name="iddocente">
+                    </div>
 
-                <div class="form-group">
-                    <label style="font-weight: bold;">Teléfono</label>
-                    <input type="text" class="form-control" [(ngModel)]="docente.telefono" name="telefono">
-                </div>
+                    <div class="form-group col-6">
+                        <label style="font-weight: bold;">Nombre</label>
+                        <input type="text" class="form-control" [(ngModel)]="docente.nombre" name="nombre">
+                    </div>
 
-                <div class="form-group">
-                    <label style="font-weight: bold;">Correo</label>
-                    <input type="text" class="form-control" [(ngModel)]="docente.correo" name="correo">
-                </div>
+                    <div class="form-group col-6">
+                        <label style="font-weight: bold;">Teléfono</label>
+                        <input type="text" class="form-control" [(ngModel)]="docente.telefono" name="telefono">
+                    </div>
 
-                <div class="form-group">
-                    <label style="font-weight: bold;">Categoría Docente</label>
-                    <select class="custom-select" [(ngModel)]="docente.idcategoriadocente" name="idcategoriadocente">
-                  <option [value]="''">Seleccione una categoría docente ...</option>
-                  <option [value]="categoria.idcategoriadocente" *ngFor="let categoria of Categorias" >{{ categoria.categoria | capitalizado }}</option>
-                </select>
-                </div>
+                    <div class="form-group col-6">
+                        <label style="font-weight: bold;">Correo</label>
+                        <input type="text" class="form-control" [(ngModel)]="docente.correo" name="correo">
+                    </div>
 
-                <div class="form-group">
-                    <label style="font-weight: bold;">Tipo Contrato</label>
-                    <select class="custom-select" [(ngModel)]="docente.idtipocontrato" name="idtipocontrato">
-                  <option [value]="''">Seleccione un tipo de contrato ...</option>
-                  <option [value]="tipo.idtipocontrato" *ngFor="let tipo of TiposContrato" >{{ tipo.contrato | capitalizado }}</option>
-                </select>
+                    <div class="form-group col-6">
+                        <label style="font-weight: bold;">Categoría Docente</label>
+                        <select class="custom-select" [(ngModel)]="docente.idcategoriadocente" name="idcategoriadocente">
+                          <option [value]="''">Seleccione una categoría docente ...</option>
+                          <option [value]="categoria.idcategoriadocente" *ngFor="let categoria of Categorias" >{{ categoria.categoria | capitalizado }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label style="font-weight: bold;">Tipo Contrato</label>
+                        <select class="custom-select" [(ngModel)]="docente.idtipocontrato" name="idtipocontrato">
+                          <option [value]="''">Seleccione un tipo de contrato ...</option>
+                          <option [value]="tipo.idtipocontrato" *ngFor="let tipo of TiposContrato" >{{ tipo.contrato | capitalizado }}</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

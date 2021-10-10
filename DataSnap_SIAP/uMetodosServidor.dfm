@@ -7,7 +7,7 @@ object Matematicas: TMatematicas
     Params.Strings = (
       'Database=siap'
       'User_Name=postgres'
-      'Password=!40r4c10n713n3.0d3r'
+      'Password=5716f2746fdaf169c38b4b5d79f7d810'
       'CharacterSet=UTF8'
       'DriverID=PG')
     FetchOptions.AssignedValues = [evMode, evRowsetSize]

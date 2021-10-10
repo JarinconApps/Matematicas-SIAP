@@ -145,6 +145,9 @@ export interface Docente {
   vinculacion?: string;
   Terminados?: TrabajoGrado[];
   noTerminados?: TrabajoGrado[];
+  contra?: string;
+  areaprofundizacion?: string;
+  titulomayorformacion?: string;
 }
 
 export interface Error {

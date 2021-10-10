@@ -114,6 +114,8 @@ alter table siap_docentes add column documento text;
 alter table siap_docentes add column vinculacion text;
 alter table siap_docentes add column institucion text;
 alter table siap_docentes add column contra text;
+alter table siap_docentes add column areaprofundizacion text;
+alter table siap_docentes add column titulomayorformacion text;
 
 /* Enlaces de divulgación docente*/
 create table if not exists siap_divulgacion_docente(
@@ -476,7 +478,103 @@ create table if not exists siap_seminario(
 	evidencias text
 );
 
+-- Tablas para el EMEM
 
+create table if not exists emem_eventos(
+	IdEvento varchar(255) primary key not null,
+	Nombre varchar(255),
+	Fecha varchar(255),
+	Dias varchar(255),
+	Visible varchar(255),
+	Descripcion text,
+	Titulo text,
+	Modalidades text
+);
 
+create table if not exists emen_conferencistas(
+	IdConferencista varchar(255) primary key not null,
+	Nombre varchar(255),
+	Correo varchar(255),
+	Institucion varchar(255)
+);
 
+create table if not exists emem_biografia_conferencista(
+	IdBiografia varchar(255) primary key not null,
+	Biografia varchar(255),
+	Orden integer,
+	IdConferencista varchar(255) references emen_conferencistas(IdConferencista)
+);
 
+create table if not exists emem_modalidades(
+	IdModalidad varchar(255) primary key not null,
+	Modalidad varchar(255)
+);
+
+create table if not exists emem_dias_cronograma(
+	IdDia varchar(255) primary key not null,
+	Dia varchar(255),
+	IdEvento varchar(255) references emem_eventos(IdEvento)
+);
+
+create table if not exists emem_evento_cronograma(
+	IdEventoCronograma varchar(255) primary key not null,
+	Hora varchar(255),
+	Titulo varchar(255),
+	Descripcion varchar(255),
+	Enlace varchar(255),
+	IdDia varchar(255) references emem_dias_cronograma(IdDia),
+	orden integer
+);
+
+create table if not exists emem_conferencias(
+	IdConferencia varchar(255) primary key not null,
+	Titulo text,
+	IdConferencista varchar(255) references emen_conferencistas(IdConferencista),
+	Resumen text,
+	IdEvento varchar(255) references emem_eventos(IdEvento),
+	IdModalidad varchar(255) references emem_modalidades(IdModalidad),
+	Tipo varchar(255),
+	IdEventoCronograma varchar(255) references emem_evento_cronograma(IdEventoCronograma)
+);
+
+create table if not exists emem_organizadores(
+	IdOrganizador varchar(255) primary key not null,
+	Nombre varchar(255),
+	Correo varchar(255)		
+);
+
+create table if not exists emem_funciones_organizador(
+	IdFuncion varchar(255) primary key not null,
+	Funcion varchar(255),
+	IdEvento varchar(255) references emem_eventos(IdEvento),
+	IdOrganizador varchar(255) references emem_organizadores(IdOrganizador)
+);
+
+create table if not exists emen_evento_organizadores(
+	IdEventoOrganizador varchar(255) primary key not null,
+	IdOrganizador varchar(255) references emem_organizadores(IdOrganizador),
+	IdEvento varchar(255) references emem_eventos(IdEvento),
+	Orden integer
+);
+
+create table if not exists emem_tipo_participante(
+	IdTipoParticipante varchar(255) primary key not null,
+	Nombre varchar(255)
+);
+
+create table if not exists emem_participante(
+	IdParticipante varchar(255) primary key not null,
+	Nombre varchar(255),
+	Correo varchar(255),
+	Documento varchar(255),
+	Institucion varchar(255),
+	Titulo varchar(255)
+);
+
+create table if not exists emem_participante_evento(
+	IdParticipanteEvento varchar(255) primary key not null,
+	IdEvento varchar(255) references emem_eventos(IdEvento),
+	IdParticipante varchar(255) references emem_participante(IdParticipante),
+	IdTipoParticipante varchar(255) references emem_tipo_participante(IdTipoParticipante),
+	TituloPonencia text	
+);

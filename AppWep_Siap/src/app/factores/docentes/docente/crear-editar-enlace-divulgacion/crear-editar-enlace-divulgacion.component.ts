@@ -18,7 +18,7 @@ export class CrearEditarEnlaceDivulgacionComponent implements OnInit {
   };
   accion = 'Crear';
 
-  enlaces: string[] = ['Cvlac', 'Orcid', 'Scopus', 'Google Académico'];
+  enlaces: string[] = ['Cvlac', 'Orcid', 'Scopus', 'Google Académico', 'Mendeley', 'Research Gate'];
 
   constructor(public dialogRef: MatDialogRef<CrearEditarEnlaceDivulgacionComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,

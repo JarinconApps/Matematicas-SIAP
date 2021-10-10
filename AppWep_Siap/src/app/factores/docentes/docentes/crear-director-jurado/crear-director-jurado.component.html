@@ -1,4 +1,4 @@
-<h1>Crear/Editar un Docente</h1>
+<app-titulo-dialogo [Titulo]="'Creando/Editando director o jurado ...'"></app-titulo-dialogo>
 <hr>
 
 <div class="text-center" style="margin: 20px;" *ngIf="guardando">
@@ -13,30 +13,49 @@
 
 <form *ngIf="!guardando && !leyendo" ngNativeValidate (ngSubmit)="guardarDocente()">
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Documento de Identidad</label>
-        <input type="number" class="form-control" required [(ngModel)]="docente.documento" name="iddocente">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label style="font-weight: bold;">Documento de Identidad</label>
+                <input type="number" class="form-control" required [(ngModel)]="docente.documento" name="iddocente">
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold;">Nombre</label>
+                <input type="text" class="form-control" required [(ngModel)]="docente.nombre" name="nombre">
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold;">Teléfono</label>
+                <input type="text" class="form-control" [(ngModel)]="docente.telefono" name="telefono">
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold;">Correo</label>
+                <input type="text" class="form-control" [(ngModel)]="docente.correo" name="correo">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label style="font-weight: bold;">Institución</label>
+                <input type="text" class="form-control" [(ngModel)]="docente.institucion" name="institucion">
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold;">Área de Profundización</label>
+                <input type="text" class="form-control" [(ngModel)]="docente.areaprofundizacion" name="areaprofundizacion">
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold;">Título de Mayor de Formación</label>
+                <input type="text" class="form-control" [(ngModel)]="docente.titulomayorformacion" name="titulomayorformacion">
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Nombre</label>
-        <input type="text" class="form-control" required [(ngModel)]="docente.nombre" name="nombre">
-    </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Teléfono</label>
-        <input type="text" class="form-control" [(ngModel)]="docente.telefono" name="telefono">
-    </div>
 
-    <div class="form-group">
-        <label style="font-weight: bold;">Correo</label>
-        <input type="text" class="form-control" [(ngModel)]="docente.correo" name="correo">
-    </div>
-
-    <div class="form-group">
-        <label style="font-weight: bold;">Institución</label>
-        <input type="text" class="form-control" [(ngModel)]="docente.institucion" name="institucion">
-    </div>
 
     <button type="submit" class="btn btn-outline-success float-right"><img src="assets/Iconos/Guardar.png" style="height: 32px;"> Guardar</button>
 </form>

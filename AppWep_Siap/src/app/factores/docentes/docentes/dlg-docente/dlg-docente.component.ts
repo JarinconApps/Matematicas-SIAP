@@ -26,6 +26,9 @@ export class DlgDocenteComponent implements OnInit {
     idcategoriadocente: '',
     idtipocontrato: '',
     foto: '',
+    contra: '',
+    areaprofundizacion: '',
+    titulomayorformacion: ''
   };
 
   accion: string;
@@ -79,6 +82,8 @@ export class DlgDocenteComponent implements OnInit {
   guardarDocente() {
 
     this.guardando = true;
+
+    console.log(this.docente);
 
     if (this.accion === 'Crear') {
 

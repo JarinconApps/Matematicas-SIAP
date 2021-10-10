@@ -285,6 +285,8 @@ export class TrabajosGradoComponent implements OnInit {
       idAreaProfundizacion: '',
       idGrupoInvestigacion: '',
       estadoProyecto: '',
+      fechaInicio: '2008-08-20',
+      fechaFin: '2021-08-20',
       paginacion: {
         todos: 'no',
         contenido: [],

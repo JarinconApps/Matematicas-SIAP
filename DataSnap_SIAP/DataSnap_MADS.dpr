@@ -29,7 +29,11 @@ uses
   uTCRUDModel
     in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTCRUDModel.pas',
   uTValidateToken
-    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas';
+    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas',
+  uModuloEventoEMEM
+    in 'Modulos\uModuloEventoEMEM.pas' {moduloEventoEMEM: TDataModule} ,
+  uConstantes in 'uConstantes.pas',
+  uFVistaJSON in 'uFVistaJSON.pas' {FVistaJSON};
 
 {$R *.res}
 
@@ -43,6 +47,8 @@ begin
   Application.CreateForm(TFResumenes, FResumenes);
   Application.CreateForm(TFCertificados, FCertificados);
   Application.CreateForm(TFVisorContenido, FVisorContenido);
+  Application.CreateForm(TmoduloEventoEMEM, moduloEventoEMEM);
+  Application.CreateForm(TFVistaJSON, FVistaJSON);
   Application.Run;
 
 end.

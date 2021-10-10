@@ -1,0 +1,1 @@
+SELECT * FROM emem_evento_cronograma WHERE IdDia='olikujqw-ujyt-mnju-ikju-okmnbtqrwygf' ORDER BY Orden

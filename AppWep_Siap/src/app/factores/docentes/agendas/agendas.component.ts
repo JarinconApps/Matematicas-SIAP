@@ -209,7 +209,6 @@ export class AgendasComponent implements OnInit {
 
         this.genService.postAgendaServicio(datos).subscribe((rRespuesta2: any) => {
 
-
           this.leerAgendasServicio();
         });
       } else {

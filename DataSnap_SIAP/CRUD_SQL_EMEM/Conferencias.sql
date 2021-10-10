@@ -1,0 +1,1 @@
+select * from emem_conferencias where idevento='evento-2021'

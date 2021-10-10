@@ -21,7 +21,9 @@ export class CrearDirectorJuradoComponent implements OnInit {
     foto: '',
     activo: 'no',
     vinculacion: 'jurado',
-    institucion: ''
+    institucion: '',
+    titulomayorformacion: '',
+    areaprofundizacion: ''
   };
 
   accion: string;
@@ -29,6 +31,8 @@ export class CrearDirectorJuradoComponent implements OnInit {
   contIntentos = 0;
   guardando = false;
   leyendo = false;
+
+  tituloBoton = 'Agregar Jurado/Director';
 
   Categorias: CategoriaDocente[] = [];
   TiposContrato: TipoContrato[] = [];
@@ -41,6 +45,8 @@ export class CrearDirectorJuradoComponent implements OnInit {
   ngOnInit() {
     this.accion = this.data.accion;
     this.id = this.data.iddocente;
+    this.docente.vinculacion = this.data.vinculacion;
+    this.tituloBoton = this.data.tituloBoton;
 
     this.leerCategorias();
     this.leerTiposContrato();

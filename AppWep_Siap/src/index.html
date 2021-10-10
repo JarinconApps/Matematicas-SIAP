@@ -60,6 +60,7 @@
         })()
 
         function crearWord(element, nombre) {
+            console.log(element);
             var html = document.getElementById(element).outerHTML;
             var blob = new Blob(['\ufeff', html], {
                 type: 'application/msword'
@@ -78,6 +79,7 @@
         }
 
         function crearExcel(element, nombre) {
+            console.log(element);
             var html = document.getElementById(element).outerHTML;
             var blob = new Blob(['\ufeff', html], {
                 type: 'application/msexcel'

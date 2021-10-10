@@ -65,6 +65,9 @@
     #botonesEditarPerfilDocente {
         display: none;
     }
+    #botonesDescargar {
+        display: none;
+    }
 }
 
 @page {

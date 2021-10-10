@@ -95,7 +95,7 @@ uses System.SysUtils, System.Classes, dialogs, System.Json, Contnrs,
   IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdMessageClient,
   IdSMTPBase, IdSMTP, uFCertificados, Utilidades, ComObj,
   Datasnap.DSHTTPWebBroker,
-  Web.HTTPApp, uModuloDatos, uFVisorContenido;
+  Web.HTTPApp, uModuloDatos, uFVisorContenido, uConstantes, uModuloEventoEMEM;
 
 type
 {$METHODINFO ON}
@@ -164,6 +164,7 @@ type
     function pruebaExcel: TJSONObject;
 
     function validarTokenHeader: boolean;
+    function accesoDenegadoToken: TJSONObject;
 
     { CRUD: concurrencias }
     function concurrencia(idClave: string): TJSONObject;
@@ -186,8 +187,6 @@ type
 
     { CRUD: participantes }
     function participante(idClave: string): TJSONObject;
-    function updateparticipante(const token: string; const datos: TJSONObject)
-      : TJSONObject;
     function cancelparticipante(const idClave: string; const token: string)
       : TJSONObject;
     function acceptparticipante(const token: string; const datos: TJSONObject)
@@ -255,6 +254,16 @@ type
     { CRUD: Comunicación con el usuario }
     function updateenviarCorreo(const token: string; const datos: TJSONObject)
       : TJSONObject;
+
+    { CRUD Eventos }
+    function eventosEMEM: TJSONObject;
+    function eventoEMEM(IdEvento: string): TJSONObject;
+    function conferenciasEMEM(IdEvento: string): TJSONObject;
+    function ponenciasEMEM(IdEvento: string): TJSONObject;
+    function cronogramaEMEM(IdEvento: string): TJSONObject;
+    function organizadoresEvento(IdEvento: string): TJSONObject;
+    function tipoParticipacion: TJSONObject;
+    function participanteEvento(Documento, IdEvento: string): TJSONObject;
 
     { Configuraciones }
     function permiteCrearResumenes: TJSONObject;
@@ -443,8 +452,7 @@ type
       : TJSONObject;
 
     { ParticipanteEmem }
-    function updateParticipanteEmem(const token: string;
-      const datos: TJSONObject): TJSONObject;
+    function updateParticipanteEmem(datos: TJSONObject): TJSONObject;
     function ParticipanteEmem(const ID: string): TJSONObject;
     function ParticipantesEmem: TJSONObject;
     function cancelParticipanteEmem(const token: string; const ID: string)
@@ -1485,6 +1493,7 @@ begin
   Result := Json;
   escribirMensaje('ActividadesFuncionesDocente', Json.toString);
   Query.Free;
+  Query2.Free;
 end;
 
 { Método DELETE - ActividadFuncionDocente }
@@ -3437,6 +3446,7 @@ begin
         JsonLinea.AddPair('estadoproyecto', Query.FieldByName('estadoproyecto')
           .AsString);
 
+        { Para buscar entre fechas }
         if (fecha1 >= fecha3) and (fecha1 <= fecha4) and (fecha2 >= fecha3) and
           (fecha2 <= fecha4) then
           ArrayJson.AddElement(JsonLinea);
@@ -5000,59 +5010,6 @@ begin
   Query.Free;
 end;
 
-{ Método INSERT - ParticipanteEmem }
-function TMatematicas.updateParticipanteEmem(const token: string;
-  const datos: TJSONObject): TJSONObject;
-var
-  Json: TJSONObject;
-  Query: TFDQuery;
-begin
-  try
-    Query := TFDQuery.create(nil);
-    Query.Connection := Conexion;
-    Json := TJSONObject.create;
-
-    if token = FDataSnapMatematicas.obtenerToken then
-    begin
-
-      limpiarConsulta(Query);
-
-      limpiarParametros;
-
-      agregarParametro('idparticipante', 'String');
-      agregarParametro('primernombre', 'String');
-      agregarParametro('segundonombre', 'String');
-      agregarParametro('primerapellido', 'String');
-      agregarParametro('segundoapellido', 'String');
-      agregarParametro('correo', 'String');
-      agregarParametro('contra', 'String');
-      agregarParametro('idafiliacion', 'String');
-
-      INSERT('emem_participantes', Query);
-
-      asignarDatos(datos, Query);
-
-      Json.AddPair(JsonRespuesta, 'El participante se creo correctamente');
-    end
-    else
-    begin
-      Json.AddPair(JsonRespuesta, AccesoDenegado);
-    end;
-
-  except
-    on E: Exception do
-    begin
-      Json.AddPair(JsonError, E.Message);
-      enviarError(TimeToStr(now), DateToStr(now), 'updateParticipanteEmem',
-        E.Message + datos.toString);
-    end;
-  end;
-
-  Result := Json;
-  escribirMensaje('updateParticipanteEmem', Json.toString);
-  Query.Free;
-end;
-
 { Método GET - ParticipanteEmem }
 function TMatematicas.ParticipanteEmem(const ID: string): TJSONObject;
 var
@@ -5092,6 +5049,12 @@ begin
   Result := Json;
   escribirMensaje('ParticipanteEmem', Json.toString);
   Query.Free;
+end;
+
+function TMatematicas.participanteEvento(Documento, IdEvento: string)
+  : TJSONObject;
+begin
+  Result := moduloEventoEMEM.getParticipanteEvento(Documento, IdEvento);
 end;
 
 { Método GET-ALL - ParticipanteEmem }
@@ -5164,6 +5127,7 @@ begin
   Result := Json;
   escribirMensaje('ParticipantesEmem', Json.toString);
   Query.Free;
+  QAfiliacion.Free;
 end;
 
 { Método DELETE - ParticipanteEmem }
@@ -6163,6 +6127,8 @@ begin
   Result := Json;
   escribirMensaje('FuncionesDocente', Json.toString);
   Query.Free;
+  Query2.Free;
+  Query3.Free;
 end;
 
 function TMatematicas.getPrespuestoByFechaPlan(IdPlan: string): TJSONArray;
@@ -6181,7 +6147,8 @@ begin
     QPres.Connection := Conexion;
 
     QFecha.Close;
-    QFecha.SQL.Text := 'SELECT * FROM siap_fechas_plan_mejoramiento ORDER BY fecha';
+    QFecha.SQL.Text :=
+      'SELECT * FROM siap_fechas_plan_mejoramiento ORDER BY fecha';
     QFecha.Open;
     QFecha.First;
 
@@ -6929,6 +6896,7 @@ begin
   Result := Json;
   escribirMensaje('AgendasServicio', Json.toString);
   Query.Free;
+  QDoc.Free;
 end;
 
 function TMatematicas.AgendasPorPrograma(const Periodo: string): TJSONObject;
@@ -7248,11 +7216,11 @@ begin
   Result := Json;
   escribirMensaje('AgendasServicio', Json.toString);
   Query.Free;
+  Query2.Free;
 end;
 
 function TMatematicas.EstadisticasTrabajoGrado: TJSONObject;
 var
-  QTrabajos: TFDQuery;
   JsonResponse: TJSONObject;
   Estadisticas: TJSONArray;
 begin
@@ -7606,6 +7574,16 @@ begin
   QContratos.Free;
   QDocentes.Free;
   QtrabajosGrado.Free;
+end;
+
+function TMatematicas.eventoEMEM(IdEvento: string): TJSONObject;
+begin
+  Result := moduloEventoEMEM.getEventoEMEM(IdEvento);
+end;
+
+function TMatematicas.eventosEMEM: TJSONObject;
+begin
+  Result := moduloEventoEMEM.getEventosEMEM;
 end;
 
 function TMatematicas.extractYearFromDate(fecha: string): word;
@@ -8536,6 +8514,8 @@ begin
   Result := Json;
   escribirMensaje('ServiciosPrograma', Json.toString);
   Query.Free;
+  Query2.Free;
+  Query3.Free;
 end;
 
 function TMatematicas.ServiciosProgramaDocente(const IdDocente, Periodo: string)
@@ -8563,7 +8543,7 @@ begin
     Json.AddPair('ServiciosProgramas', ArrayJson);
 
     { Leer los servicios del programa para el periodo especificado, esto genera
-      una lista de servicios (materias las cuales se deben validad, que profesor
+      una lista de servicios (materias las cuales se deben validar, que profesor
       ya la ha tomado y si se le cruzan al profesor que se envia como paramétro) }
 
     limpiarConsulta(Query);
@@ -8697,6 +8677,8 @@ begin
   Result := Json;
   escribirMensaje('ServiciosPrograma', Json.toString);
   Query.Free;
+  Query2.Free;
+  Query3.Free;
 end;
 
 { Método DELETE - ServicioPrograma }
@@ -9302,6 +9284,11 @@ begin
   QPlan.Free;
 end;
 
+function TMatematicas.ponenciasEMEM(IdEvento: string): TJSONObject;
+begin
+  Result := moduloEventoEMEM.getPonencias(IdEvento);
+end;
+
 function TMatematicas.presupuestosPm(IdPlan: string): TJSONObject;
 var
   Json, jsonpresupuesto: TJSONObject;
@@ -9430,6 +9417,7 @@ begin
 
   Result := JsonProduccionDocente;
   QProduccionDocente.Free;
+  QTipoProducto.Free;
 end;
 
 function TMatematicas.ProductosDocente(IdDocente: string): TJSONObject;
@@ -10332,6 +10320,8 @@ begin
       agregarParametro('idcategoriadocente', 'String');
       agregarParametro('idtipocontrato', 'String');
       agregarParametro('contra', 'String');
+      agregarParametro('areaprofundizacion', 'String');
+      agregarParametro('titulomayorformacion', 'String');
 
       INSERT('siap_docentes', Query);
 
@@ -10481,6 +10471,8 @@ begin
     agregarParametro('idcategoriadocente', 'String');
     agregarParametro('idtipocontrato', 'String');
     agregarParametro('contra', 'String');
+    agregarParametro('areaprofundizacion', 'String');
+    agregarParametro('titulomayorformacion', 'String');
 
     for i := 1 to Query.RecordCount do
     begin
@@ -10553,6 +10545,8 @@ begin
     agregarParametro('idcategoriadocente', 'String');
     agregarParametro('idtipocontrato', 'String');
     agregarParametro('contra', 'String');
+    agregarParametro('areaprofundizacion', 'String');
+    agregarParametro('titulomayorformacion', 'String');
 
     Json := crearJSON(Query);
 
@@ -10622,6 +10616,8 @@ begin
     agregarParametro('idcategoriadocente', 'String');
     agregarParametro('idtipocontrato', 'String');
     agregarParametro('contra', 'String');
+    agregarParametro('areaprofundizacion', 'String');
+    agregarParametro('titulomayorformacion', 'String');
 
     for i := 1 to Query.RecordCount do
     begin
@@ -10773,6 +10769,8 @@ begin
     agregarParametro('activo', 'String');
     agregarParametro('idcategoriadocente', 'String');
     agregarParametro('idtipocontrato', 'String');
+    agregarParametro('areaprofundizacion', 'String');
+    agregarParametro('titulomayorformacion', 'String');
 
     for i := 1 to Query.RecordCount do
     begin
@@ -11040,6 +11038,8 @@ begin
       agregarParametro('institucion', 'String');
       agregarParametro('idcategoriadocente', 'String');
       agregarParametro('idtipocontrato', 'String');
+      agregarParametro('areaprofundizacion', 'String');
+      agregarParametro('titulomayorformacion', 'String');
 
       ID := datos.GetValue('iddocente').Value;
       UPDATE('siap_docentes', 'iddocente', ID, Query);
@@ -11803,6 +11803,11 @@ begin
   Query.Free;
 end;
 
+function TMatematicas.tipoParticipacion: TJSONObject;
+begin
+  Result := moduloEventoEMEM.getTiposParticipacion;
+end;
+
 { Método GET-ALL - TipoContrato }
 function TMatematicas.TiposAccion: TJSONObject;
 var
@@ -12156,6 +12161,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-referenciaResumen');
   end;
+
+  _referenciaResumen.Free;
 end;
 
 function TMatematicas.referenciasResumen(idClave: string): TJSONObject;
@@ -12178,6 +12185,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-referenciasResumen');
   end;
+
+  _referenciaResumen.Free;
 end;
 
 function TMatematicas.ReporteHorasFacultad(Periodo: string): TJSONObject;
@@ -12536,7 +12545,13 @@ begin
 
   Result := Json;
   escribirMensaje('AgendaServicio', Json.toString);
-  Query.Free;
+
+  QServicios.Free;
+  QContrato.Free;
+  QFacultad.Free;
+  QDocentes.Free;
+  QFunciones.Free;
+  QActividades.Free;
 end;
 
 function TMatematicas.ReporteProgramaServicios(const IdProgrma, Periodo: string)
@@ -12749,6 +12764,7 @@ begin
   end;
 
   Result := Json;
+  _referenciaResumen.Free;
 end;
 
 function TMatematicas.acceptreferenciaResumen(const token: string;
@@ -12786,6 +12802,7 @@ begin
   end;
 
   Result := Json;
+  _referenciaResumen.Free;
 end;
 
 function TMatematicas.cancelreferenciaResumen(const idClave: string;
@@ -12824,6 +12841,7 @@ begin
   end;
 
   Result := Json;
+  _referenciaResumen.Free;
 end;
 
 { CRUD: autorResumen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -12881,6 +12899,8 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
+  Query2.Free;
 end;
 
 function TMatematicas.autorPorCedula(cedula: string): TJSONObject;
@@ -12926,6 +12946,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.autorResumen(idClave: string): TJSONObject;
@@ -12953,6 +12974,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-autorResumen');
   end;
+
+  _autorResumen.Free;
 end;
 
 function TMatematicas.updateagregarAutorResumen(const token: string;
@@ -13039,6 +13062,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.updateautorResumen(const token: string;
@@ -13076,6 +13100,7 @@ begin
   end;
 
   Result := Json;
+  _autorResumen.Free;
 end;
 
 function TMatematicas.acceptautorResumen(const token: string;
@@ -13129,6 +13154,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.cancelautorResumen(const cedula: string;
@@ -13174,6 +13200,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.cancelborrarResumen(const id_resumen: string;
@@ -13267,6 +13294,9 @@ begin
         E.Message + ')');
     end;
   end;
+
+  Query.Free;
+  Query2.Free;
 end;
 
 { CRUD: palabraClave %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -13295,6 +13325,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-palabraClave');
   end;
+
+  _palabraClave.Free;
 end;
 
 function TMatematicas.palabraClaveResumen(idClave: string): TJSONObject;
@@ -13317,6 +13349,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-palabraClaveResumen');
   end;
+
+  _palabraClave.Free;
 end;
 
 function TMatematicas.updatepalabraClave(const token: string;
@@ -13354,6 +13388,12 @@ begin
   end;
 
   Result := Json;
+  _palabraClave.Free;
+end;
+
+function TMatematicas.updateParticipanteEmem(datos: TJSONObject): TJSONObject;
+begin
+  Result := moduloEventoEMEM.postParticipante(datos);
 end;
 
 function TMatematicas.acceptpalabraClave(const token: string;
@@ -13391,6 +13431,7 @@ begin
   end;
 
   Result := Json;
+  _palabraClave.Free;
 end;
 
 function TMatematicas.cancelpalabraClave(const idClave: string;
@@ -13429,6 +13470,7 @@ begin
   end;
 
   Result := Json;
+  _palabraClave.Free;
 end;
 
 { CRUD: resumenes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -13457,6 +13499,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-resumen');
   end;
+
+  _resumen.Free;
 end;
 
 function TMatematicas.resumenesAutor(idClave: string): TJSONObject;
@@ -13479,6 +13523,7 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-resumenesAutor');
   end;
+  _resumen.Free;
 end;
 
 function TMatematicas.resumenPorTipo(const tipo: string): TJSONObject;
@@ -13538,6 +13583,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.updateresumen(const token: string;
@@ -13575,6 +13621,7 @@ begin
   end;
 
   Result := Json;
+  _resumen.Free;
 end;
 
 function TMatematicas.acceptresumen(const token: string;
@@ -13612,6 +13659,7 @@ begin
   end;
 
   Result := Json;
+  _resumen.Free;
 end;
 
 function TMatematicas.cancelresumen(const idClave: string; const token: string)
@@ -13650,6 +13698,7 @@ begin
   end;
 
   Result := Json;
+  _resumen.Free;
 end;
 
 { CRUD: participantees %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -13678,6 +13727,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-participante');
   end;
+
+  _participante.Free;
 end;
 
 function TMatematicas.permiteCrearResumenes: TJSONObject;
@@ -13702,44 +13753,6 @@ begin
     Json.AddPair('permite', 'si')
   else
     Json.AddPair('permite', 'no');
-
-  Result := Json;
-end;
-
-function TMatematicas.updateparticipante(const token: string;
-  const datos: TJSONObject): TJSONObject;
-var
-  _participante: Tparticipante;
-  Json: TJSONObject;
-begin
-  Json := TJSONObject.create;
-  try
-
-    if token = FDataSnapMatematicas.obtenerToken then
-    begin
-      _participante := Tparticipante.create;
-      _participante.Conexion := Conexion;
-
-      iniciarConexion;
-      Json := _participante.post(datos);
-      terminarConexion;
-
-    end
-    else
-    begin
-      Json.AddPair('respuesta',
-        'Acceso denegado, por favor recarge el navegador pulsando la tecla F5');
-    end;
-
-  except
-    on E: Exception do
-    begin
-      if Pos('existe la llave', E.Message) >= 0 then
-        Json.AddPair('respuesta', 'El usuario ya esta registrado')
-      else
-        Json.AddPair('respuesta', E.Message)
-    end;
-  end;
 
   Result := Json;
 end;
@@ -13779,6 +13792,7 @@ begin
   end;
 
   Result := Json;
+  _participante.Free;
 end;
 
 function TMatematicas.cancelparticipante(const idClave: string;
@@ -13817,6 +13831,7 @@ begin
   end;
 
   Result := Json;
+  _participante.Free;
 end;
 
 { CRUD: usuarioes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -13845,6 +13860,8 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-usuario');
   end;
+
+  _usuario.Free;
 end;
 
 function TMatematicas.validarHorario(IdDocente, idservicio, Periodo: string)
@@ -14010,6 +14027,9 @@ begin
   end
   else
     Result.Observacion := '';
+
+  Query.Free;
+  Query2.Free;
 end;
 
 function TMatematicas.validarToken(token: string): TJSONObject;
@@ -14087,6 +14107,7 @@ begin
   end;
 
   Result := Json;
+  _usuario.Free;
 end;
 
 function TMatematicas.acceptusuario(const token: string;
@@ -14124,6 +14145,14 @@ begin
   end;
 
   Result := Json;
+  _usuario.Free;
+end;
+
+function TMatematicas.accesoDenegadoToken: TJSONObject;
+begin
+  Result := TJSONObject.create;
+  Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+  Result.AddPair(JSON_RESPONSE, 'Acceso denegado, token inválido');
 end;
 
 function TMatematicas.cancelusuario(const idClave: string; const token: string)
@@ -14162,6 +14191,7 @@ begin
   end;
 
   Result := Json;
+  _usuario.Free;
 end;
 
 { CRUD: concurrenciaes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -14190,6 +14220,13 @@ begin
     on E: Exception do
       escribirMensaje(E.Message, 'error-concurrencia');
   end;
+
+  _concurrencia.Free;
+end;
+
+function TMatematicas.conferenciasEMEM(IdEvento: string): TJSONObject;
+begin
+  Result := moduloEventoEMEM.getConferencias(IdEvento);
 end;
 
 function TMatematicas.updateconcurrencia(const token: string;
@@ -14227,6 +14264,7 @@ begin
   end;
 
   Result := Json;
+  _concurrencia.Free;
 end;
 
 function TMatematicas.updateenviarCorreo(const token: string;
@@ -14352,6 +14390,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.updateLoginUsuario(const datos: TJSONObject): TJSONObject;
@@ -14394,6 +14433,7 @@ begin
   end;
 
   Result := Json;
+  _concurrencia.Free;
 end;
 
 function TMatematicas.cancelconcurrencia(const idClave: string;
@@ -14432,6 +14472,7 @@ begin
   end;
 
   Result := Json;
+  _concurrencia.Free;
 end;
 
 function TMatematicas.updateobtenerCertificados(const datos: TJSONObject)
@@ -14507,6 +14548,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerConexion(clave: string): TJSONObject;
@@ -14565,6 +14607,8 @@ begin
     Result := 'Tomado por ' + Query.FieldByName('nombre').AsString
   else
     Result := '';
+
+  Query.Free;
 end;
 
 function TMatematicas.obtenerHorasCatedra: integer;
@@ -14580,6 +14624,7 @@ begin
   Query.Open;
 
   Result := Query.FieldByName('horascatedra').AsInteger;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerHorasContrato: integer;
@@ -14595,6 +14640,7 @@ begin
   Query.Open;
 
   Result := Query.FieldByName('horascontrato').AsInteger;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerHorasDocencia(IdDocente: string): integer;
@@ -14611,6 +14657,7 @@ begin
   Query.Open;
 
   Result := Query.FieldByName('horas').AsInteger;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerHorasServicio(idservicio: string): string;
@@ -14662,6 +14709,8 @@ begin
         E.Message + ' => ' + idservicio);
     end;
   end;
+
+  Query.Free;
 end;
 
 function TMatematicas.obtenerListasTalleres: TJSONObject;
@@ -14777,6 +14826,9 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
+  Query2.Free;
+  Query3.Free;
 end;
 
 function TMatematicas.obtenerNombreServicio(const ID: string): string;
@@ -14792,6 +14844,7 @@ begin
   Query.Open;
 
   Result := Query.FieldByName('asignatura').AsString;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerNumerosActas(const IdDocente: string;
@@ -14841,6 +14894,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerSemanasSemestre: integer;
@@ -14856,6 +14910,7 @@ begin
   Query.Open;
 
   Result := Query.FieldByName('semanassemestre').AsInteger;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerTallerParticipante(const cedula: string)
@@ -14919,6 +14974,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.obtenerTipoContrato(IdDocente: string): string;
@@ -14938,6 +14994,12 @@ begin
 
   escribirMensaje('Consulta Contrato', Query.FieldByName('contrato').AsString);
   Result := Query.FieldByName('contrato').AsString;
+  Query.Free;
+end;
+
+function TMatematicas.organizadoresEvento(IdEvento: string): TJSONObject;
+begin
+  Result := moduloEventoEMEM.getContactoEvento(IdEvento);
 end;
 
 function TMatematicas.updatetoken(const datos: TJSONObject): TJSONObject;
@@ -15116,6 +15178,8 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
+  Query2.Free;
 end;
 
 function TMatematicas.descargarResumenEmem(clave: string): TJSONObject;
@@ -15240,6 +15304,9 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
+  Query2.Free;
+  Query3.Free;
 end;
 
 { CONEXION DE LA APLICACION }
@@ -15315,6 +15382,8 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
+  Query2.Free;
 end;
 
 procedure TMatematicas.terminarConexion;
@@ -15444,6 +15513,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 { OPERACIONES BÁSICAS DEL SERVIDOR }
@@ -15492,6 +15562,7 @@ begin
   end;
 
   Result := Json;
+  Query.Free;
 end;
 
 function TMatematicas.JsonRespuesta: string;
@@ -15806,6 +15877,11 @@ begin
   begin
     Result.AddPair(JsonRespuesta, 'Consulta con resultado vacio');
   end;
+end;
+
+function TMatematicas.cronogramaEMEM(IdEvento: string): TJSONObject;
+begin
+  Result := moduloEventoEMEM.getCronograma(IdEvento);
 end;
 
 procedure TMatematicas.asignarDatos(datos: TJSONObject; Query: TFDQuery);

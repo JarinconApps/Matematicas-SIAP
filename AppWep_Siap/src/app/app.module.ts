@@ -174,6 +174,7 @@ import { ExportarPlanMejoramientoComponent } from './factores/procesos_academico
 import { FechasPresupuestosComponent } from './factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/fechas-presupuestos.component';
 import { CrearEditarFechaComponent } from './factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/crear-editar-fecha/crear-editar-fecha.component';
 import { CrearEditarPresupuestoComponent } from './factores/procesos_academicos/plan-mejoramiento/crear-editar-plan-mejoramiento/crear-editar-presupuesto/crear-editar-presupuesto.component';
+import { NuevosCambiosComponent } from './general/menu/nuevos-cambios/nuevos-cambios.component';
 
 
 
@@ -424,6 +425,8 @@ import { CrearEditarPresupuestoComponent } from './factores/procesos_academicos/
 
     CrearEditarPresupuestoComponent,
 
+    NuevosCambiosComponent,
+
 
   ],
   imports: [
@@ -486,7 +489,8 @@ import { CrearEditarPresupuestoComponent } from './factores/procesos_academicos/
     VerSeminarioComponent,
     ExportarPlanMejoramientoComponent,
     CrearEditarFechaComponent,
-    CrearEditarPresupuestoComponent
+    CrearEditarPresupuestoComponent,
+    NuevosCambiosComponent
   ],
   bootstrap: [AppComponent]
 })
