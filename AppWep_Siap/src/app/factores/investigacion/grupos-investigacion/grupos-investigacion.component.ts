@@ -31,7 +31,13 @@ export class GruposInvestigacionComponent implements OnInit {
 
     this.genService.getGruposInvestigacion().subscribe((rGruposInvestigacion: RespuestaCRUD) => {
       console.log(rGruposInvestigacion);
-      this.GruposInvestigacion = rGruposInvestigacion.Results;
+      this.GruposInvestigacion = [];
+
+      for (const grupo of rGruposInvestigacion.Results) {
+        if (grupo.idgrupoinvestigacion !== 'ninguno') {
+          this.GruposInvestigacion.push(grupo);
+        }
+      }
 
       this.leyendo = false;
     });

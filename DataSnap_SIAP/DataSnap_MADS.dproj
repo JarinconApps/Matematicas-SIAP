@@ -157,6 +157,16 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <Form>FVistaJSON</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uModuloUtilidades.pas">
+            <Form>ModuloUtilidades</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uModuloSeminario.pas">
+            <Form>ModuloSeminario</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <None Include="js\base64.js"/>
         <None Include="js\serverfunctionexecutor.js"/>
         <None Include="js\json2.js"/>

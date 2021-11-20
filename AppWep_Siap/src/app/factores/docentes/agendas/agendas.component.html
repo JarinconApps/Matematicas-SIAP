@@ -6,39 +6,63 @@
 <div class="m-3" *ngIf="!leyendo">
 
     <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label class="font-weight-bold">Periodo</label>
-                <select [(ngModel)]="periodo" class="custom-select" (change)="cambiarPeriodo()">
-                  <option *ngFor="let periodo of Periodos"  [value]="periodo.periodo">{{periodo.periodo}}</option>
-                </select>
+
+        <div class="col-3">
+            <div class="card shadow">
+                <div class="card-header bg-dark">
+                    <h5 class="text-center text-white">Menú Agendas</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-bold">Periodo</label>
+                        <select [(ngModel)]="periodo" class="custom-select" (change)="cambiarPeriodo()">
+                          <option *ngFor="let periodo of Periodos"  [value]="periodo.periodo">{{periodo.periodo}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">Tipo de Contrato</label>
+                        <select class="custom-select" [(ngModel)]="tipoContrato" name="tipoContrato" (change)="leerDocentes()">
+                          <option *ngFor="let contrato of contratos" [value]="contrato.idtipocontrato">{{contrato.contrato | capitalizado}}</option>
+                        </select>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item list-group-item-action puntero-manito" *ngFor="let opcion of Opciones" (click)="abrirOpcion(opcion.Ruta)">
+                            <div class="media">
+                                <img class="mr-3" style="height: 32px;" [src]="'assets/Iconos/' + opcion.Icono" alt="Descargar">
+                                <div class="media-body">
+                                    <h6>{{ opcion.Titulo | capitalizado }}</h6>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card card-shadow mt-1">
+                <div class="card-header bg-dark">
+                    <h5 class="text-center text-white">Docentes</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label class="font-weight-bold">Buscar por Nombre</label>
+                        <input class="form-control" type="text" [(ngModel)]="termino" name="termino" (keyup)="buscarDocente()">
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        <a class="list-group-item list-group-item-action puntero-manito" *ngFor="let docente of bDocentes" (click)="seleccionarDocente(docente)">
+                            <img [src]="docente.foto | noImagen" class="icono32w" style="border-radius: 100%;"> {{ docente.nombre | capitalizado }}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col">
-            <div class="form-group">
-                <label class="font-weight-bold">Tipo de Contrato</label>
-                <select class="custom-select" [(ngModel)]="tipoContrato" name="tipoContrato" (change)="leerDocentes()">
-                  <option *ngFor="let contrato of contratos" [value]="contrato.idtipocontrato">{{contrato.contrato | capitalizado}}</option>
-                </select>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Opciones para las Agendas -->
-    <!-- BOTÓN -->
-    <div class="row mb-3">
-        <div *ngFor="let opcion of Opciones" class="col puntero-manito animate__rubberBand animate__animated" (click)="abrirOpcion(opcion.Ruta)">
-            <button class="btn btn-outline-success">
-          <img style="margin: 5px; height: 48px;" [src]="'assets/Iconos/' + opcion.Icono" alt="Descargar">
-              {{ opcion.Titulo | capitalizado }}
-      </button>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-9">
+        <div class="col-9">
             <div class="card-shadow card">
                 <div class="card-body">
                     <h3 class="text-success">{{ docenteSeleccionado.nombre | capitalizado }}
@@ -259,24 +283,6 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="col-md-3">
-            <div class="card card-shadow">
-                <div class="card-body">
-
-                    <div class="form-group">
-                        <label class="font-weight-bold">Buscar por Nombre</label>
-                        <input class="form-control" type="text" [(ngModel)]="termino" name="termino" (keyup)="buscarDocente()">
-                    </div>
-
-                    <div class="list-group list-group-flush">
-                        <a class="list-group-item list-group-item-action puntero-manito" *ngFor="let docente of bDocentes" (click)="seleccionarDocente(docente)">
-                            <img [src]="docente.foto | noImagen" class="icono32w" style="border-radius: 100%;"> {{ docente.nombre | capitalizado }}
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

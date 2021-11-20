@@ -6,9 +6,9 @@ uses
   Vcl.Forms,
   Web.WebReq,
   IdHTTPWebBrokerBridge,
-  uFDataSnapMatematicas in 'uFDataSnapMatematicas.pas' {FDataSnapMatematicas} ,
-  uMetodosServidor in 'uMetodosServidor.pas' {Matematicas: TDataModule} ,
-  uModuloWeb in 'uModuloWeb.pas' {ModuloWeb: TWebModule} ,
+  uFDataSnapMatematicas in 'uFDataSnapMatematicas.pas' {FDataSnapMatematicas},
+  uMetodosServidor in 'uMetodosServidor.pas' {Matematicas: TDataModule},
+  uModuloWeb in 'uModuloWeb.pas' {ModuloWeb: TWebModule},
   uTConcurrencia in 'uTConcurrencia.pas',
   uTPropiedadesTabla in 'uTPropiedadesTabla.pas' {$R *.res},
   uTUsuario in 'uTUsuario.pas',
@@ -17,23 +17,19 @@ uses
   uTPalabraClave in 'uTPalabraClave.pas',
   uTAutoresResumen in 'uTAutoresResumen.pas',
   uTReferenciaResumen in 'uTReferenciaResumen.pas',
-  uFResumenes in 'uFResumenes.pas' {FResumenes} ,
-  uFCertificados in 'uFCertificados.pas' {FCertificados} ,
-  Utilidades
-    in '..\..\..\..\Dropbox\MIS_PROYECTOS\7000_Librerias\Utilidades\Utilidades.pas',
-  uModuloDatos in 'uModuloDatos.pas' {moduloDatos: TDataModule} ,
-  uFVisorContenido
-    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\Formularios\uFVisorContenido.pas' {FVisorContenido} ,
-  uTAttribute
-    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTAttribute.pas',
-  uTCRUDModel
-    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTCRUDModel.pas',
-  uTValidateToken
-    in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas',
-  uModuloEventoEMEM
-    in 'Modulos\uModuloEventoEMEM.pas' {moduloEventoEMEM: TDataModule} ,
+  uFResumenes in 'uFResumenes.pas' {FResumenes},
+  uFCertificados in 'uFCertificados.pas' {FCertificados},
+  Utilidades in '..\..\..\..\Dropbox\MIS_PROYECTOS\7000_Librerias\Utilidades\Utilidades.pas',
+  uModuloDatos in 'uModuloDatos.pas' {moduloDatos: TDataModule},
+  uFVisorContenido in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\Formularios\uFVisorContenido.pas' {FVisorContenido},
+  uTAttribute in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTAttribute.pas',
+  uTCRUDModel in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTCRUDModel.pas',
+  uTValidateToken in '..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas',
+  uModuloEventoEMEM in 'Modulos\uModuloEventoEMEM.pas' {moduloEventoEMEM: TDataModule},
   uConstantes in 'uConstantes.pas',
-  uFVistaJSON in 'uFVistaJSON.pas' {FVistaJSON};
+  uFVistaJSON in 'uFVistaJSON.pas' {FVistaJSON},
+  uModuloUtilidades in 'uModuloUtilidades.pas' {ModuloUtilidades: TDataModule},
+  uModuloSeminario in 'uModuloSeminario.pas' {ModuloSeminario: TDataModule};
 
 {$R *.res}
 
@@ -49,6 +45,8 @@ begin
   Application.CreateForm(TFVisorContenido, FVisorContenido);
   Application.CreateForm(TmoduloEventoEMEM, moduloEventoEMEM);
   Application.CreateForm(TFVistaJSON, FVistaJSON);
+  Application.CreateForm(TModuloUtilidades, ModuloUtilidades);
+  Application.CreateForm(TModuloSeminario, ModuloSeminario);
   Application.Run;
 
 end.

@@ -11,7 +11,7 @@
 
         <div class="card shadow mb-3">
             <div class="card-header bg-dark text-white">
-                <h3 class="card-title">Opciones de Búsqueda</h3>
+                <h5 class="card-title">Opciones de Búsqueda</h5>
             </div>
 
             <div class="card-body">
@@ -79,16 +79,16 @@
 
         <div class="card shadow mb-3">
             <div class="card-header bg-dark text-white">
-                <h3 class="card-title">Menú</h3>
+                <h5 class="card-title">Menú</h5>
             </div>
 
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item-action list-group-item puntero-manito" *ngFor="let menu of Menus" (click)="abrirMenu(menu)">
                         <div class="media">
-                            <img class="mr-3" [src]="menu.imagen" style="width: 48px;">
+                            <img class="mr-3" [src]="menu.imagen" style="width: 32px;">
                             <div class="media-body">
-                                <h5 class="text-info">{{ menu.nombre | capitalizado }}</h5>
+                                <h6 class="text-info">{{ menu.nombre | capitalizado }}</h6>
                                 <p>{{ menu.descripcion }}</p>
                             </div>
                         </div>

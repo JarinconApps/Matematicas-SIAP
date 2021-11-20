@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TrabajoGrado, Modalidad, AreaProfundizacion, GrupoInvestigacion, Paginacion, FiltroBusquedaTrabajosGrado } from '../../../interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../services/dialogos.service';
 import { TransferService } from '../../../services/transfer.service';
-import { RUTA_CREAR_EDITAR_TRABAJO_GRADO, RUTA_MODALIDADES, RUTA_AREASPROFUNDIZACION, RUTA_GRUPOSINVESTIGACION, RUTA_FACTOR_DOCENTES, RUTA_DIRECTORES_JURADOS_TRABAJO_GRADO, RUTA_VER_TRABAJO_GRADO, RUTA_EXPORTAR_TRABAJOS_GRADO, RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO } from '../../../config/config';
+import { RUTA_CREAR_EDITAR_TRABAJO_GRADO, RUTA_MODALIDADES, RUTA_AREASPROFUNDIZACION, RUTA_GRUPOSINVESTIGACION, RUTA_FACTOR_DOCENTES, RUTA_DIRECTORES_JURADOS_TRABAJO_GRADO, RUTA_VER_TRABAJO_GRADO, RUTA_EXPORTAR_TRABAJOS_GRADO, RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO, RUTA_ESTADISTICAS_TRABAJOS_GRADO } from '../../../config/config';
 import { Menu } from '../../../general/menu/menu.component';
 
 @Component({
@@ -140,6 +140,12 @@ export class TrabajosGradoComponent implements OnInit {
       ruta: 'ver-directores-jurados',
       imagen: 'assets/Iconos/pendiente.png',
       descripcion: 'Gestión de la lista de docentes que son directores y jurados.'
+    },
+    {
+      nombre: 'Estadísticas de trabajos de grado',
+      imagen: 'assets/Iconos/estadisticas.png',
+      ruta: RUTA_ESTADISTICAS_TRABAJOS_GRADO,
+      descripcion: 'Análisis de los datos de trabajos de grado'
     }
   ];
 
@@ -160,6 +166,10 @@ export class TrabajosGradoComponent implements OnInit {
   abrirMenu(menu: Menu) {
     if (menu.ruta === 'ver-modalidades') {
       this.genService.navegar([RUTA_MODALIDADES]);
+    }
+
+    if (menu.ruta === RUTA_ESTADISTICAS_TRABAJOS_GRADO) {
+      this.genService.navegar([RUTA_ESTADISTICAS_TRABAJOS_GRADO]);
     }
 
     if (menu.ruta === 'exportar-trabajos') {

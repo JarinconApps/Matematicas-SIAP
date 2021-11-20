@@ -4,7 +4,7 @@ import { TransferService } from '../../../services/transfer.service';
 import { TipoContrato, Docente, AgendaServicio, ServicioPrograma, Periodo, ActividadFuncionDocente, FuncionDocente } from '../../../interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../services/dialogos.service';
 import { Utilidades } from '../../../utilidades/utilidades.class';
-import { RUTA_FACTOR_DOCENTES, RUTA_EXPORTAR_AGENDA_DOCENTE, RUTA_EXPORTAR_AGENDAS_FACULTAD, RUTA_SERVICIOSPROGRAMA, RUTA_SERVICIOPROGRAMA, RUTA_AGENDAS, RUTA_ESTADO_AGENDAS } from '../../../config/config';
+import { RUTA_FACTOR_DOCENTES, RUTA_EXPORTAR_AGENDA_DOCENTE, RUTA_EXPORTAR_AGENDAS_FACULTAD, RUTA_SERVICIOSPROGRAMA, RUTA_SERVICIOPROGRAMA, RUTA_AGENDAS, RUTA_ESTADO_AGENDAS, RUTA_ESTADISTICAS_HORAS_FACULTADES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA } from '../../../config/config';
 
 interface Opcion {
   Titulo?: string;
@@ -66,7 +66,17 @@ export class AgendasComponent implements OnInit {
       Titulo: 'Estado de las Agendas',
       Icono: 'Estado.png',
       Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADO_AGENDAS],
-  }
+    },
+    {
+      Titulo: 'Servicios por programa',
+      Icono: 'presentacion.png',
+      Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA],
+    },
+    {
+      Titulo: 'Horas por facultad',
+      Icono: 'reloj.png',
+      Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_HORAS_FACULTADES],
+    }
   ];
 
   constructor(private transfer: TransferService,

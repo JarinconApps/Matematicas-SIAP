@@ -111,6 +111,7 @@ const routes: Routes = [
   {path: RUTA_REPORTE_DIRECCION_JURADO, component: ReporteDireccionJuradoComponent},
   {path: RUTA_ESTADISTICAS_TRABAJOS_GRADO, component: EstadisticasTrabajosGradoComponent},
   {path: RUTA_EXPORTAR_TRABAJOS_GRADO, component: ExportarTrabajosGradoComponent},
+  {path: RUTA_ESTADISTICAS_TRABAJOS_GRADO, component: EstadisticasTrabajosGradoComponent},
   {path: RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO, component: ReporteDireccionTrabajosGradoComponent},
   {path: RUTA_VER_TRABAJO_GRADO + '/:IdTrabajoGrado', component: VerTrabajoGradoComponent},
   {path: RUTA_CREAR_EDITAR_TRABAJO_GRADO + '/:Id', component: CrearEditarTrabajoGradoComponent},
@@ -173,12 +174,6 @@ const routes: Routes = [
   {path: RUTA_SEMINARIO, component: SeminarioComponent, children: [
     {path: RUTA_EVENTOS_SEMINARIO, component: EventosSeminarioComponent},
   ]},
-
-  // %%%%%%% Estadísticas Generales de Toda la Aplicación %%%%%%%
-  {path: RUTA_ESTADISTICAS, component: EstadisticasComponent, canActivate: [RutaNavegarService],
-    children: [
-      {path: RUTA_ESTADISTICAS_TRABAJOS_GRADO, component: EstadisticasTrabajosGradoComponent}
-    ]},
 
   // %%%%%%% MENU - ACERCA DE %%%%%%%
   {path: RUTA_ACERCA, component: AcercaComponent,

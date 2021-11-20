@@ -95,7 +95,8 @@ uses System.SysUtils, System.Classes, dialogs, System.Json, Contnrs,
   IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdMessageClient,
   IdSMTPBase, IdSMTP, uFCertificados, Utilidades, ComObj,
   Datasnap.DSHTTPWebBroker,
-  Web.HTTPApp, uModuloDatos, uFVisorContenido, uConstantes, uModuloEventoEMEM;
+  Web.HTTPApp, uModuloDatos, uFVisorContenido, uConstantes, uModuloEventoEMEM,
+  uModuloSeminario;
 
 type
 {$METHODINFO ON}
@@ -601,6 +602,7 @@ type
     function seminarios: TJSONObject;
     function acceptSeminario(datos: TJSONObject): TJSONObject;
     function cancelSeminario(IdSeminario: string): TJSONObject;
+    function actualizarNumerosSeminario: TJSONObject;
 
     function updateFechaPresupuestoPm(datos: TJSONObject): TJSONObject;
     function FechasPresupuestoPm: TJSONObject;
@@ -1363,6 +1365,11 @@ begin
   Result := Json;
   escribirMensaje('ActividadFuncionDocente', Json.toString);
   Query.Free;
+end;
+
+function TMatematicas.actualizarNumerosSeminario: TJSONObject;
+begin
+  Result := ModuloSeminario.ordenarNumerosSeminario;
 end;
 
 { Método GET-ALL - ActividadFuncionDocente }
@@ -2695,6 +2702,7 @@ var
   j, total: integer;
   percent: string;
   fs: TFormatSettings;
+  fecha: TDate;
 begin
   try
     JsonResponse := TJSONObject.create;
@@ -2730,21 +2738,24 @@ begin
       QTrabajos.Close;
       QTrabajos.SQL.Text :=
         'SELECT * FROM siap_trabajosgrado WHERE idgrupoinvestigacion=' + #39 +
-        IdGrupo + #39;
+        IdGrupo + #39 + ' ORDER BY fechainicioejecucion';
       QTrabajos.Open;
 
-      JsonEst := TJSONObject.create;
-      JsonEst.AddPair('Label', NombreGrupo);
-      JsonEst.AddPair('Count', IntToStr(QTrabajos.RecordCount));
+      if QTrabajos.RecordCount > 0 then
+      begin
+        JsonEst := TJSONObject.create;
+        JsonEst.AddPair('Label', NombreGrupo);
+        JsonEst.AddPair('Count', IntToStr(QTrabajos.RecordCount));
 
-      percent := FloatToStrF(100 * (QTrabajos.RecordCount / total), ffNumber,
-        3, 2, fs);
-      JsonEst.AddPair('Percent', percent);
+        percent := FloatToStrF(100 * (QTrabajos.RecordCount / total), ffNumber,
+          3, 2, fs);
+        JsonEst.AddPair('Percent', percent);
 
-      Etiquetas.Add(NombreGrupo);
-      datos.Add(QTrabajos.RecordCount);
+        Etiquetas.Add(NombreGrupo);
+        datos.Add(QTrabajos.RecordCount);
 
-      Estadisticas.AddElement(JsonEst);
+        Estadisticas.AddElement(JsonEst);
+      end;
 
       QGrupos.Next;
     end;
@@ -2820,18 +2831,21 @@ begin
         IdModalidad + #39;
       QTrabajos.Open;
 
-      JsonEst := TJSONObject.create;
-      JsonEst.AddPair('Label', Modalidad);
-      JsonEst.AddPair('Count', IntToStr(QTrabajos.RecordCount));
+      if QTrabajos.RecordCount > 0 then
+      begin
+        JsonEst := TJSONObject.create;
+        JsonEst.AddPair('Label', Modalidad);
+        JsonEst.AddPair('Count', IntToStr(QTrabajos.RecordCount));
 
-      percent := FloatToStrF(100 * (QTrabajos.RecordCount / total), ffNumber,
-        3, 2, fs);
-      JsonEst.AddPair('Percent', percent);
+        percent := FloatToStrF(100 * (QTrabajos.RecordCount / total), ffNumber,
+          3, 2, fs);
+        JsonEst.AddPair('Percent', percent);
 
-      Etiquetas.Add(Modalidad);
-      datos.Add(QTrabajos.RecordCount);
+        Etiquetas.Add(Modalidad);
+        datos.Add(QTrabajos.RecordCount);
 
-      Estadisticas.AddElement(JsonEst);
+        Estadisticas.AddElement(JsonEst);
+      end;
 
       QModalidades.Next;
     end;
@@ -2945,20 +2959,23 @@ begin
           Inc(cont);
       end;
 
-      JsonEst := TJSONObject.create;
-      etiqueta := 'Entre ' + IntToStr(cant) + '-' + IntToStr(cant + 6)
-        + ' meses';
-      JsonEst.AddPair('Label', etiqueta);
-      JsonEst.AddPair('Count', IntToStr(cont));
+      if cont > 0 then
+      begin
+        JsonEst := TJSONObject.create;
+        etiqueta := 'Entre ' + IntToStr(cant) + '-' + IntToStr(cant + 6)
+          + ' meses';
+        JsonEst.AddPair('Label', etiqueta);
+        JsonEst.AddPair('Count', IntToStr(cont));
 
-      percent := FloatToStrF(100 * (cont / QTrabajos.RecordCount), ffNumber,
-        3, 2, fs2);
-      JsonEst.AddPair('Percent', percent);
+        percent := FloatToStrF(100 * (cont / QTrabajos.RecordCount), ffNumber,
+          3, 2, fs2);
+        JsonEst.AddPair('Percent', percent);
 
-      Etiquetas.Add(etiqueta);
-      datos.Add(cont);
+        Etiquetas.Add(etiqueta);
+        datos.Add(cont);
 
-      Estadisticas.AddElement(JsonEst);
+        Estadisticas.AddElement(JsonEst);
+      end;
       cant := cant + 6;
     end;
 
@@ -3009,7 +3026,6 @@ begin
     datos := TJSONArray.create;
 
     calificaciones := TStringList.create;
-    calificaciones.Add('pendiente');
     calificaciones.Add('aprobado');
     calificaciones.Add('aprobado meritorio');
     calificaciones.Add('aprobado laureado');

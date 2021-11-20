@@ -16,7 +16,6 @@ export class GraficaEstadisticaComponent implements OnInit {
 
   public opciones: ChartOptions = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
     scales: { xAxes: [{}], yAxes: [{}] },
     plugins: {
       datalabels: {

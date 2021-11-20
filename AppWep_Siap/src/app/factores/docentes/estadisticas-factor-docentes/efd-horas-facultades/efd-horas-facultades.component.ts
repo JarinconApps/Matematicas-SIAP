@@ -155,7 +155,7 @@ export class EfdHorasFacultadesComponent implements OnInit {
 
   obtenerReporteHorasFacultad() {
     this.leyendo = true;
-    this.genService.getReporteHorasFacultad('2021-1').subscribe((rReporte: any) => {
+    this.genService.getReporteHorasFacultad(this.periodo).subscribe((rReporte: any) => {
 
       this.Contratos = rReporte.Contratos;
 

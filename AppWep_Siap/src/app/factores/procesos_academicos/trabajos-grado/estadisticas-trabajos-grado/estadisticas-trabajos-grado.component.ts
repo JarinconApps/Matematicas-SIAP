@@ -13,11 +13,31 @@ import { count } from 'rxjs/operators';
 export class EstadisticasTrabajosGradoComponent implements OnInit {
 
   Estadisticas: Statistics[] = [];
+  Ejemplo: Statistics;
 
   constructor(private genService: GeneralService) { }
 
   ngOnInit() {
     this.obtenerEstadisticas();
+
+    this.Ejemplo = {
+      Statistics: [{
+        Label: 'Nombre',
+        Count: 5,
+        Percent: 20
+      }],
+      Labels: ['2008', '2009', '2010', '2011'],
+      Data: [
+        {
+          data: [1, 2, 3, 4], label: '2008'
+        },
+        {
+          data: [2, 5, 8, 9], label: '2009'
+        }
+      ]
+    };
+
+    console.log(this.Ejemplo);
   }
 
   obtenerEstadisticas() {
@@ -46,9 +66,9 @@ export class EstadisticasTrabajosGradoComponent implements OnInit {
                 est.Labels[i] = est.Labels[j];
                 est.Labels[j] = tempLb;
 
-                const tempDt = est.Data.data[i];
-                est.Data.data[i] = est.Data.data[j];
-                est.Data.data[j] = tempDt;
+                const tempDt = est.Data[0].data[i];
+                est.Data[0].data[i] = est.Data[0].data[j];
+                est.Data[0].data[j] = tempDt;
               }
             }
           }

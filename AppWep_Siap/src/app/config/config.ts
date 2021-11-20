@@ -74,3 +74,4 @@ export const RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO = 'reporte-trabajos-grado';
 export const RUTA_REPORTE_DIRECCION_JURADO = 'reporte-direccion-jurado';
 export const RUTA_SEMINARIO = 'seminario';
 export const RUTA_EVENTOS_SEMINARIO = 'eventos-seminario';
+export const ACCION_ACTUALIZAR_NUMEROS_SEMINARIO = 'accion_actualizar_numeros_seminario';

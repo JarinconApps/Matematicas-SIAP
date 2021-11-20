@@ -661,13 +661,13 @@ export interface Statistic {
 export interface Statistics {
   Statistics?: Statistic[];
   Labels?: string[];
-  Data?: Data;
+  Data?: Data[];
   Ordenar?: string;
 }
 
 export interface Data {
   data?: number[];
-  label?: string[];
+  label?: string;
 }
 
 export interface Paginacion {

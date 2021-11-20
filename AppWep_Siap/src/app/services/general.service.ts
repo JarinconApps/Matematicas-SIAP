@@ -16,7 +16,8 @@ export class GeneralService {
 
   private token = '';
   private ENCABEZADO_HTTP = 'http://';
-  private IP_SERVIDOR = '201.185.240.142';
+  // private IP_SERVIDOR = '201.233.205.66';
+  private IP_SERVIDOR = 'localhost';
   private PUERTO = ':1952';
   private GENERAL = '/datasnap/rest/tmatematicas/';
 
@@ -122,6 +123,7 @@ export class GeneralService {
   private URL_ENLACES_DIVULGACION = 'EnlacesDivulgacion';
   private URL_SEMINARIO = 'Seminario';
   private URL_SEMINARIOS = 'Seminarios';
+  private URL_ACTUALIZAR_NUMERO_SEMINARIOS = 'actualizarNumerosSeminario';
   private URL_FECHA_PRESUPUESTO_SM = 'FechaPresupuestoPm';
   private URL_FECHAS_PRESUPUESTO_SM = 'FechasPresupuestoPm';
   private URL_PRESUPUESTO_PM = 'PresupuestoPm';
@@ -1895,6 +1897,12 @@ export class GeneralService {
 
   getSeminarios() {
     const url = this.dataSnap_Path(this.URL_SEMINARIOS);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  actualizarNumerosSeminarios() {
+    const url = this.dataSnap_Path(this.URL_ACTUALIZAR_NUMERO_SEMINARIOS);
     const headers = this.headers;
     return this.http.get(url, {headers});
   }

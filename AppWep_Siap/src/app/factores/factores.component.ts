@@ -15,43 +15,6 @@ export class FactoresComponent implements OnInit {
 
   // Crear un menu dinámico
   Menus: MenuFactores[] = [
-    // Estadísticas
-    {
-     Titulo: 'Reportes y Estadísticas',
-     Botones: [
-       {
-         IdBoton: 'estadisticas-trabajos-grado',
-         Titulo: 'Estadísticas de Trabajos de Grado',
-          Icono: 'reporte.png',
-          Ruta: [RUTA_ESTADISTICAS, RUTA_ESTADISTICAS_TRABAJOS_GRADO]
-       },
-       {
-        IdBoton: 'reportes-trabajos-grado',
-        Titulo: 'Reportes de Trabajos de Grado',
-         Icono: 'reporte.png',
-         Ruta: [RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO]
-       },
-       {
-        IdBoton: 'reportes-trabajos-grado',
-        Titulo: 'Reportes de Dirección y Jurados de Trabajos de Grado',
-         Icono: 'reporte.png',
-         Ruta: [RUTA_REPORTE_DIRECCION_JURADO]
-       },
-       {
-         IdBoton: 'servicios-por-programa',
-         Titulo: 'Servicios por Programa',
-          Icono: 'reporte.png',
-          Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA]
-       },
-       {
-         IdBoton: 'horas-por-facultad',
-         Titulo: 'Horas por Facultad',
-          Icono: 'reporte.png',
-          Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_HORAS_FACULTADES]
-       },
-
-     ]
-    },
     {
       Titulo: 'Procesos Académicos',
       Botones: [
@@ -69,19 +32,19 @@ export class FactoresComponent implements OnInit {
         },
         {
            Titulo: 'Actualización de Documentos',
-           Icono: 'pendiente.png',
+           Icono: 'ActualizacionDocumentos.png',
            Ruta: [''],
            IdBoton: 'pro-aca-actualiza-doc'
         },
         {
            Titulo: 'Coordinación de Práctica Docente',
-           Icono: 'pendiente.png',
+           Icono: 'PracticaProfesional.png',
            Ruta: [''],
            IdBoton: 'pro-aca-coord-pra-doc'
         },
         {
            Titulo: 'Virtualización',
-           Icono: 'pendiente.png',
+           Icono: 'Virtualizacion.png',
            Ruta: [''],
            IdBoton: 'pro-aca-virtualiz'
         }
@@ -93,19 +56,19 @@ export class FactoresComponent implements OnInit {
       Botones: [
         {
            Titulo: '  Pruebas Saber PRO',
-           Icono: 'pendiente.png',
+           Icono: 'PruebaSaverPRO.png',
            Ruta: [''],
            IdBoton: 'est-prueba-sab-pro'
         },
         {
           Titulo: 'Comité de Apoyo Estudiantil',
-          Icono: 'pendiente.png',
+          Icono: 'ComiteApoyo.png',
           Ruta: [''],
           IdBoton: 'est-com-apoy-est'
         },
         {
           Titulo: 'Propuesta de Evaluación por Nucleos',
-          Icono: 'pendiente.png',
+          Icono: 'PropuestaEvaluacionPorNucleos.png',
           Ruta: [''],
           IdBoton: 'est-pro-eva-nucleos'
         }
@@ -156,12 +119,6 @@ export class FactoresComponent implements OnInit {
           Icono: 'agendas.png',
           Ruta: [RUTA_FACTOR_DOCENTES, RUTA_AGENDAS],
           IdBoton: 'doc-agendas'
-        },
-        {
-          Titulo: 'Estadísticas',
-          Icono: 'estadisticas.png',
-          Ruta: [RUTA_FACTOR_DOCENTES, RUTA_ESTADISTICAS_FACTOR_DOCENTES],
-          IdBoton: 'doc-estadisticas'
         }
       ]
      },
@@ -172,25 +129,25 @@ export class FactoresComponent implements OnInit {
       Botones: [
         {
            Titulo: 'RED Clema',
-           Icono: 'pendiente.png',
+           Icono: 'RedClema.png',
            Ruta: [''],
            IdBoton: 'inter-red-clema'
         },
         {
           Titulo: 'Capacitaciones para Convocatorias',
-          Icono: 'pendiente.png',
+          Icono: 'CapacitacionParaConvocatorias.png',
           Ruta: [''],
           IdBoton: 'inter-cap-convo'
         },
         {
           Titulo: 'Proyectos de Doble Titulación',
-          Icono: 'pendiente.png',
+          Icono: 'ProyectosDobleTitulacion.png',
           Ruta: [''],
           IdBoton: 'inter-pro-doble-tit'
         },
         {
           Titulo: 'Participación en Eventos Científicos',
-          Icono: 'pendiente.png',
+          Icono: 'ParticipacionEventosCientificos.png',
           Ruta: [''],
           IdBoton: 'inter-par-event-cientif'
         }
@@ -203,25 +160,25 @@ export class FactoresComponent implements OnInit {
       Botones: [
         {
            Titulo: 'Representante Ante el CIFE',
-           Icono: 'pendiente.png',
+           Icono: 'RepresentanteCIFE.png',
            Ruta: [''],
            IdBoton: 'invest-rep-cife'
         },
         {
           Titulo: 'Revisión de Proyectos de Investigación',
-          Icono: 'pendiente.png',
+          Icono: 'RevisionProyectosInvestigacion.png',
           Ruta: [''],
           IdBoton: 'invest-rev-pro-invest'
         },
         {
           Titulo: 'Semillero de Investigación de la Facultad',
-          Icono: 'pendiente.png',
+          Icono: 'SemilleroFacultad.png',
           Ruta: [''],
           IdBoton: 'invest-sem-inv-fac'
         },
         {
           Titulo: 'Representante de Investigaciones',
-          Icono: 'pendiente.png',
+          Icono: 'RepresentanteInvestigaciones.png',
           Ruta: [''],
           IdBoton: 'invest-rep-invest'
         },
@@ -240,25 +197,25 @@ export class FactoresComponent implements OnInit {
       Botones: [
         {
            Titulo: 'MADS - Laboratorio de Matemática Aplicada y Desarrollo de Software',
-           Icono: 'pendiente.png',
+           Icono: 'MADS.png',
            Ruta: [''],
            IdBoton: 'egg-mads'
         },
         {
           Titulo: 'Coordinación de Comunicaciones del Programa',
-          Icono: 'pendiente.png',
+          Icono: 'RepresentanteComunaciones.png',
           Ruta: [''],
           IdBoton: 'egg-coord-com-pro'
         },
         {
           Titulo: 'Proyecto: Laboratorio de Didáctica de la Matemática',
-          Icono: 'pendiente.png',
+          Icono: 'LaboratorioMatematicas.png',
           Ruta: [''],
           IdBoton: 'egg-lab-didact-mat'
         },
         {
           Titulo: 'Seminario interno del programa',
-          Icono: 'pendiente.png',
+          Icono: 'Seminario.png',
           Ruta: [RUTA_SEMINARIO, RUTA_EVENTOS_SEMINARIO],
           IdBoton: 'egg-seminario-interno'
         },
@@ -277,31 +234,31 @@ export class FactoresComponent implements OnInit {
       Botones: [
         {
            Titulo: '¿Qué es SIAP?',
-           Icono: 'pendiente.png',
+           Icono: 'Acerca_de.png',
            Ruta: [''],
            IdBoton: 'acerca-que-siap'
         },
         {
           Titulo: 'Actualizaciones',
-          Icono: 'pendiente.png',
+          Icono: 'Actualizaciones.png',
           Ruta: [RUTA_ACERCA, RUTA_ACTUALIZACIONES],
           IdBoton: 'acerca-actualiza'
         },
         {
           Titulo: 'Manual de Ayuda',
-          Icono: 'pendiente.png',
+          Icono: 'ManualAyuda.png',
           Ruta: [RUTA_ACERCA, RUTA_MANUAL_AYUDA],
           IdBoton: 'acerca-man-ayu'
         },
         {
           Titulo: 'Gestión de Errores',
-          Icono: 'pendiente.png',
+          Icono: 'GestionErrores.png',
           Ruta: [RUTA_ACERCA, RUTA_GESTION_ERRORES],
           IdBoton: 'acerca-gestion-err'
         },
         {
           Titulo: 'Tareas Pendientes',
-          Icono: 'pendiente.png',
+          Icono: 'TareasPendientes.png',
           Ruta: [RUTA_ACERCA, RUTA_TAREAS_PENDIENTES],
           IdBoton: 'acerca-gestion-err'
         }
@@ -314,19 +271,19 @@ export class FactoresComponent implements OnInit {
       Botones: [
         {
            Titulo: 'Usuarios',
-           Icono: 'pendiente.png',
+           Icono: 'Usuarios.png',
            Ruta: [RUTA_ADMINISTRADOR, RUTA_ADMIN_USUARIO],
            IdBoton: 'admin-usuarios'
         },
         {
           Titulo: 'Configuración General',
-          Icono: 'pendiente.png',
+          Icono: 'Configuracion.png',
           Ruta: [RUTA_ADMINISTRADOR, RUTA_ADMIN_CONFIGURACIONES],
           IdBoton: 'admin-config-gen'
         },
         {
           Titulo: 'Tipos de Producción',
-          Icono: 'pendiente.png',
+          Icono: 'TiposProductos.png',
           Ruta: [RUTA_ADMINISTRADOR, RUTA_ADMIN_TIPO_PRODUCCION],
           IdBoton: 'admin-config-gen'
         }

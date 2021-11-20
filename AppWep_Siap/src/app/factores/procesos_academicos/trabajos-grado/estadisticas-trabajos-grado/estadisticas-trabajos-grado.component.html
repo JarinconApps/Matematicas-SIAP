@@ -1,3 +1,7 @@
+<div class="col-md-8">
+    <app-visor-grafica [IdGrafica]="'grafica5125'" [Etiquetas]="Ejemplo.Labels" [Titulo]="'Esto es un título'" [Datos]="Ejemplo.Data"></app-visor-grafica>
+</div>
+
 <div class="m-5">
     <div class="card m-3 mb-5" *ngFor="let estadistica of Estadisticas; let id = index">
         <div class="card-body">
@@ -24,7 +28,7 @@
                 </div>
 
                 <div class="col-md-8">
-                    <app-visor-grafica [IdGrafica]="'grafica' + id" [Titulo]="estadistica.Data.label" [Etiquetas]="estadistica.Labels" [Datos]="[estadistica.Data]"></app-visor-grafica>
+                    <app-visor-grafica [IdGrafica]="'grafica' + id" [Titulo]="'Título'" [Etiquetas]="estadistica.Labels" [Datos]="[estadistica.Data]"></app-visor-grafica>
                 </div>
             </div>
 

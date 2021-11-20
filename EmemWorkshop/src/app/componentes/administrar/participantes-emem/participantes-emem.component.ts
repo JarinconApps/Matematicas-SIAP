@@ -33,7 +33,7 @@ export class ParticipantesEmemComponent implements OnInit {
   }
 
   agregarParticipanteEmem() {
-    this.dlgService.DlgParticipanteEmem('Crear', '').subscribe((rRespuesta: any) => {
+    this.dlgService.DlgParticipanteEmem('Crear').subscribe((rRespuesta: any) => {
 
       this.leerParticipantesEmem();
     });

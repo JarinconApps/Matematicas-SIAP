@@ -11,9 +11,9 @@
                     <ul class="list-group-flush list-group">
                         <li class="list-group-item-action list-group-item puntero-manito" (click)="verMenu(menu)" *ngFor="let menu of Menus">
                             <div class="media">
-                                <img src="assets/Iconos/pendiente.png" style="width: 32px;">
+                                <img src="assets/Iconos/pendiente.png" class="mr-3" style="width: 32px;">
                                 <div class="media-body">
-                                    <h5>{{ menu.nombre | capitalizado }}</h5>
+                                    <h6>{{ menu.nombre | capitalizado }}</h6>
                                     <p class="text-justify">{{ menu.descripcion }}</p>
                                 </div>
                             </div>

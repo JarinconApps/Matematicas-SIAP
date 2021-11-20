@@ -163,13 +163,14 @@
 
                             <div class="card-body">
 
-                                <select class="custom-select" (change)="cambiarOpciones()" [(ngModel)]="generalChartType" name="radarChartType">
+                                <!--  <select class="custom-select" (change)="cambiarOpciones()" [(ngModel)]="generalChartType" name="radarChartType">
                                   <option value="bar">Barras</option>
                                   <option value="pie">Pastel</option>
                                   <option value="polarArea">Área Polar</option>
                                   <option value="radar">Radar</option>
                                   <option value="line">Lineal</option>
-                                </select>
+                                  <option value="bar-stacked">Apilado</option>
+                                </select> -->
 
                                 <ul class="list-group list-group-flush text-justify puntero-manito">
                                     <li class="list-group-item-action list-group-item" *ngFor="let menuEst of MenusEstadisticas" (click)="crearGrafica(menuEst)">{{ menuEst.Titulo}}</li>
@@ -185,10 +186,12 @@
                             <p class="font-size-24 text-justify">{{ descripcionGeneral }}</p>
                         </div>
 
-                        <div style="display: block;">
+                        <!-- <div style="display: block;">
                             <canvas baseChart [datasets]="datosGeneral" [colors]="generalChartColors" [labels]="lbDatosGeneral" [options]="generalChartOptions" [legend]="generalChartLegend" [chartType]="generalChartType">
                             </canvas>
-                        </div>
+                        </div> -->
+
+                        <app-visor-grafica [Etiquetas]="lbDatosGeneral" [Datos]="datosGeneral"></app-visor-grafica>
 
                         <div style="height: 50px;"></div>
                     </div>

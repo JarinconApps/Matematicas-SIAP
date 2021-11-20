@@ -3,11 +3,6 @@
 <form ngNativeValidated (ngSubmit)="guardar()">
     <div class="row">
         <div class="form-group col">
-            <label class="font-weight-bold">Número</label>
-            <input class="form-control" [(ngModel)]="evento.numero" name="numero">
-        </div>
-
-        <div class="form-group col">
             <label class="font-weight-bold">Semestre</label>
             <select class="custom-select" required [(ngModel)]="evento.semestre" name="semestre">
               <option [value]="sem" *ngFor="let sem of semestre">{{ sem }}</option>

@@ -15,13 +15,24 @@ import { Afiliacion, RespuestaCRUD } from '../../../../Interfaces/interfaces.int
 export class DlgParticipanteEmemComponent implements OnInit {
 
 
-  participanteEMEM: ParticipanteEmem = {
+  /* participanteEMEM: ParticipanteEmem = {
     Nombre: 'Julián Andrés Rincón Penagos',
     Correo: 'jarincon@uniquindio.edu.co',
     Institucion: 'Universidad del Quindío',
     Titulo: 'Magister en Ciencias de la Educación',
     TituloPonencia: 'Entorno para IA',
     Documento: '1098308059',
+    IdEvento: '',
+    IdTipoParticipante: ''
+  }; */
+
+  participanteEMEM: ParticipanteEmem = {
+    Nombre: '',
+    Correo: '',
+    Institucion: '',
+    Titulo: '',
+    TituloPonencia: '',
+    Documento: '',
     IdEvento: '',
     IdTipoParticipante: ''
   };
