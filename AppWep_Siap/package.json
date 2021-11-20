@@ -28,7 +28,7 @@
         "chartjs-plugin-datalabels": "^1.0.0",
         "core-js": "^2.5.4",
         "jquery": "^3.4.1",
-        "jspdf": "^2.1.1",
+        "jspdf": "^2.3.1",
         "ng2-charts": "^2.2.5",
         "ngx-quill": "^7.0.0",
         "popper.js": "^1.15.0",
