@@ -16,7 +16,7 @@ export class GeneralService {
 
   private token = '';
   private ENCABEZADO_HTTP = 'http://';
-  // private IP_SERVIDOR = '201.233.205.66';
+  // private IP_SERVIDOR = 'mads.uniquindio.edu.co';
   private IP_SERVIDOR = 'localhost';
   private PUERTO = ':1952';
   private GENERAL = '/datasnap/rest/tmatematicas/';
