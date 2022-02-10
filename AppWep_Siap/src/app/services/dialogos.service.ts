@@ -11,7 +11,7 @@ import { EsperaComponent } from '../dialogos/espera/espera.component';
 import { MostrarParticipanteComponent } from '../dialogos/mostrar-participante/mostrar-participante.component';
 import { EvaluarResumenEmemComponent } from '../dialogos/evaluar-resumen-emem/evaluar-resumen-emem.component';
 import { SnackBarComponent } from '../dialogos/snack-bar/snack-bar.component';
-import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario, FechaPresupuestoPm, PresupuestoPm } from '../interfaces/interfaces.interfaces';
+import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario, FechaPresupuestoPm, PresupuestoPm, Estudiante } from '../interfaces/interfaces.interfaces';
 import { DlgTipoContratoComponent } from '../factores/docentes/tipos-contrato/dlg-tipo-contrato/dlg-tipo-contrato.component';
 import { DlgCategoriaDocenteComponent } from '../factores/docentes/categorias-docentes/dlg-categoria-docente/dlg-categoria-docente.component';
 import { DlgDocenteComponent } from '../factores/docentes/docentes/dlg-docente/dlg-docente.component';
@@ -52,6 +52,9 @@ import { ExportarPlanMejoramientoComponent } from '../factores/procesos_academic
 import { CrearEditarFechaComponent } from '../factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/crear-editar-fecha/crear-editar-fecha.component';
 import { CrearEditarPresupuestoComponent } from '../factores/procesos_academicos/plan-mejoramiento/crear-editar-plan-mejoramiento/crear-editar-presupuesto/crear-editar-presupuesto.component';
 import { NuevosCambiosComponent } from '../general/menu/nuevos-cambios/nuevos-cambios.component';
+import { CrearEditarEstudianteComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/crear-editar-estudiante/crear-editar-estudiante.component';
+import { EnviarCorreoPracticaComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/enviar-correo-practica/enviar-correo-practica.component';
+import { VerListaCorreosComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/ver-lista-correos/ver-lista-correos.component';
 
 @Injectable({
   providedIn: 'root'
@@ -457,6 +460,33 @@ export class DialogosService {
     const dialogRef = this.dialog.open(NuevosCambiosComponent, {
       width: '800px', height: '600px',
       data: {nuevosCambios}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarEstudiante(estudiante: Estudiante) {
+    const dialogRef = this.dialog.open(CrearEditarEstudianteComponent, {
+      width: '800px', height: '600px',
+      data: {estudiante}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  enviarCorreoPractica() {
+    const dialogRef = this.dialog.open(EnviarCorreoPracticaComponent, {
+      width: '800px', height: '600px',
+      data: {}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  verListaCorreos(estudiantes: Estudiante[]) {
+    const dialogRef = this.dialog.open(VerListaCorreosComponent, {
+      width: '800px', height: '600px',
+      data: {estudiantes}
     });
 
     return dialogRef.afterClosed();

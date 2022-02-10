@@ -31,7 +31,6 @@ export class InicioComponent implements OnInit {
   ingresar() {
     const datos =  JSON.stringify(this.usuario);
     this.genService.postLoginUsuario(datos).subscribe((RespLogin: any) => {
-      console.log(RespLogin);
 
       if (RespLogin.Respuesta === 'Acceso-Correcto') {
         this.genService.navegar([RUTA_FACTORES]);

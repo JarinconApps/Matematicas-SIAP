@@ -215,12 +215,9 @@ export class TrabajosGradoComponent implements OnInit {
     const t1 = new Date();
     this.leyendo = true;
 
-    console.log(this.filtroBusqueda);
-
     const datos = JSON.stringify(this.filtroBusqueda);
 
     this.genService.getTrabajosGrado(datos).subscribe((rTrabajosGrado: FiltroBusquedaTrabajosGrado) => {
-      console.log(rTrabajosGrado);
       this.filtroBusqueda = rTrabajosGrado;
       this.TrabajosGrado = rTrabajosGrado.paginacion.contenido;
       this.bTrabajosGrado = this.TrabajosGrado;
@@ -235,27 +232,23 @@ export class TrabajosGradoComponent implements OnInit {
 
   cambiarPagina(delta: number) {
     this.filtroBusqueda.paginacion.desde = Number(this.filtroBusqueda.paginacion.desde) + Number(this.filtroBusqueda.paginacion.cantidad) * delta;
-    console.log(this.filtroBusqueda);
     this.leerTrabajosGrado();
   }
 
   leerModalidades() {
     this.genService.getModalidades().subscribe((rModalidades: any) => {
-      console.log(rModalidades);
       this.Modalidades = rModalidades.Modalidades;
     });
   }
 
   leerAreasProfundizacion() {
     this.genService.getAreasProfundizacion().subscribe((rAreasProfundizacion: any) => {
-      console.log(rAreasProfundizacion);
       this.AreasProfundizacion = rAreasProfundizacion.AreasProfundizacion;
     });
   }
 
   leerGruposInvestigacion() {
     this.genService.getGruposInvestigacion().subscribe((rGruposInvestigacion: any) => {
-      console.log(rGruposInvestigacion);
       this.GruposInvestigacion = rGruposInvestigacion.GruposInvestigacion;
     });
   }
@@ -265,7 +258,6 @@ export class TrabajosGradoComponent implements OnInit {
   }
 
   editarTrabajoGrado(trabajogrado: TrabajoGrado) {
-    console.log(trabajogrado);
     this.genService.navegar([RUTA_CREAR_EDITAR_TRABAJO_GRADO, trabajogrado.idtrabajogrado]);
   }
 

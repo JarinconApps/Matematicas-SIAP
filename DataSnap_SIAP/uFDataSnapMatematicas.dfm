@@ -1,7 +1,7 @@
 object FDataSnapMatematicas: TFDataSnapMatematicas
   Left = 271
   Top = 114
-  Caption = 'Data Snap Matem'#225'ticas'
+  Caption = 'Data Snap Matem'#225'ticas - Versi'#243'n (2.21.12.15.1045)'
   ClientHeight = 729
   ClientWidth = 1008
   Color = clWhite
@@ -898,7 +898,7 @@ object FDataSnapMatematicas: TFDataSnapMatematicas
             Font.Style = []
             ParentFont = False
             TabOrder = 0
-            Text = '1952'
+            Text = '8080'
             ExplicitHeight = 24
           end
         end
@@ -1687,7 +1687,7 @@ object FDataSnapMatematicas: TFDataSnapMatematicas
     Left = 808
     Top = 64
     Bitmap = {
-      494C010104000800940020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040008009C0020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

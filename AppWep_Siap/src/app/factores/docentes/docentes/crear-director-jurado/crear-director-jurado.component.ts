@@ -13,17 +13,19 @@ import { SnackBarComponent } from '../../../../dialogos/snack-bar/snack-bar.comp
 export class CrearDirectorJuradoComponent implements OnInit {
 
   docente: Docente = {
+    documento: '',
     nombre: '',
     telefono: '',
     correo: '',
-    idcategoriadocente: '',
-    idtipocontrato: '',
-    foto: '',
     activo: 'no',
-    vinculacion: 'jurado',
     institucion: '',
+    vinculacion: 'jurado',
+    idcategoriadocente: 'jurado',
+    idtipocontrato: 'jurado',
+    contra: '',
+    areaprofundizacion: '',
+    foto: '',
     titulomayorformacion: '',
-    areaprofundizacion: ''
   };
 
   accion: string;
@@ -45,7 +47,10 @@ export class CrearDirectorJuradoComponent implements OnInit {
   ngOnInit() {
     this.accion = this.data.accion;
     this.id = this.data.iddocente;
-    this.docente.vinculacion = this.data.vinculacion;
+
+    if (this.data.vinculacion) {
+      this.docente.vinculacion = this.data.vinculacion;
+    }
     this.tituloBoton = this.data.tituloBoton;
 
     this.leerCategorias();
@@ -76,7 +81,6 @@ export class CrearDirectorJuradoComponent implements OnInit {
   leerDocente() {
     this.genService.getDocente(this.id).subscribe((rDocente: Docente) => {
       this.docente = rDocente;
-
     });
   }
 
@@ -87,8 +91,10 @@ export class CrearDirectorJuradoComponent implements OnInit {
     if (this.accion === 'Crear') {
 
       this.docente.iddocente = this.docente.documento;
+
       const datos = JSON.stringify(this.docente);
       this.genService.postDocente(datos).subscribe((rRespuesta: any) => {
+
         this.mostrarSnackBar(rRespuesta.Respuesta || rRespuesta.Error);
         return this.dialogRef.close(this.docente);
       });

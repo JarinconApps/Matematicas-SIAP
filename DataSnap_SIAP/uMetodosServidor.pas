@@ -96,7 +96,7 @@ uses System.SysUtils, System.Classes, dialogs, System.Json, Contnrs,
   IdSMTPBase, IdSMTP, uFCertificados, Utilidades, ComObj,
   Datasnap.DSHTTPWebBroker,
   Web.HTTPApp, uModuloDatos, uFVisorContenido, uConstantes, uModuloEventoEMEM,
-  uModuloSeminario;
+  uModuloSeminario, uModuloPracticaDocente;
 
 type
 {$METHODINFO ON}
@@ -616,6 +616,16 @@ type
     function getPrespuestoByFechaPlan(IdPlan: string): TJSONArray;
     function acceptPresupuestoPm(datos: TJSONObject): TJSONObject;
     function cancelPresupuestoPm(idpresupuesto: string): TJSONObject;
+
+    { Crud para práctica docente }
+    function PeriodosPractica: TJSONObject;
+    function Estudiante(Documento, Periodo: string): TJSONObject;
+    function updateEstudiantePeriodo(Estudiante: TJSONObject): TJSONObject;
+    function updateEstudiante(Estudiante: TJSONObject): TJSONObject;
+    function acceptEstudiante(Estudiante: TJSONObject): TJSONObject;
+    function Estudiantes: TJSONObject;
+    function cancelEstudiante(IdEstudiante: string): TJSONObject;
+    function updateEnviarCorreoPractica(datos: TJSONObject): TJSONObject;
 
   end;
 {$METHODINFO OFF}
@@ -2211,10 +2221,10 @@ begin
     QTrabajoGrado.Connection := Conexion;
     Json := TJSONObject.create;
 
-    sDat := TStringList.create;
-    sDat.Add(datos.toString);
-    sDat.SaveToFile('C:\Users\julia\Desktop\datos.json');
-    sDat.Free;
+    { sDat := TStringList.create;
+      sDat.Add(datos.toString);
+      sDat.SaveToFile('C:\Users\julia\Desktop\datos.json');
+      sDat.Free; }
 
     objWebModule := GetDataSnapWebModule;
     token := objWebModule.Request.GetFieldByName('Autorizacion');
@@ -3262,7 +3272,7 @@ var
   fs: TFormatSettings;
   desde, hasta, cantidad, total: integer;
   attrOrdenar: TJSONArray;
-  titulo, estudiante, director, IdModalidad, idareaprofundizacion,
+  titulo, Estudiante, director, IdModalidad, idareaprofundizacion,
     idgrupoinvestigacion, estadoProyecto, OrdenarPor, fechaInicio,
     fechaFin: string;
   jsonDocente, paginacion: TJSONObject;
@@ -3274,7 +3284,7 @@ begin
     ArrayJson := TJSONArray.create;
 
     titulo := filtroBusqueda.GetValue('titulo').Value;
-    estudiante := filtroBusqueda.GetValue('estudiante').Value;
+    Estudiante := filtroBusqueda.GetValue('estudiante').Value;
     director := filtroBusqueda.GetValue('director').Value;
     IdModalidad := filtroBusqueda.GetValue('idModalidad').Value;
     idareaprofundizacion := filtroBusqueda.GetValue
@@ -3294,11 +3304,11 @@ begin
     Query.SQL.Add('ON stg.iddirector=sd.iddocente WHERE ');
     Query.SQL.Add('(POSITION(' + #39 + titulo + #39 +
       ' IN LOWER(titulo)) > 0) AND ');
-    Query.SQL.Add('((POSITION(' + #39 + estudiante + #39 +
+    Query.SQL.Add('((POSITION(' + #39 + Estudiante + #39 +
       ' IN LOWER(estudiante1)) > 0) OR ');
-    Query.SQL.Add('(POSITION(' + #39 + estudiante + #39 +
+    Query.SQL.Add('(POSITION(' + #39 + Estudiante + #39 +
       ' IN LOWER(estudiante2)) > 0) OR ');
-    Query.SQL.Add('(POSITION(' + #39 + estudiante + #39 +
+    Query.SQL.Add('(POSITION(' + #39 + Estudiante + #39 +
       ' IN LOWER(estudiante3)) > 0)) AND ');
     Query.SQL.Add('(POSITION(' + #39 + director + #39 +
       ' IN LOWER(sd.nombre)) > 0) AND ');
@@ -3480,7 +3490,7 @@ begin
     paginacion.AddPair('contenido', ArrayJson);
 
     Json.AddPair('titulo', titulo);
-    Json.AddPair('estudiante', estudiante);
+    Json.AddPair('estudiante', Estudiante);
     Json.AddPair('director', director);
     Json.AddPair('estadoProyecto', estadoProyecto);
     Json.AddPair('idModalidad', IdModalidad);
@@ -4281,6 +4291,25 @@ begin
   Result := Json;
   escribirMensaje('updateGrupoInvestigacion', Json.toString);
   Query.Free;
+end;
+
+function TMatematicas.updateEstudiante(Estudiante: TJSONObject): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.postEstudiante(Estudiante)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
+function TMatematicas.updateEstudiantePeriodo(Estudiante: TJSONObject)
+  : TJSONObject;
+begin
+  Result := moduloPracticaDocente.putEstudiantePeriodo(Estudiante);
 end;
 
 { Método GET - GrupoInvestigacion }
@@ -6147,6 +6176,11 @@ begin
   Query3.Free;
 end;
 
+function TMatematicas.PeriodosPractica: TJSONObject;
+begin
+  Result := moduloPracticaDocente.getPeriodos;
+end;
+
 function TMatematicas.getPrespuestoByFechaPlan(IdPlan: string): TJSONArray;
 var
   Fechas, presupuestos: TJSONArray;
@@ -6405,6 +6439,11 @@ begin
   Result := Json;
   escribirMensaje('updateConfiguracion', Json.toString);
   Query.Free;
+end;
+
+function TMatematicas.acceptEstudiante(Estudiante: TJSONObject): TJSONObject;
+begin
+  Result := moduloPracticaDocente.putEstudiante(Estudiante);
 end;
 
 { Método GET - Configuracion }
@@ -6985,6 +7024,7 @@ var
     horas: real;
   contrato, Jornada, Aulas, tipo, Observacion: string;
   formato: TFormatSettings;
+  iPeriodo: integer;
 begin
   Query := TFDQuery.create(nil);
   Query.Connection := Conexion;
@@ -7105,92 +7145,191 @@ begin
       if (Jornada <> 'virtual') and (Jornada <> 'distancia') then
         sumaHorasSemana := sumaHorasSemana + horas;
 
-      escribirMensaje('tipo-servicio',
-        tipo + ' (' + Query.FieldByName('asignatura').AsString + ')');
+      { A partir del 2022-1 la norma cambio y las materias virtuales se
+        agregaron al factor de profesores de carrera y contrato, por tal
+        razón a continuación se deja una condición para que el histórico no se
+        vea afectado y es determinar si estamos en el periodo antes o después
+        de 2022-1 para realizar los cálculos }
 
-      { Para docentes de Carrera %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
-      if contrato = 'carrera' then
+      // Convertir el periodo a formato de número
+      iPeriodo := StrToInt(Copy(Periodo, 1, 4));
+
+      if iPeriodo < 2022 then
       begin
-        totalHorasContrato := Query2.FieldByName('hormaxcarrera').AsInteger;
+        { Para docentes de Carrera %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
+        if contrato = 'carrera' then
+        begin
+          totalHorasContrato := Query2.FieldByName('hormaxcarrera').AsInteger;
 
-        if (Jornada = 'virtual') and (tipo <> 'posgrado') then
-        begin
-          horasSemestre := horas;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
-          horasFactor := horasSemestre;
+          if (Jornada = 'virtual') and (tipo <> 'posgrado') then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+            horasFactor := horasSemestre;
+          end
+          else if Jornada = 'distancia' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else if (Jornada = 'posgrado') or (tipo = 'posgrado') then
+          begin
+            horasSemestre := horas * semanasSemestre;
+            reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else if (Jornada = 'virtual') and (tipo = 'posgrado') then
+          begin
+            horasSemestre := horas;
+            reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else
+          begin
+            horasSemestre := horas * semanasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
+            horasFactor := horasSemestre * 2.5;
+          end;
         end
-        else if Jornada = 'distancia' then
+
+        { Para docentes de contrato %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
+        else if contrato = 'contrato' then
         begin
-          horasSemestre := horas;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
-          horasFactor := horasSemestre * 2.5;
+          totalHorasContrato := Query2.FieldByName('hormaxcontrato').AsInteger;
+          if (Jornada = 'virtual') and (tipo <> 'posgrado') then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          end
+          else if Jornada = 'distancia' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
+            horasFactor := horasSemestre * 2;
+          end
+          else
+          begin
+            horasSemestre := horas * semanasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
+            horasFactor := horasSemestre * 2;
+          end;
         end
-        else if (Jornada = 'posgrado') or (tipo = 'posgrado') then
-        begin
-          horasSemestre := horas * semanasSemestre;
-          reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
-          horasFactor := horasSemestre * 2.5;
-        end
-        else if (Jornada = 'virtual') and (tipo = 'posgrado') then
-        begin
-          horasSemestre := horas;
-          reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
-          horasFactor := horasSemestre * 2.5;
-        end
+
+        { Para docentes catedráticos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
         else
         begin
-          horasSemestre := horas * semanasSemestre;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
-          horasFactor := horasSemestre * 2.5;
+          totalHorasContrato := Query2.FieldByName('hormaxcatedratico')
+            .AsInteger;
+          if Jornada = 'virtual' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          end
+          else if Jornada = 'distancia' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre)
+          end
+          else
+          begin
+            horasSemestre := horas * semanasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          end;
+
+          horasFactor := horasSemestre * 1;
         end;
       end
-
-      { Para docentes de contrato %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
-      else if contrato = 'contrato' then
+      else // Ahora se establece la nueva regla para el factor después de 2022-1
       begin
-        totalHorasContrato := Query2.FieldByName('hormaxcontrato').AsInteger;
-        if Jornada = 'virtual' then
+        { Para docentes de Carrera %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
+        if contrato = 'carrera' then
         begin
-          horasSemestre := horas;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          totalHorasContrato := Query2.FieldByName('hormaxcarrera').AsInteger;
+
+          if (Jornada = 'virtual') and (tipo <> 'posgrado') then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else if Jornada = 'distancia' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else if (Jornada = 'posgrado') or (tipo = 'posgrado') then
+          begin
+            horasSemestre := horas * semanasSemestre;
+            reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else if (Jornada = 'virtual') and (tipo = 'posgrado') then
+          begin
+            horasSemestre := horas;
+            reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
+            horasFactor := horasSemestre * 2.5;
+          end
+          else
+          begin
+            horasSemestre := horas * semanasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2.5;
+            horasFactor := horasSemestre * 2.5;
+          end;
         end
-        else if Jornada = 'distancia' then
+
+        { Para docentes de contrato %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
+        else if contrato = 'contrato' then
         begin
-          horasSemestre := horas;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
-          horasFactor := horasSemestre * 2;
+          totalHorasContrato := Query2.FieldByName('hormaxcontrato').AsInteger;
+          if (Jornada = 'virtual') and (tipo <> 'posgrado') then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
+            horasFactor := horasSemestre * 2;
+          end
+          else if Jornada = 'distancia' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
+            horasFactor := horasSemestre * 2;
+          end
+          else
+          begin
+            horasSemestre := horas * semanasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
+            horasFactor := horasSemestre * 2;
+          end;
         end
+
+        { Para docentes catedráticos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
         else
         begin
-          horasSemestre := horas * semanasSemestre;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 2;
-          horasFactor := horasSemestre * 2;
-        end;
-      end
+          totalHorasContrato := Query2.FieldByName('hormaxcatedratico')
+            .AsInteger;
+          if Jornada = 'virtual' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          end
+          else if Jornada = 'distancia' then
+          begin
+            horasSemestre := horas;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre)
+          end
+          else
+          begin
+            horasSemestre := horas * semanasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          end;
 
-      { Para docentes catedráticos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
-      else
-      begin
-        totalHorasContrato := Query2.FieldByName('hormaxcatedratico').AsInteger;
-        if Jornada = 'virtual' then
-        begin
-          horasSemestre := horas;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
-        end
-        else if Jornada = 'distancia' then
-        begin
-          horasSemestre := horas;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre)
-        end
-        else
-        begin
-          horasSemestre := horas * semanasSemestre;
-          sumaHorasSemestre := sumaHorasSemestre + (horasSemestre);
+          horasFactor := horasSemestre * 1;
         end;
-
-        horasFactor := horasSemestre * 1;
       end;
 
       if (Jornada <> 'virtual') then
@@ -7230,7 +7369,6 @@ begin
   end;
 
   Result := Json;
-  escribirMensaje('AgendasServicio', Json.toString);
   Query.Free;
   Query2.Free;
 end;
@@ -7419,6 +7557,19 @@ begin
   Result := Json;
   escribirMensaje('cancelAgendaServicio', Json.toString);
   Query.Free;
+end;
+
+function TMatematicas.Estudiantes: TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getEstudiantes
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
 end;
 
 function TMatematicas.EvaluadoresTrabajosGrado: TJSONObject;
@@ -10321,27 +10472,63 @@ begin
     if token = FDataSnapMatematicas.obtenerToken then
     begin
 
-      limpiarConsulta(Query);
+      Query.Close;
+      Query.SQL.Text := 'INSERT INTO Siap_Docentes (';
+      Query.SQL.Add('iddocente, ');
+      Query.SQL.Add('documento, ');
+      Query.SQL.Add('nombre, ');
+      Query.SQL.Add('telefono, ');
+      Query.SQL.Add('correo, ');
+      Query.SQL.Add('activo, ');
+      Query.SQL.Add('institucion, ');
+      Query.SQL.Add('vinculacion, ');
+      Query.SQL.Add('idcategoriadocente, ');
+      Query.SQL.Add('idtipocontrato, ');
+      Query.SQL.Add('contra, ');
+      Query.SQL.Add('areaprofundizacion, ');
+      Query.SQL.Add('titulomayorformacion) VALUES (');
+      Query.SQL.Add(':iddocente, ');
+      Query.SQL.Add(':documento, ');
+      Query.SQL.Add(':nombre, ');
+      Query.SQL.Add(':telefono, ');
+      Query.SQL.Add(':correo, ');
+      Query.SQL.Add(':activo, ');
+      Query.SQL.Add(':institucion, ');
+      Query.SQL.Add(':vinculacion, ');
+      Query.SQL.Add(':idcategoriadocente, ');
+      Query.SQL.Add(':idtipocontrato, ');
+      Query.SQL.Add(':contra, ');
+      Query.SQL.Add(':areaprofundizacion, ');
+      Query.SQL.Add(':titulomayorformacion)');
 
-      limpiarParametros;
+      Query.Params.ParamByName('iddocente').Value :=
+        StrToInt(datos.GetValue('iddocente').Value);
+      Query.Params.ParamByName('documento').Value :=
+        datos.GetValue('documento').Value;
+      Query.Params.ParamByName('nombre').Value :=
+        datos.GetValue('nombre').Value;
+      Query.Params.ParamByName('telefono').Value :=
+        datos.GetValue('telefono').Value;
+      Query.Params.ParamByName('correo').Value :=
+        datos.GetValue('correo').Value;
+      Query.Params.ParamByName('activo').Value :=
+        datos.GetValue('activo').Value;
+      Query.Params.ParamByName('institucion').Value :=
+        datos.GetValue('institucion').Value;
+      Query.Params.ParamByName('vinculacion').Value :=
+        datos.GetValue('vinculacion').Value;
+      Query.Params.ParamByName('idcategoriadocente').Value :=
+        datos.GetValue('idcategoriadocente').Value;
+      Query.Params.ParamByName('idtipocontrato').Value :=
+        datos.GetValue('idtipocontrato').Value;
+      Query.Params.ParamByName('contra').Value :=
+        datos.GetValue('contra').Value;
+      Query.Params.ParamByName('areaprofundizacion').Value :=
+        datos.GetValue('areaprofundizacion').Value;
+      Query.Params.ParamByName('titulomayorformacion').Value :=
+        datos.GetValue('titulomayorformacion').Value;
 
-      agregarParametro('iddocente', 'Integer');
-      agregarParametro('documento', 'Integer');
-      agregarParametro('nombre', 'String');
-      agregarParametro('telefono', 'String');
-      agregarParametro('correo', 'String');
-      agregarParametro('activo', 'String');
-      agregarParametro('institucion', 'String');
-      agregarParametro('vinculacion', 'String');
-      agregarParametro('idcategoriadocente', 'String');
-      agregarParametro('idtipocontrato', 'String');
-      agregarParametro('contra', 'String');
-      agregarParametro('areaprofundizacion', 'String');
-      agregarParametro('titulomayorformacion', 'String');
-
-      INSERT('siap_docentes', Query);
-
-      asignarDatos(datos, Query);
+      Query.ExecSQL;
 
       Json.AddPair(JsonRespuesta, 'El Docente se creo correctamente');
     end
@@ -10354,6 +10541,7 @@ begin
     on E: Exception do
     begin
       Json.AddPair(JsonError, E.Message);
+      Json.AddPair('datos', datos.ToJSON);
       enviarError(TimeToStr(now), DateToStr(now), 'updateDocente',
         E.Message + datos.toString);
     end;
@@ -11392,6 +11580,20 @@ begin
 end;
 
 { Método INSERT - Error }
+function TMatematicas.updateEnviarCorreoPractica(datos: TJSONObject)
+  : TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.enviarCorreo(datos)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 function TMatematicas.updateError(const token: string; const datos: TJSONObject)
   : TJSONObject;
 var
@@ -11599,6 +11801,19 @@ begin
   Result := Json;
   escribirMensaje('cancelError', Json.toString);
   Query.Free;
+end;
+
+function TMatematicas.cancelEstudiante(IdEstudiante: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.deleteEstudiante(IdEstudiante)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
 end;
 
 { Método UPDATE - Error }
@@ -12992,6 +13207,11 @@ begin
   end;
 
   _autorResumen.Free;
+end;
+
+function TMatematicas.Estudiante(Documento, Periodo: string): TJSONObject;
+begin
+  Result := moduloPracticaDocente.BuscarEstudiante(Documento, Periodo);
 end;
 
 function TMatematicas.updateagregarAutorResumen(const token: string;

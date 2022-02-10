@@ -59,7 +59,7 @@ export class VisorGraficaComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: { [property: string]: SimpleChange }): void {
-    console.log(changes.Etiquetas);
+
     this.Etiquetas = changes.Etiquetas.currentValue;
 
     for (let i = 0; i < this.Etiquetas.length; i++) {
@@ -176,7 +176,6 @@ export class VisorGraficaComponent implements OnInit, OnChanges {
   }
 
   ordenar(value: string) {
-    console.log(value);
 
     for (let i = 0; i < this.Etiquetas.length; i++ ) {
       for (let j = i; j < this.Etiquetas.length; j++ ) {
@@ -212,7 +211,6 @@ export class VisorGraficaComponent implements OnInit, OnChanges {
   descargarGrafica() {
 
     const canvas: any = document.getElementById('canvas-' + this.IdGrafica);
-    console.log(canvas);
 
     if (canvas.msToBlob) { // para internet explorer
       const blob = canvas.msToBlob();
@@ -223,7 +221,7 @@ export class VisorGraficaComponent implements OnInit, OnChanges {
         link.href = canvas.toDataURL(); // Extensión .png ("image/png") --- Extension .jpg ("image/jpeg")
         link.download = this.Titulo;
       } catch {
-        console.log('Errorcito');
+
       }
     }
   }

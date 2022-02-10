@@ -758,3 +758,19 @@ export interface PresupuestoPm {
   descripcion?: string;
   valor?: number;
 }
+
+export interface Estudiante {
+  Correo?: string;
+  Direccion?: string;
+  Documento?: string;
+  Eps?: string;
+  EstadoCivil?: string;
+  Genero?: string;
+  IdEstudiante?: string;
+  Municipio?: string;
+  Nombre?: string;
+  Semestre?: string;
+  Telefono?: string;
+  TipoDocumento?: string;
+  Seleccionado?: boolean;
+}

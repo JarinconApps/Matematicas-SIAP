@@ -126,7 +126,7 @@ export class CrearEditarPlanMejoramientoComponent implements OnInit {
 
   obtenerPresupuestos() {
     this.genService.getPresupuestoPm(this.planMejoramiento.idplan).subscribe((rPresupuestos: RespuestaCRUD) => {
-      console.log(rPresupuestos);
+
       this.planMejoramiento.presupuestos = rPresupuestos.Results;
 
       this.actualizarTotalPresupuesto();
@@ -137,7 +137,6 @@ export class CrearEditarPlanMejoramientoComponent implements OnInit {
     let suma = 0;
     for (const presupuesto of this.planMejoramiento.presupuestos) {
       suma = suma + Number(presupuesto.valor);
-      console.log(suma);
     }
     this.planMejoramiento.totalPresupuesto = suma;
   }

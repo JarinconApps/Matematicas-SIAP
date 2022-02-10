@@ -1,3 +1,94 @@
-<p>
-  coordinacion-practica-docente works!
-</p>
+<div class="m-3 row">
+    <div class="col-md-3">
+        <div class="card shadow">
+            <div class="card-header bg-dark">
+                <h3 class="card-title text-white text-center">
+                    Coordinación de la práctica docente
+                </h3>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="font-weight-bold">Seleccione el semestre</label>
+                    <select class="custom-select" [(ngModel)]="periodo.idperiodo" name="periodo">
+                      <option [value]="periodo.idperiodo" *ngFor="let periodo of periodos">{{ periodo.periodo }}</option>
+                    </select>
+                </div>
+
+                <div class="list-group list-group-flush">
+
+                    <!-- Enviar correo electrónico -->
+                    <button class="list-group-item-action list-group-item" (click)="enviarCorreo()">
+                      <div class="media">
+                        <img class="mr-3" src="assets/Iconos/Gmail.png" style="width: 32px;">
+                        <div class="media-body">
+                          Enviar correo a los estudiantes.
+                        </div>
+                      </div>
+                    </button>
+
+                    <!-- Obtener lista de correos -->
+                    <button class="list-group-item-action list-group-item" (click)="obtenerListaCorreos()">
+                    <div class="media">
+                      <img class="mr-3" src="assets/Iconos/Gmail.png" style="width: 32px;">
+                      <div class="media-body">
+                        Obtener lista de correos
+                      </div>
+                    </div>
+                  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="card shadow">
+            <div class="card-body">
+
+                <button class="btn btn-outline-info" (click)="seleccionarTodos()">Seleccionar todos</button>
+
+                <div class="modal-footer">
+                    <div class="alert alert-success" *ngIf="enviando">
+                        <i class="fas fa-sync fa-1x text-success fa fa-spin"></i> Enviando correo
+                    </div>
+                    <button class="btn btn-outline-success" (click)="crearEstudiante()">Agregar Estudiante</button>
+                </div>
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th></th>
+                            <th>No</th>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Ver</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let estudiante of estudiantes; let id = index">
+                            <td>
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="estudiante.Seleccionado" name="Seleccionado">
+                            </td>
+                            <td>{{ id + 1 }}</td>
+                            <td>{{ estudiante.Documento }}</td>
+                            <td>{{ estudiante.Nombre }}</td>
+                            <td>{{ estudiante.Correo }}</td>
+                            <td>
+                                <button class="btn btn-outline-success btn-sm" (click)="ver(estudiante)">Ver</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-warning btn-sm" (click)="editar(estudiante)">Editar</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-danger btn-sm" (click)="eliminar(estudiante)">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

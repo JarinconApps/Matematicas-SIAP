@@ -33,7 +33,6 @@ export class ReporteDireccionJuradoComponent implements OnInit {
   leerDocentes() {
     this.leyendo = true;
     this.genService.getDocentes('Nombre').subscribe((rDocentes: any) => {
-      console.log(rDocentes);
 
       this.Docentes = rDocentes.Docentes;
       this.bDocentes = this.Docentes;
@@ -45,7 +44,6 @@ export class ReporteDireccionJuradoComponent implements OnInit {
     this.docenteSeleccionado = docente;
     this.leyendoTrabajos = true;
     this.genService.getDireccionJuradoDocente(docente.iddocente).subscribe((rTrabajos: any) => {
-      console.log(rTrabajos);
       this.TrabajosGrado = rTrabajos;
       this.leyendoTrabajos = false;
     });

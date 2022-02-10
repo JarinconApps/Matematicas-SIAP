@@ -1,0 +1,17 @@
+<app-titulo-dialogo [Titulo]="'Enviar '"></app-titulo-dialogo>
+
+<form ngNativeValidated (ngSubmit)="enviarCorreo()">
+    <div class="form-group">
+        <label class="font-weight-bold">Asunto</label>
+        <input class="form-control" [(ngModel)]="correo.asunto" name="asunto">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Mensaje</label>
+        <angular-editor [placeholder]="" [config]="genService.editorConfig" [(ngModel)]="correo.mensaje" name="mensaje"></angular-editor>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-success" type="submit">Enviar Correo</button>
+    </div>
+</form>

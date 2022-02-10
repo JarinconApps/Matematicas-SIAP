@@ -36,16 +36,12 @@ export class EstadisticasTrabajosGradoComponent implements OnInit {
         }
       ]
     };
-
-    console.log(this.Ejemplo);
   }
 
   obtenerEstadisticas() {
     this.genService.getEstadisticasTrabajosGrado().subscribe((rEstadisticas: any) => {
-      console.log(rEstadisticas);
 
       this.Estadisticas = rEstadisticas.Statistics;
-      console.log(this.Estadisticas);
 
       // Ordenar las estadísticas
       for (const est of this.Estadisticas) {
@@ -74,8 +70,6 @@ export class EstadisticasTrabajosGradoComponent implements OnInit {
           }
         }
       }
-
-      console.log(this.Estadisticas);
     });
   }
 

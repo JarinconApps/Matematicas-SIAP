@@ -24,7 +24,6 @@ export class ExportarPlanMejoramientoComponent implements OnInit {
 
   obtenerPlanesMejoramiento() {
     this.genService.getPlanesMejoramiento().subscribe((rPlanes: any) => {
-      console.log(rPlanes);
       this.planesMejoramiento = rPlanes.Planes;
 
       this.calcularTotalPorFecha();
@@ -53,8 +52,6 @@ export class ExportarPlanMejoramientoComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.planesMejoramiento);
   }
 
 }

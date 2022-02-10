@@ -82,6 +82,7 @@ export class ExportarAgendaComponent implements OnInit {
 
     this.genService.getAgendasServicio(this.IdDocente, this.Periodo).subscribe((rAgendasServicio: any) => {
 
+
       this.AgendasServicio = rAgendasServicio.AgendasServicios;
       if (this.AgendasServicio.length > 0) {
         this.numerocontrato = this.AgendasServicio[0].numerocontrato;

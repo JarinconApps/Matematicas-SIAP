@@ -29,7 +29,8 @@ uses
   uConstantes in 'uConstantes.pas',
   uFVistaJSON in 'uFVistaJSON.pas' {FVistaJSON},
   uModuloUtilidades in 'uModuloUtilidades.pas' {ModuloUtilidades: TDataModule},
-  uModuloSeminario in 'uModuloSeminario.pas' {ModuloSeminario: TDataModule};
+  uModuloSeminario in 'uModuloSeminario.pas' {ModuloSeminario: TDataModule},
+  uModuloPracticaDocente in 'uModuloPracticaDocente.pas' {moduloPracticaDocente: TDataModule};
 
 {$R *.res}
 
@@ -47,6 +48,7 @@ begin
   Application.CreateForm(TFVistaJSON, FVistaJSON);
   Application.CreateForm(TModuloUtilidades, ModuloUtilidades);
   Application.CreateForm(TModuloSeminario, ModuloSeminario);
+  Application.CreateForm(TmoduloPracticaDocente, moduloPracticaDocente);
   Application.Run;
 
 end.

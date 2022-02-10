@@ -3,17 +3,18 @@ unit uModuloDatos;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.JSON, FireDAC.Stan.Intf,
+  System.SysUtils, System.Classes, dialogs, System.JSON, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.PG,
   FireDAC.Phys.PGDef, uMd5, Utilidades, uTAttribute, uTCRUDModel,
-  uModuloUtilidades;
+  uModuloUtilidades, System.NetEncoding, IdHashMessageDigest, idHash, IdGlobal;
 
 type
   TmoduloDatos = class(TDataModule)
     Conexion: TFDConnection;
     Encriptador: TMD5;
+    procedure DataModuleCreate(Sender: TObject);
   private
     FtokenServidor: string;
 
@@ -21,9 +22,20 @@ type
   public
     function postLoginUsuario(usuario: TJSONObject): TJSONObject;
     function generarNuevoToken: string;
+    function toMd5(texto: string): string;
+    function SubirArchivo(archivo, nombre: string): boolean;
+    function generarID: string;
 
     property tokenServidor: string read FtokenServidor write settokenServidor;
   end;
+
+const
+  JSON_STATUS = 'Status';
+  JSON_RESPONSE = 'Response';
+  JSON_RESULTS = 'Results';
+  RESPONSE_CORRECTO = 'Correcto';
+  RESPONSE_INCORRECTO = 'Incorrecto';
+  JSON_OBJECT = 'Object';
 
 var
   moduloDatos: TmoduloDatos;
@@ -32,6 +44,40 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 {$R *.dfm}
+
+procedure TmoduloDatos.DataModuleCreate(Sender: TObject);
+begin
+  Conexion.Connected := true;
+end;
+
+function TmoduloDatos.generarID: string;
+var
+  i: Integer;
+  Base: string;
+begin
+  Base := '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  result := '';
+
+  for i := 1 to 8 do
+  begin
+    result := result + Codes64[Random(length(Base)) + 1];
+  end;
+  result := result + '-';
+  for i := 1 to 4 do
+  begin
+    result := result + Codes64[Random(length(Base)) + 1];
+  end;
+  result := result + '-';
+  for i := 1 to 4 do
+  begin
+    result := result + Codes64[Random(length(Base)) + 1];
+  end;
+  result := result + '-';
+  for i := 1 to 12 do
+  begin
+    result := result + Codes64[Random(length(Base)) + 1];
+  end;
+end;
 
 function TmoduloDatos.generarNuevoToken: string;
 begin
@@ -97,6 +143,24 @@ end;
 procedure TmoduloDatos.settokenServidor(const Value: string);
 begin
   FtokenServidor := Value;
+end;
+
+function TmoduloDatos.SubirArchivo(archivo, nombre: string): boolean;
+begin
+
+end;
+
+function TmoduloDatos.toMd5(texto: string): string;
+var
+  hashMessageDigest5: TIdHashMessageDigest5;
+begin
+  hashMessageDigest5 := nil;
+  try
+    hashMessageDigest5 := TIdHashMessageDigest5.create;
+    Result := IdGlobal.IndyLowerCase(hashMessageDigest5.HashStringAsHex(texto));
+  finally
+    hashMessageDigest5.Free;
+  end;
 end;
 
 end.

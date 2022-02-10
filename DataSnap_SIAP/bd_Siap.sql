@@ -578,3 +578,31 @@ create table if not exists emem_participante_evento(
 	IdTipoParticipante varchar(255) references emem_tipo_participante(IdTipoParticipante),
 	TituloPonencia text	
 );
+
+create table if not exists siap_estudiantes(
+	IdEstudiante varchar(255) primary key not null,
+	Nombre varchar(255),
+	Documento varchar(255) unique,
+	Correo varchar(255) unique,
+	Telefono varchar(255),
+	TipoDocumento varchar(255),
+	Genero varchar(255),
+	Direccion varchar(255),
+	Municipio varchar(255),
+	Semestre varchar(255),
+	Eps varchar(255),
+	EstadoCivil varchar(255)
+);
+
+create table if not exists siap_practica_docente(
+	IdRegistro varchar(255) primary key not null,
+	IdPeriodo varchar(255) references siap_periodos(IdPeriodo),
+	IdEstudiante varchar(255) references siap_estudiantes(IdEstudiante),
+	EspacioAcademico varchar(255),
+	docAntDis varchar(255),
+	docAntJud varchar(255),
+	docAntFis varchar(255),
+	docMedCor varchar(255),
+	docIdentidad varchar(255),
+	docEPS varchar(255)
+);

@@ -36,11 +36,10 @@ export class SeminarioComponent implements OnInit {
   }
 
   irMenu(menu: Menu) {
-    console.log(menu);
 
     if (menu.ruta === ACCION_ACTUALIZAR_NUMEROS_SEMINARIO) {
       this.genService.actualizarNumerosSeminarios().subscribe((rActualizacion: RespuestaCRUD) => {
-        console.log(rActualizacion);
+
         this.dlgServide.mostrarSnackBar(rActualizacion.Response);
       });
       return;

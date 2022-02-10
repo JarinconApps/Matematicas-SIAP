@@ -29,7 +29,7 @@ export class CrearEditarAreaDocenteComponent implements OnInit {
 
   leerAreasProfundizacion() {
     this.genService.getAreasProfundizacion().subscribe((rAreas: any) => {
-      console.log(rAreas);
+
       this.areasProfundizacion = rAreas.AreasProfundizacion;
     });
   }

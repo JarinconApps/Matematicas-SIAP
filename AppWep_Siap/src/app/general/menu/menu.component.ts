@@ -103,8 +103,6 @@ export class MenuComponent implements OnInit {
       oldVer = localStorage.getItem('oldVer').toString();
     }
 
-    console.log(oldVer);
-
     if (oldVer !== this.version) {
       this.dlgService.nuevosCambios(this.nuevosCambios).subscribe(() => {
         localStorage.setItem('oldVer', this.version);

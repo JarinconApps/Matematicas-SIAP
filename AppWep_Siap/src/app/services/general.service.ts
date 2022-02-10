@@ -16,15 +16,15 @@ export class GeneralService {
 
   private token = '';
   private ENCABEZADO_HTTP = 'http://';
-  // private IP_SERVIDOR = 'mads.uniquindio.edu.co';
-  private IP_SERVIDOR = 'localhost';
-  private PUERTO = ':1952';
+  private IP_SERVIDOR = 'mads.uniquindio.edu.co';
+  // private IP_SERVIDOR = 'localhost';
+  private PUERTO = ':8080';
   private GENERAL = '/datasnap/rest/tmatematicas/';
 
   private URL_USUARIO = 'usuario';
   private URL_PARTICPANTE = 'participante';
   private URL_RESUMEN = 'resumen';
-  private URL_BORRAR_RESUMEN = 'borrarResumen';
+  private URL_BORRAR_RESUMEN = 'borrarResumen';s
   private URL_TOKEN = 'token';
   private URL_RESUMENES_AUTOR = 'resumenesAutor';
   private URL_PALABRA_CLAVE = 'palabraClave';
@@ -128,6 +128,9 @@ export class GeneralService {
   private URL_FECHAS_PRESUPUESTO_SM = 'FechasPresupuestoPm';
   private URL_PRESUPUESTO_PM = 'PresupuestoPm';
   private URL_PRESUPUESTOS_PM = 'presupuestosPm';
+  private URL_ESTUDIANTES = 'Estudiantes';
+  private URL_ESTUDIANTE = 'Estudiante';
+  private URL_ENVIAR_CORREO_PRACTICA = 'EnviarCorreoPractica';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -1987,5 +1990,46 @@ export class GeneralService {
     const url = this.dataSnap_Path(this.URL_PRESUPUESTO_PM);
     const headers = this.headers;
     return this.http.put(url, datos, {headers});
+  }
+
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     CRUD Estudiantes
+      Eventos para los estudiantes de práctica docente
+  =========================================================================================================================*/
+
+  getEstudiantes() {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTES);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  postEstudiantePeriodo(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE) + 'Periodo';
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  postEstudiante(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  postEnviarCorreoPractica(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ENVIAR_CORREO_PRACTICA);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  putEstudiante(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
+  }
+
+  deleteEstudiante(IdEstudiante: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE) + this.parametro(IdEstudiante);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
   }
 }

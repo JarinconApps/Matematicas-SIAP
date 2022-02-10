@@ -83,8 +83,6 @@ export class DlgDocenteComponent implements OnInit {
 
     this.guardando = true;
 
-    console.log(this.docente);
-
     if (this.accion === 'Crear') {
 
       this.docente.iddocente = this.docente.documento;

@@ -44,7 +44,6 @@ export class CrearEditarPresupuestoComponent implements OnInit {
 
   guardar() {
     const datos = JSON.stringify(this.presupuestoPm);
-    console.log(this.presupuestoPm);
 
     if (this.presupuestoPm.idfecha === '') {
       this.dialogRef.close({Response: 'Debe seleccionar una fecha'});

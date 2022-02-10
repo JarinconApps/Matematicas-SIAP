@@ -24,7 +24,6 @@ export class FechasPresupuestosComponent implements OnInit {
 
   obtenerFechas() {
     this.genService.getFechasPresupuestoPm().subscribe((rFechas: RespuestaCRUD) => {
-      console.log(rFechas);
       this.Fechas = rFechas.Results;
     });
   }

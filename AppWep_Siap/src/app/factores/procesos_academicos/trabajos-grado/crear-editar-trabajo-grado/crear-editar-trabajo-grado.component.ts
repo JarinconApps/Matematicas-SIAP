@@ -98,7 +98,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
     this.obtenerEstadoLectura.subscribe((rEstado: boolean) => {
       if (rEstado) {
         if (this.id !== 'Crear') {
-          console.log(rEstado);
           this.leerTrabajoGrado();
         }
       }
@@ -109,7 +108,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
 
   obtenerParametros() {
     this.activatedRoute.params.subscribe((rParams: any) => {
-      console.log(rParams);
 
       this.id = rParams.Id;
 
@@ -139,8 +137,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
 
   leerGruposInvestigacion() {
     this.genService.getGruposInvestigacion().subscribe((RespGruposInvestigacion: RespuestaCRUD) => {
-
-      console.log(RespGruposInvestigacion);
       this.GruposInvestigacion = RespGruposInvestigacion.Results;
       this.estadoLectura++;
       this.bsLecturaTerminada.next(this.estadoLectura === 3);
@@ -150,7 +146,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
   leerTrabajoGrado() {
     this.leyendo = true;
     this.genService.getTrabajoGrado(this.id).subscribe((rTrabajoGrado: TrabajoGrado) => {
-      console.log(rTrabajoGrado);
 
       this.trabajogrado = rTrabajoGrado;
       this.verCamposEstudiantes[1] = this.trabajogrado.estudiante2.length > 0;
@@ -168,8 +163,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
   }
 
   guardarTrabajoGrado() {
-
-    console.log(this.trabajogrado);
 
     // Validación de Jurados, Director y Codirector
     if (!this.validarJurados_y_Director()) {
@@ -259,9 +252,10 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
   }
 
   SeleccionarDocente(nJurado: number) {
+
     const dialogRef = this.dialog.open(SeleccionarDocenteComponent, {
       width: '60%px', height: '600px',
-      data: {}
+      data: {vinculacion: 'evaluador'}
     });
 
     dialogRef.afterClosed().subscribe((RespDocente: Docente) => {

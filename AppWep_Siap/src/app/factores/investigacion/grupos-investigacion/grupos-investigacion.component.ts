@@ -30,7 +30,7 @@ export class GruposInvestigacionComponent implements OnInit {
     this.leyendo = true;
 
     this.genService.getGruposInvestigacion().subscribe((rGruposInvestigacion: RespuestaCRUD) => {
-      console.log(rGruposInvestigacion);
+
       this.GruposInvestigacion = [];
 
       for (const grupo of rGruposInvestigacion.Results) {

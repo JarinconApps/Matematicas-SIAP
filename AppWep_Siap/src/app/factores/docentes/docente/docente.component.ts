@@ -93,7 +93,7 @@ export class DocenteComponent implements OnInit {
    */
    agregarAreaProfundizacion() {
     this.dlgService.crearEditarAreaDocente(this.docente.iddocente).subscribe((rAreaDocente: RespuestaCRUD) => {
-      console.log(rAreaDocente);
+
       this.leerAreasProfundizacion();
     });
    }
@@ -103,7 +103,7 @@ export class DocenteComponent implements OnInit {
    */
   leerAreasProfundizacion() {
     this.genService.getAreasDocente(this.docente.iddocente).subscribe((rAreas: RespuestaCRUD) => {
-      console.log(rAreas);
+
       this.AreasProfundizacion = rAreas.Results;
     });
   }
@@ -113,7 +113,7 @@ export class DocenteComponent implements OnInit {
    */
   desvincularAreaProfundizacion(area: AreaProfundizacion) {
     this.genService.deleteAreaDocente(area.idareadocente).subscribe((rArea: RespuestaCRUD) => {
-      console.log(rArea);
+
       this.dlgService.mostrarSnackBar(rArea.Response);
       this.leerAreasProfundizacion();
     });

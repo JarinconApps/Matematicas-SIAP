@@ -175,6 +175,9 @@ import { FechasPresupuestosComponent } from './factores/procesos_academicos/plan
 import { CrearEditarFechaComponent } from './factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/crear-editar-fecha/crear-editar-fecha.component';
 import { CrearEditarPresupuestoComponent } from './factores/procesos_academicos/plan-mejoramiento/crear-editar-plan-mejoramiento/crear-editar-presupuesto/crear-editar-presupuesto.component';
 import { NuevosCambiosComponent } from './general/menu/nuevos-cambios/nuevos-cambios.component';
+import { CrearEditarEstudianteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/crear-editar-estudiante/crear-editar-estudiante.component';
+import { EnviarCorreoPracticaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/enviar-correo-practica/enviar-correo-practica.component';
+import { VerListaCorreosComponent } from './factores/procesos_academicos/coordinacion-practica-docente/ver-lista-correos/ver-lista-correos.component';
 
 
 
@@ -427,6 +430,12 @@ import { NuevosCambiosComponent } from './general/menu/nuevos-cambios/nuevos-cam
 
     NuevosCambiosComponent,
 
+    CrearEditarEstudianteComponent,
+
+    EnviarCorreoPracticaComponent,
+
+    VerListaCorreosComponent,
+
 
   ],
   imports: [
@@ -490,7 +499,10 @@ import { NuevosCambiosComponent } from './general/menu/nuevos-cambios/nuevos-cam
     ExportarPlanMejoramientoComponent,
     CrearEditarFechaComponent,
     CrearEditarPresupuestoComponent,
-    NuevosCambiosComponent
+    NuevosCambiosComponent,
+    CrearEditarEstudianteComponent,
+    EnviarCorreoPracticaComponent,
+    VerListaCorreosComponent
   ],
   bootstrap: [AppComponent]
 })

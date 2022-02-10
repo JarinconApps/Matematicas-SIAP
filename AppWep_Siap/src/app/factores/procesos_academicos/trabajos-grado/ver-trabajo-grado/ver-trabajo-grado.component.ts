@@ -60,7 +60,6 @@ export class VerTrabajoGradoComponent implements OnInit {
   ngOnInit() {
 
     this.trabajogrado = this.data.trabajoGrado;
-    console.log(this.trabajogrado.cantidadsemestresejecucion.Meses);
   }
 
 }

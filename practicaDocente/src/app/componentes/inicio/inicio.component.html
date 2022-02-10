@@ -1,0 +1,299 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="card shadow">
+            <div class="card-header bg-dark">
+                <h3 class="card-title text-white text-center">Práctica pedagógica</h3>
+            </div>
+
+            <div class="card-body">
+                <div clas="form-group">
+                    <label class="fw-bold">Seleccione un semestre</label>
+                    <select class="form-select" [(ngModel)]="periodo.IdPeriodo" name="periodo">
+                      <option [value]="periodo.IdPeriodo" *ngFor="let periodo of Periodos">{{ periodo.Periodo }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="fw-bold">Ingrese su documento</label>
+                    <input class="form-control" [(ngModel)]="estudiante.Documento" name="Documento">
+                </div>
+
+                <div class="modal-footer mt-3">
+                    <button class="btn btn-outline-success" (click)="buscarEstudiante()">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+
+        <div class="card shadow m-3">
+            <div class="card-body">
+                <h1 class="text-success">Preinscripción prácticas {{ periodo.Periodo }}</h1>
+
+                <div class="alert alert-success" style="font-size: 24px;">
+                    Bienvenido al sistema de inscripciones de prácticas docentes del programa de Licenciatura en Matemáticas. A continuación seleccione el periodo académico en el que se quiere registrar e ingrese su número de documento para buscar su información. Complete
+                    cada campo requerido y adjunte los documentos solicitados en formato PDF.
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success m-3 shadow" *ngIf="!mostrarDatos && mostrarRespuesta">
+            <h3>Respuesta</h3>
+            <hr>
+            <p class="text-justify" style="font-size: 24px;">
+                {{ respuesta }}
+            </p>
+        </div>
+
+
+        <div class="m-1" *ngIf="mostrarDatos && !mostrarRespuesta">
+            <!-- Nombre completo -->
+            <h1 class="text-info">Datos Generales</h1>
+            <hr>
+
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Nombre completo</label>
+                        <input class="form-control" type="text" required [(ngModel)]="estudiante.Nombre" name="Nombre">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipo de documento -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div clas="form-group m-3">
+                        <label class="fw-bold">Tipo de documento</label>
+                        <select class="form-select" [(ngModel)]="estudiante.TipoDocumento" name="TipoDocumento">
+                          <option value="Tarjeta de Identidad">Tarjeta de identidad</option>
+                          <option value="Cédula">Cédula de ciudadania</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Número de documento de identidad -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Número de documento de identidad</label>
+                        <input class="form-control" required type="number" [(ngModel)]="estudiante.Documento" name="Documento">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Género -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div clas="form-group m-3">
+                        <label class="fw-bold">Género</label>
+                        <select class="form-select" [(ngModel)]="estudiante.Genero" name="Genero">
+                          <option value="Femenino">Femenino</option>
+                          <option value="Masculino">Masculino</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Correo electrónico -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Correo electrónico</label>
+                        <input class="form-control" required type="email" [(ngModel)]="estudiante.Correo" name="Correo">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Teléfono</label>
+                        <input class="form-control" required type="number" [(ngModel)]="estudiante.Telefono" name="Telefono">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dirección de residencia -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Dirección de residencia</label>
+                        <input class="form-control" required type="text" [(ngModel)]="estudiante.Direccion" name="Direccion">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Municipio -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Municipio en el que reside</label>
+                        <input class="form-control" required type="text" [(ngModel)]="estudiante.Municipio" name="Municipio">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado Civil -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div clas="form-group m-3">
+                        <label class="fw-bold">Estado civil</label>
+                        <select class="form-select" [(ngModel)]="estudiante.EstadoCivil" name="EstadoCivil">
+                          <option [value]="estadoCivil" *ngFor="let estadoCivil of EstadoCivil">{{ estadoCivil }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EPS -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Entidad promotora de salud (EPS)</label>
+                        <input class="form-control" required type="text" [(ngModel)]="estudiante.Municipio" name="Municipio">
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="text-info">Datos Académicos</h1>
+            <hr>
+
+            <!-- Semestre -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div clas="form-group m-3">
+                        <label class="fw-bold">¿Qué semestre cursará en el {{ periodo.Periodo }}?</label>
+                        <select class="form-select" [(ngModel)]="estudiante.Semestre" name="Semestre">
+                          <option [value]="semestre" *ngFor="let semestre of Semestres">{{ semestre }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materia -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div clas="form-group m-3">
+                        <label class="fw-bold">Seleccione el espacio académico a registrar</label>
+                        <select class="form-select" [(ngModel)]="estudiante.EspacioAcademico" name="EspacioAcademico">
+                          <option [value]="materia" *ngFor="let materia of Materias">{{ materia }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Código de Inscripción -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Código de Inscripción</label>
+                        <input class="form-control" required type="text" [(ngModel)]="estudiante.Codigo" name="Codigo">
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="text-info">Documentos requeridos</h1>
+            <hr>
+
+            <!-- Documento de identidad -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Documento de identidad (150%) (formato PDF)</label>
+                        <form>
+                            <div class="input-group m-1 mb-2">
+                                <input type="file" class="form-control" (change)="seleccionarArchivo($event, 'DocumentoIdentidad')" aria-describedby="fileDoc" aria-label="Upload">
+                            </div>
+                        </form>
+                    </div>
+                    <a *ngIf="estudiante.DocumentoIdentidad" target="_blank" class="btn btn-danger m-2" [href]="rutaDocumentos + 'Documento_Identidad_' + estudiante.Documento + '.pdf'"> Ver Archivo</a>
+                </div>
+            </div>
+
+            <!-- Certificado EPS -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Certificado de afiliación EPS (formato PDF)</label>
+                        <div class="input-group m-1 mb-2">
+                            <input type="file" class="form-control" (change)="seleccionarArchivo($event, 'CertificadoEPS')" aria-describedby="fileEPS" aria-label="Upload">
+                        </div>
+                    </div>
+                    <a *ngIf="estudiante.CertificadoEPS" target="_blank" class="btn btn-danger m-2" [href]="rutaDocumentos + 'Certificado_EPS_' + estudiante.Documento + '.pdf'"> Ver Archivo</a>
+                </div>
+            </div>
+
+            <!-- Antecedentes disciplinarios -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Certificado de antecedentes disciplinarios (Procuraduría) (formato PDF)  </label>
+                        <div class="input-group m-1 mb-2">
+                            <input type="file" class="form-control" (change)="seleccionarArchivo($event, 'AntecedentesDisciplinarios')" aria-describedby="fileAntDis" aria-label="Upload">
+                        </div>
+                    </div>
+                    <a *ngIf="estudiante.AntecedentesDisciplinarios" target="_blank" class="btn btn-danger m-2" [href]="rutaDocumentos + 'Antecedentes_Displinarios_' + estudiante.Documento + '.pdf'"> Ver Archivo</a>
+                    <a target="_blank" class="btn btn-info m-2" href="https://www.procuraduria.gov.co/portal/Certificado-de-Antecedentes.page">Descargar aquí</a>
+                </div>
+            </div>
+
+            <!-- Antecedentes Judiciales -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Certificado de antecedentes judiciales (Policia) (formato PDF)</label>
+                        <div class="input-group m-1 mb-2">
+                            <input type="file" class="form-control" (change)="seleccionarArchivo($event, 'AntecedentesJudiciales')" aria-describedby="fuleAntJud" aria-label="Upload">
+                        </div>
+                    </div>
+                    <a *ngIf="estudiante.AntecedentesJudiciales" target="_blank" class="btn btn-danger m-2" [href]="rutaDocumentos + 'Antecedentes_Judiciales_' + estudiante.Documento + '.pdf'"> Ver Archivo</a>
+                    <a target="_blank" class="btn btn-info m-2" href="https://antecedentes.policia.gov.co:7005/WebJudicial/index.xhtml">Descargar aquí</a>
+                </div>
+            </div>
+
+            <!-- Antecedentes Fiscales -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Certificado de antecedentes fiscales (Contraloria) (formato PDF)</label>
+                        <div class="input-group m-1 mb-2">
+                            <input type="file" class="form-control" (change)="seleccionarArchivo($event, 'AntecedentesFiscales')" aria-describedby="fileAntFis" aria-label="Upload">
+                        </div>
+                    </div>
+                    <a *ngIf="estudiante.AntecedentesFiscales" target="_blank" class="btn btn-danger m-2" [href]="rutaDocumentos + 'Antecedentes_Fiscales_' + estudiante.Documento + '.pdf'"> Ver Archivo</a>
+                    <a target="_blank" class="btn btn-info m-2" href="https://www.contraloria.gov.co/web/guest/persona-natural">Descargar aquí</a>
+                </div>
+            </div>
+
+            <!-- Antecedentes de Medidas Correctivas -->
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="fw-bold">Certificado de medidas correctivas (Policia) (formato PDF)</label>
+                        <div class="input-group m-1 mb-2">
+                            <input type="file" class="form-control" (change)="seleccionarArchivo($event, 'MedidasCorrectivas')" aria-describedby="fileAntMC" aria-label="Upload">
+                        </div>
+                    </div>
+                    <a *ngIf="estudiante.MedidasCorrectivas" target="_blank" class="btn btn-danger m-2" [href]="rutaDocumentos + 'Medidas_Correctivas_' + estudiante.Documento + '.pdf'"> Ver Archivo</a>
+                    <a target="_blank" class="btn btn-info m-2" href="https://srvcnpc.policia.gov.co/PSC/frm_cnp_consulta.aspx">Descargar aquí</a>
+                </div>
+            </div>
+
+
+            <div class="card shadow m-1 mb-2">
+                <div class="card-body">
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-success" (click)="guardar()">Guardar Datos</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>

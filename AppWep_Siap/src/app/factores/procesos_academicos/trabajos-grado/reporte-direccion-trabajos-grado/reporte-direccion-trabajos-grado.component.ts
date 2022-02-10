@@ -98,7 +98,6 @@ export class ReporteDireccionTrabajosGradoComponent implements OnInit {
 
   obtenerReporte() {
     this.genService.getDirectoresTrabajosGrado().subscribe((rContratos: any) => {
-      console.log(rContratos);
       this.ReportesTrabajosGrado = rContratos.Contratos;
 
       this.Directores = [];
@@ -159,7 +158,6 @@ export class ReporteDireccionTrabajosGradoComponent implements OnInit {
     });
 
     this.genService.getEvaluadoresTrabajosGrado().subscribe((rContratos: any) => {
-      console.log(rContratos);
       this.TrabajosEvaluados = rContratos.Contratos;
 
       this.Evaluadores = [];

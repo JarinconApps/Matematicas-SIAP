@@ -34,7 +34,7 @@ export class GrupoInvestigacionComponent implements OnInit {
 
   obtenerParametros() {
     this.activatedRoute.params.subscribe((rParams: any) => {
-      console.log(rParams);
+
       this.grupo.idgrupoinvestigacion = rParams.IdGrupo;
 
       this.obtenerGrupoInvestigacion();
@@ -44,21 +44,21 @@ export class GrupoInvestigacionComponent implements OnInit {
 
   obtenerGrupoInvestigacion() {
     this.genService.getGrupoInvestigacion(this.grupo.idgrupoinvestigacion).subscribe((rGrupo: RespuestaCRUD) => {
-      console.log(rGrupo);
+
       this.grupo = rGrupo.Results[0];
     });
   }
 
   obtenerIntegrantes() {
     this.genService.getDocentesGrupoInvestigacion(this.grupo.idgrupoinvestigacion).subscribe((rDocentes: RespuestaCRUD) => {
-      console.log(rDocentes);
+
       this.integrantes = rDocentes.Results;
     });
   }
 
   agregarDocente() {
     this.dlgService.SeleccionarDocente('Agregar Integrante', 'integrante-grupo').subscribe((rDocente: Docente) => {
-      console.log(rDocente);
+
       const integrante: GrupoDocente = {
         idgrupoinvestigacion: this.grupo.idgrupoinvestigacion,
         iddocente: rDocente.iddocente,

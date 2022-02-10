@@ -28,7 +28,6 @@ export class AppComponent {
     genService.establecerToken(Token);
 
     genService.getValidarToken(Token).subscribe((rValidacion: RespuestaCRUD) => {
-      console.log(rValidacion);
 
       if (rValidacion.Status === 'Incorrecto') {
         localStorage.removeItem('Token');

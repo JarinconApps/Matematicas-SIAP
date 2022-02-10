@@ -129,11 +129,9 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="uTReferenciaResumen.pas"/>
         <DCCReference Include="uFResumenes.pas">
             <Form>FResumenes</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uFCertificados.pas">
             <Form>FCertificados</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\..\..\..\Dropbox\MIS_PROYECTOS\7000_Librerias\Utilidades\Utilidades.pas"/>
         <DCCReference Include="uModuloDatos.pas">
@@ -142,29 +140,28 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DCCReference>
         <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\Formularios\uFVisorContenido.pas">
             <Form>FVisorContenido</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTAttribute.pas"/>
         <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTCRUDModel.pas"/>
         <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas"/>
         <DCCReference Include="Modulos\uModuloEventoEMEM.pas">
             <Form>moduloEventoEMEM</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="uConstantes.pas"/>
         <DCCReference Include="uFVistaJSON.pas">
             <Form>FVistaJSON</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uModuloUtilidades.pas">
             <Form>ModuloUtilidades</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="uModuloSeminario.pas">
             <Form>ModuloSeminario</Form>
-            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="uModuloPracticaDocente.pas">
+            <Form>moduloPracticaDocente</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <None Include="js\base64.js"/>

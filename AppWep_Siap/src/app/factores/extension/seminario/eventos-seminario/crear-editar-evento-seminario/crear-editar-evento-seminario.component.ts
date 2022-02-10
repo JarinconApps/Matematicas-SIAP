@@ -59,13 +59,12 @@ export class CrearEditarEventoSeminarioComponent implements OnInit {
 
   obtenerAreasProfundizacion() {
     this.genService.getAreasProfundizacion().subscribe((rAreas: any) => {
-      console.log(rAreas);
+
       this.areasProfundizacion = rAreas.AreasProfundizacion;
     });
   }
 
   guardar() {
-    console.log(this.evento);
 
     const datos = JSON.stringify(this.evento);
 

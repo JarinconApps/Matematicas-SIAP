@@ -1,0 +1,71 @@
+<app-titulo-dialogo [Titulo]="'Crear/Editar Estudiante ...'"></app-titulo-dialogo>
+<hr>
+
+<form ngNativeValidate (ngSubmit)="guardar()">
+    <div class="form-group">
+        <label class="font-weight-bold">Documento</label>
+        <input class="form-control" required [(ngModel)]="estudiante.Documento" name="Documento">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Nombre</label>
+        <input class="form-control" [(ngModel)]="estudiante.Nombre" name="Nombre">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Correo</label>
+        <input class="form-control" required [(ngModel)]="estudiante.Correo" name="Correo">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Teléfono</label>
+        <input class="form-control" [(ngModel)]="estudiante.Telefono" name="Telefono">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Tipo de Documento</label>
+        <select class="custom-select" [(ngModel)]="estudiante.TipoDocumento" name="TipoDocumento">
+          <option value="Tarjeta de Identidad">Tarjeta de identidad</option>
+          <option value="Cédula">Cédula de ciudadania</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Género</label>
+        <select class="custom-select" [(ngModel)]="estudiante.Genero" name="Genero">
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Dirección de Residencia</label>
+        <input class="form-control" [(ngModel)]="estudiante.Direccion" name="Direccion">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Municipio</label>
+        <input class="form-control" [(ngModel)]="estudiante.Municipio" name="Municipio">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Semestre</label>
+        <input class="form-control" [(ngModel)]="estudiante.Semestre" name="Semestre">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Eps</label>
+        <input class="form-control" [(ngModel)]="estudiante.Eps" name="Eps">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Estado Civil</label>
+        <select class="custom-select" [(ngModel)]="estudiante.EstadoCivil" name="EstadoCivil">
+          <option [value]="estadoCivil" *ngFor="let estadoCivil of EstadoCivil">{{ estadoCivil }}</option>
+        </select>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-success" type="submit">Guardar</button>
+    </div>
+</form>

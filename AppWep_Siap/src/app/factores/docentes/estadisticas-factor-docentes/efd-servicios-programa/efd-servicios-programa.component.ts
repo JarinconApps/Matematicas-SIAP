@@ -102,8 +102,6 @@ export class EfdServiciosProgramaComponent implements OnInit {
           }
         }
       }
-      console.log('Todo ordendo');
-      console.log(datos);
 
       this.datosGeneral.push({data: datos, label: 'Programas'});
       this.generalChartColors[0].backgroundColor = colores;

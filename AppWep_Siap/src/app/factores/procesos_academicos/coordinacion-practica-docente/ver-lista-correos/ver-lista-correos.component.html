@@ -1,0 +1,10 @@
+<app-titulo-dialogo [Titulo]="'Lista de correos ...'"></app-titulo-dialogo>
+
+<div class="form-group">
+    <label class="font-weight-bold">Lista de Correos de los Estudiantes</label>
+    <textarea rows="10" class="form-control" [(ngModel)]="listaEstudiantes" name="listaEstudiantes"></textarea>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-info" (click)="cerrar()">Cerrar</button>
+</div>

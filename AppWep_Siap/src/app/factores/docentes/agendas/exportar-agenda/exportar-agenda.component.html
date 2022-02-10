@@ -57,7 +57,7 @@
                 <td>{{ agenda.grupo }}</td>
                 <td>{{ agenda.programa | capitalizado }}</td>
                 <td>{{ agenda.horas | capitalizado }}</td>
-                <td>{{ agenda.horassemestre }}</td>
+                <td>{{ agenda.horasfactor }}</td>
                 <td>
                     <ul *ngIf="agenda.jornada !== 'virtual'">
                         <li *ngFor="let horario of agenda.horarios">{{ horario.dia | capitalizado }} de {{ horario.inicio }} a {{ horario.fin }}</li>

@@ -134,8 +134,6 @@ export class AgendasComponent implements OnInit {
 
     this.genService.getAgendasServicio(this.docenteSeleccionado.iddocente, this.periodo).subscribe((rAgendasServicio: any) => {
 
-      console.log(rAgendasServicio);
-
       this.AgendasServicio = rAgendasServicio.AgendasServicios;
       if (this.AgendasServicio.length > 0) {
         this.numerocontrato = this.AgendasServicio[0].numerocontrato;
