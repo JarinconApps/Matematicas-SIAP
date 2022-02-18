@@ -47,6 +47,8 @@ export class InicioComponent implements OnInit {
 
   Materias: String[] = [
     'Práctica Pedagógica I (Plan nuevo 652)',
+    'Práctica Pedagógica II (Plan nuevo 652)',
+    'Práctica Pedagógica III (Plan nuevo 652)',
     'Práctica Docente I (Plan antiguo 66)',
     'Práctica Docente II (Plan antiguo 66)'
   ];
@@ -76,6 +78,8 @@ export class InicioComponent implements OnInit {
     this.genService.buscarEstudiante(this.estudiante.Documento, this.periodo.IdPeriodo).subscribe((rEstudiante: RespuestaCRUD) => {
       console.log(rEstudiante);
       this.estudiante = rEstudiante.Object;
+
+      this.estudiante.Codigo = this.estudiante.IdEstudiante;
 
       if (this.estudiante.Documento) {
         this.mostrarDatos = true;

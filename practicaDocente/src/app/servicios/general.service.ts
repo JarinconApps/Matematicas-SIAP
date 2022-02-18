@@ -15,6 +15,7 @@ export class GeneralService {
 
   private URL_PERIODOS_PRACTICA = 'PeriodosPractica';
   private URL_ESTUDIANTE = 'Estudiante';
+  private URL_ESTUDIANTE_PERIODO = 'EstudiantePeriodo';
 
 
   constructor(private http: HttpClient) { }
@@ -42,7 +43,7 @@ export class GeneralService {
   }
 
   guardarEstudiante(datos: string) {
-    const url = this.dataSnap_Route(this.URL_ESTUDIANTE);
+    const url = this.dataSnap_Route(this.URL_ESTUDIANTE_PERIODO);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });

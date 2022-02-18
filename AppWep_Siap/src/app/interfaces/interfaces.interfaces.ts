@@ -774,3 +774,27 @@ export interface Estudiante {
   TipoDocumento?: string;
   Seleccionado?: boolean;
 }
+
+export interface EstudiantePractica {
+  Correo?: string;
+  Direccion?: string;
+  DocAntDis?: string;
+  DocAntFis?: string;
+  DocAntJud?: string;
+  DocEps?: string;
+  DocIdentidad?: string;
+  DocMedCor?: string;
+  Documento?: string;
+  Eps?: string;
+  EspacioAcademico?: string;
+  EstadoCivil?: string;
+  Genero?: string;
+  IdEstudiante?: string;
+  IdPeriodo?: string;
+  IdRegistro?: string;
+  Municipio?: string;
+  Nombre?: string;
+  Semestre?: string;
+  Telefono?: string;
+  TipoDocumento?: string;
+}

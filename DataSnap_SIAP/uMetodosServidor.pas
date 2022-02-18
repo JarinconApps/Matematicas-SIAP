@@ -626,6 +626,7 @@ type
     function Estudiantes: TJSONObject;
     function cancelEstudiante(IdEstudiante: string): TJSONObject;
     function updateEnviarCorreoPractica(datos: TJSONObject): TJSONObject;
+    function EstadisticasPeriodo(IdPeriodo: string): TJSONObject;
 
   end;
 {$METHODINFO OFF}
@@ -15706,6 +15707,19 @@ end;
 procedure TMatematicas.escribirMensaje(msg: string; tipo: string);
 begin
   // FDataSnapMatematicas.escribirMensaje(msg, tipo);
+end;
+
+function TMatematicas.EstadisticasPeriodo(IdPeriodo: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getEstadisticasPeriodo(IdPeriodo)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
 end;
 
 function TMatematicas.estadisticasTaller(const idResumen: string): TJSONObject;

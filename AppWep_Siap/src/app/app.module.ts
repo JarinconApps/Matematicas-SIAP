@@ -178,6 +178,7 @@ import { NuevosCambiosComponent } from './general/menu/nuevos-cambios/nuevos-cam
 import { CrearEditarEstudianteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/crear-editar-estudiante/crear-editar-estudiante.component';
 import { EnviarCorreoPracticaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/enviar-correo-practica/enviar-correo-practica.component';
 import { VerListaCorreosComponent } from './factores/procesos_academicos/coordinacion-practica-docente/ver-lista-correos/ver-lista-correos.component';
+import { EstadisticasPracticaDocenteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estadisticas-practica-docente/estadisticas-practica-docente.component';
 
 
 
@@ -436,6 +437,8 @@ import { VerListaCorreosComponent } from './factores/procesos_academicos/coordin
 
     VerListaCorreosComponent,
 
+    EstadisticasPracticaDocenteComponent,
+
 
   ],
   imports: [
@@ -502,7 +505,8 @@ import { VerListaCorreosComponent } from './factores/procesos_academicos/coordin
     NuevosCambiosComponent,
     CrearEditarEstudianteComponent,
     EnviarCorreoPracticaComponent,
-    VerListaCorreosComponent
+    VerListaCorreosComponent,
+    EstadisticasPracticaDocenteComponent
   ],
   bootstrap: [AppComponent]
 })

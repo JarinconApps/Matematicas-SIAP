@@ -16,8 +16,8 @@ export class GeneralService {
 
   private token = '';
   private ENCABEZADO_HTTP = 'http://';
-  private IP_SERVIDOR = 'mads.uniquindio.edu.co';
-  // private IP_SERVIDOR = 'localhost';
+  // private IP_SERVIDOR = 'mads.uniquindio.edu.co';
+  private IP_SERVIDOR = 'localhost';
   private PUERTO = ':8080';
   private GENERAL = '/datasnap/rest/tmatematicas/';
 
@@ -131,6 +131,7 @@ export class GeneralService {
   private URL_ESTUDIANTES = 'Estudiantes';
   private URL_ESTUDIANTE = 'Estudiante';
   private URL_ENVIAR_CORREO_PRACTICA = 'EnviarCorreoPractica';
+  private URL_ESTADISTICAS_PERIODO = 'EstadisticasPeriodo';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -1999,6 +2000,12 @@ export class GeneralService {
 
   getEstudiantes() {
     const url = this.dataSnap_Path(this.URL_ESTUDIANTES);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  getEstadisticasPeriodo(IdPeriodo: string) {
+    const url = this.dataSnap_Path(this.URL_ESTADISTICAS_PERIODO) + this.parametro(IdPeriodo);
     const headers = this.headers;
     return this.http.get(url, {headers});
   }

@@ -31,6 +31,7 @@ type
     function getEstudiantes: TJSONObject;
     function deleteEstudiante(IdEstudiante: string): TJSONObject;
     function enviarCorreo(datos: TJSONObject): TJSONObject;
+    function getEstadisticasPeriodo(IdPeriodo: string): TJSONObject;
   end;
 
 var
@@ -396,6 +397,81 @@ begin
   end;
 
   result := JSON;
+end;
+
+function TmoduloPracticaDocente.getEstadisticasPeriodo(IdPeriodo: string)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+  i: Integer;
+  estudiante: TJSONObject;
+  Estudiantes: TJSONArray;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM Siap_Practica_Docente as pd INNER JOIN ' +
+      'Siap_Estudiantes as est ON pd.IdEstudiante = est.IdEstudiante WHERE' +
+      ' pd.IdPeriodo=' + #39 + IdPeriodo + #39;
+    Query.Open;
+    Query.First;
+
+    Estudiantes := TJSONArray.Create;
+
+    for i := 1 to Query.RecordCount do
+    begin
+      estudiante := TJSONObject.Create;
+      estudiante.AddPair('IdRegistro', Query.FieldByName('IdRegistro')
+        .AsString);
+      estudiante.AddPair('IdPeriodo', Query.FieldByName('IdPeriodo').AsString);
+      estudiante.AddPair('IdEstudiante', Query.FieldByName('IdEstudiante')
+        .AsString);
+      estudiante.AddPair('EspacioAcademico',
+        Query.FieldByName('EspacioAcademico').AsString);
+      estudiante.AddPair('DocAntDis', Query.FieldByName('DocAntDis').AsString);
+      estudiante.AddPair('DocAntJud', Query.FieldByName('DocAntJud').AsString);
+      estudiante.AddPair('DocAntFis', Query.FieldByName('DocAntFis').AsString);
+      estudiante.AddPair('DocMedCor', Query.FieldByName('DocMedCor').AsString);
+      estudiante.AddPair('DocIdentidad', Query.FieldByName('DocIdentidad')
+        .AsString);
+      estudiante.AddPair('DocEps', Query.FieldByName('DocEps').AsString);
+      estudiante.AddPair('IdEstudiante', Query.FieldByName('IdEstudiante')
+        .AsString);
+      estudiante.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
+      estudiante.AddPair('Documento', Query.FieldByName('Documento').AsString);
+      estudiante.AddPair('Correo', Query.FieldByName('Correo').AsString);
+      estudiante.AddPair('Telefono', Query.FieldByName('Telefono').AsString);
+      estudiante.AddPair('TipoDocumento', Query.FieldByName('TipoDocumento')
+        .AsString);
+      estudiante.AddPair('Genero', Query.FieldByName('Genero').AsString);
+      estudiante.AddPair('Direccion', Query.FieldByName('Direccion').AsString);
+      estudiante.AddPair('Municipio', Query.FieldByName('Municipio').AsString);
+      estudiante.AddPair('Semestre', Query.FieldByName('Semestre').AsString);
+      estudiante.AddPair('Eps', Query.FieldByName('Eps').AsString);
+      estudiante.AddPair('EstadoCivil', Query.FieldByName('EstadoCivil')
+        .AsString);
+
+      Estudiantes.AddElement(estudiante);
+      Query.Next;
+    end;
+
+    result.AddPair(JSON_RESULTS, Estudiantes);
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE,
+      'Los estudiantes se obtuvieron correctamente');
+
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
 end;
 
 function TmoduloPracticaDocente.getEstudiantes: TJSONObject;

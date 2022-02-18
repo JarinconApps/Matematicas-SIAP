@@ -55,6 +55,7 @@ import { NuevosCambiosComponent } from '../general/menu/nuevos-cambios/nuevos-ca
 import { CrearEditarEstudianteComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/crear-editar-estudiante/crear-editar-estudiante.component';
 import { EnviarCorreoPracticaComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/enviar-correo-practica/enviar-correo-practica.component';
 import { VerListaCorreosComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/ver-lista-correos/ver-lista-correos.component';
+import { EstadisticasPracticaDocenteComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/estadisticas-practica-docente/estadisticas-practica-docente.component';
 
 @Injectable({
   providedIn: 'root'
@@ -487,6 +488,15 @@ export class DialogosService {
     const dialogRef = this.dialog.open(VerListaCorreosComponent, {
       width: '800px', height: '600px',
       data: {estudiantes}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  verEstadisticasPractica(IdPeriodo: string) {
+    const dialogRef = this.dialog.open(EstadisticasPracticaDocenteComponent, {
+      width: '90%', height: '90%',
+      data: {IdPeriodo}
     });
 
     return dialogRef.afterClosed();

@@ -100,4 +100,8 @@ export class CoordinacionPracticaDocenteComponent implements OnInit {
     this.dlgService.verListaCorreos(this.estudiantes);
   }
 
+  estadisticasPractica() {
+    this.dlgService.verEstadisticasPractica(this.periodo.idperiodo);
+  }
+
 }
