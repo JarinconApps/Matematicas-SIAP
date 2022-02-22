@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GeneralService } from '../../../../services/general.service';
-import { RespuestaCRUD, EstudiantePractica } from '../../../../interfaces/interfaces.interfaces';
+import { RespuestaCRUD, EstudiantePractica, Periodo } from '../../../../interfaces/interfaces.interfaces';
 
 @Component({
   selector: 'app-estadisticas-practica-docente',
@@ -10,21 +10,27 @@ import { RespuestaCRUD, EstudiantePractica } from '../../../../interfaces/interf
 })
 export class EstadisticasPracticaDocenteComponent implements OnInit {
 
-  IdPeriodo: string;
+  periodos: Periodo[] = [];
+  periodo: Periodo = {};
   EstudiantesPractica: EstudiantePractica[] = [];
 
-  constructor(public dialogRef: MatDialogRef<EstadisticasPracticaDocenteComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private genService: GeneralService) { }
+  constructor(private genService: GeneralService) { }
 
   ngOnInit() {
-    this.IdPeriodo = this.data.IdPeriodo;
+    this.leerSemestres();
+  }
 
-    this.leerDatos();
+  leerSemestres() {
+    this.genService.getPeriodos().subscribe((rPeriodos: any) => {
+      this.periodos = rPeriodos.Periodos;
+      this.periodo = this.periodos[this.periodos.length - 1];
+
+      this.leerDatos();
+    });
   }
 
   leerDatos() {
-    this.genService.getEstadisticasPeriodo(this.IdPeriodo).subscribe((rEstadisticas: RespuestaCRUD) => {
+    this.genService.getEstadisticasPeriodo(this.periodo.idperiodo).subscribe((rEstadisticas: RespuestaCRUD) => {
       console.log(rEstadisticas);
       this.EstudiantesPractica = rEstadisticas.Results;
     });

@@ -1,0 +1,60 @@
+<div class="form-group">
+    <label class="font-weight-bold">Seleccione el semestre</label>
+    <select class="custom-select" [(ngModel)]="periodo.idperiodo" name="periodo">
+  <option [value]="periodo.idperiodo" *ngFor="let periodo of periodos">{{ periodo.periodo }}</option>
+</select>
+</div>
+
+
+<div class="modal-footer">
+    <button class="btn btn-outline-success" (click)="crearCarta()"><img class="mr-1" src="assets/Iconos/Agregar.png" style="width: 24px;"> Crear carta</button>
+</div>
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>No</th>
+            <th>Institución</th>
+            <th>Rector</th>
+            <th>Fecha</th>
+            <th>Estudiantes</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+            <th>Exportar</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let carta of cartas; let id = index">
+            <td>{{ id + 1 }}</td>
+            <td>{{ carta.Institucion }}</td>
+            <td>{{ carta.Rector }}</td>
+            <td>{{ carta.Fecha }}</td>
+            <td>
+                <table class="table table-hover">
+                    <tbody>
+                        <tr *ngFor="let estudiante of carta.Estudiantes">
+                            <td>{{ estudiante.Nombre }}</td>
+                            <td>
+                                <button class="btn btn-outline-info" (click)="eliminarEstudiante(estudiante, carta)"><img class="m-1" src="assets/Iconos/Eliminar.png" style="width: 24px;"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-success btn-sm" (click)="agregarEstudiante(carta)"> <img class="mr-1" src="assets/Iconos/Agregar.png" style="width: 24px;"> Agregar Estudiante</button>
+                </div>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-success" (click)="editar(carta)"> <img class="mr-1" src="assets/Iconos/Editar.png" style="width: 24px;"> Editar</button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-info" (click)="eliminar(carta)"> <img class="mr-1" src="assets/Iconos/Eliminar.png" style="width: 24px;"> Eliminar</button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-danger" (click)="exportarCartaPermiso(carta)"> <img class="mr-1" src="assets/Iconos/Pdf.png" style="width: 24px;"> Exportar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -606,3 +606,18 @@ create table if not exists siap_practica_docente(
 	docIdentidad varchar(255),
 	docEPS varchar(255)
 );
+
+create table if not exists siap_carta_autorizacion_practica(
+	IdCarta varchar(255) primary key not null,
+	Rector varchar(255),
+	Institucion varchar(255),
+	Ciudad varchar(255),
+	Fecha varchar(255),
+	IdPeriodo varchar(255) references siap_periodos(IdPeriodo)
+);
+
+create table if not exists siap_estudiantes_carta(
+	IdEstudianteCarta varchar(255) primary key not null,
+	IdCarta varchar(255) references siap_carta_autorizacion_practica(IdCarta),
+	IdEstudiante varchar(255) references siap_estudiantes(IdEstudiante)	
+);

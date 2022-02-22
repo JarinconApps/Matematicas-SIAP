@@ -1,0 +1,40 @@
+<div class="m-5" style="font-size: 24px">
+    <div class="text-center">
+        <img src="assets/Iconos/logo-uq-2.png" style="width: 128px">
+    </div>
+
+    <p class="text-justify">
+        Armenia, {{ carta.Fecha }}
+    </p>
+
+    <p class="text-justify" style="margin-top: 50px">
+        Señor <br>
+        <span class="font-weight-bold">{{ carta.Rector | uppercase }}</span> <br> Rector <br> Institución Educativa: {{ carta.Institucion }} <br> {{ carta.Ciudad }}
+    </p>
+
+    <p class="text-justify" style="margin-top: 50px">
+        Cordial Saludo,
+    </p>
+
+    <p class="text-justify" style="margin-top: 50px">
+        Muy amablemente me permito solicitar su colaboración para que los estudiantes de la Licenciatura en Matemáticas de la Universidad del Quindío
+        <span *ngFor="let estudiante of carta.Estudiantes">
+        <span class="font-weight-bold">{{ estudiante.Nombre | uppercase }}</span>,
+        <span *ngIf="estudiante.Genero === 'Masculino'">identificado </span>
+        <span *ngIf="estudiante.Genero === 'Femenino'">identificada </span> con documento de identidad {{ estudiante.Documento }};
+        </span>
+        puedan realizar la práctica docente en su institución.
+    </p>
+
+    <p class="text-justify" style="margin-top: 50px">
+        Los estudiantes deberán cumplir a cabalidad con los procesos pactados con el Docente de la Práctica y a su vez cumplir como mínimo tres (3) horas semanales de asistencia a la práctica.
+    </p>
+
+    <p class="text-justify" style="margin-top: 50px">
+        Agradezco su valiosa colaboración,
+    </p>
+
+    <p class="text-justify" style="margin-top: 150px">
+        Hernán Dario Toro Zapata <br> Director Programa Licenciatura en Matemáticas
+    </p>
+</div>

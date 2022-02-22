@@ -16,8 +16,8 @@ export class GeneralService {
 
   private token = '';
   private ENCABEZADO_HTTP = 'http://';
-  // private IP_SERVIDOR = 'mads.uniquindio.edu.co';
-  private IP_SERVIDOR = 'localhost';
+  private IP_SERVIDOR = 'mads.uniquindio.edu.co';
+  // private IP_SERVIDOR = 'localhost';
   private PUERTO = ':8080';
   private GENERAL = '/datasnap/rest/tmatematicas/';
 
@@ -129,9 +129,13 @@ export class GeneralService {
   private URL_PRESUPUESTO_PM = 'PresupuestoPm';
   private URL_PRESUPUESTOS_PM = 'presupuestosPm';
   private URL_ESTUDIANTES = 'Estudiantes';
+  private URL_ESTUDIANTES_BY_PERIODO = 'EstudiantesByPeriodo';
   private URL_ESTUDIANTE = 'Estudiante';
   private URL_ENVIAR_CORREO_PRACTICA = 'EnviarCorreoPractica';
   private URL_ESTADISTICAS_PERIODO = 'EstadisticasPeriodo';
+  private URL_CARTAS_PERMISO_BY_PERIODO = 'CartasPermisoByPeriodo';
+  private URL_CARTA_PERMISO = 'CartaPermiso';
+  private URL_ESTUDIANTE_CARTA = 'EstudianteCarta';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -2004,8 +2008,20 @@ export class GeneralService {
     return this.http.get(url, {headers});
   }
 
+  getEstudiantesByPeriodo(IdPeriodo: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTES_BY_PERIODO) + this.parametro(IdPeriodo);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
   getEstadisticasPeriodo(IdPeriodo: string) {
     const url = this.dataSnap_Path(this.URL_ESTADISTICAS_PERIODO) + this.parametro(IdPeriodo);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  getCartasPeriodo(IdPeriodo: string) {
+    const url = this.dataSnap_Path(this.URL_CARTAS_PERMISO_BY_PERIODO) + this.parametro(IdPeriodo);
     const headers = this.headers;
     return this.http.get(url, {headers});
   }
@@ -2036,6 +2052,42 @@ export class GeneralService {
 
   deleteEstudiante(IdEstudiante: string) {
     const url = this.dataSnap_Path(this.URL_ESTUDIANTE) + this.parametro(IdEstudiante);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
+  }
+
+  getCartaPermiso(IdCarta: string) {
+    const url = this.dataSnap_Path(this.URL_CARTA_PERMISO) + this.parametro(IdCarta);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  postCartaPermiso(datos: string) {
+    const url = this.dataSnap_Path(this.URL_CARTA_PERMISO);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  putCartaPermiso(datos: string) {
+    const url = this.dataSnap_Path(this.URL_CARTA_PERMISO);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
+  }
+
+  deleteCartaPermiso(IdCarta: string) {
+    const url = this.dataSnap_Path(this.URL_CARTA_PERMISO) + this.parametro(IdCarta);
+    const headers = this.headers;
+    return this.http.delete(url,  {headers});
+  }
+
+  postEstudianteCarta(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE_CARTA);
+    const headers = this.headers;
+    return this.http.post(url, datos, {headers});
+  }
+
+  deleteEstudianteCarta(IdEstudianteCarta: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE_CARTA) + this.parametro(IdEstudianteCarta);
     const headers = this.headers;
     return this.http.delete(url,  {headers});
   }

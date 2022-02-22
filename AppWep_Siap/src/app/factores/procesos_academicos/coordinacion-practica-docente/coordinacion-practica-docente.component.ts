@@ -3,6 +3,8 @@ import { GeneralService } from '../../../services/general.service';
 import { RespuestaCRUD, Periodo, Estudiante, Correo } from '../../../interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../services/dialogos.service';
 import { restoreView } from '@angular/core/src/render3';
+import { Router } from '@angular/router';
+import { RUTA_COORDINACION_PRACTICA_DOCENTE, RUTA_ESTUDIANTES_PRACTICA, RUTA_ESTADISTICAS_PRACTICA, RUTA_CARTAS_PERMISOS_PRACTICA } from '../../../config/config';
 
 @Component({
   selector: 'app-coordinacion-practica-docente',
@@ -11,97 +13,31 @@ import { restoreView } from '@angular/core/src/render3';
 })
 export class CoordinacionPracticaDocenteComponent implements OnInit {
 
-  periodos: Periodo[] = [];
-  periodo: Periodo = {};
-  estudiantes: Estudiante[] = [];
-  enviando = false;
-
-  constructor(private genService: GeneralService,
+  constructor(private router: Router,
+              private genService: GeneralService,
               private dlgService: DialogosService) { }
 
+
   ngOnInit() {
-
-    this.leerSemestres();
-    this.leerEstudiantes();
   }
 
-  leerSemestres() {
-    this.genService.getPeriodos().subscribe((rPeriodos: any) => {
-      this.periodos = rPeriodos.Periodos;
-      this.periodo = this.periodos[this.periodos.length - 1];
-    });
+  verEstudiantesPractica() {
+    this.router.navigate([RUTA_COORDINACION_PRACTICA_DOCENTE, RUTA_ESTUDIANTES_PRACTICA]);
   }
 
-  leerEstudiantes() {
+  verCorreosEstudiantes() {
     this.genService.getEstudiantes().subscribe((rEstudiantes: RespuestaCRUD) => {
-      this.estudiantes = rEstudiantes.Results;
+      const estudiantes = rEstudiantes.Results;
+      this.dlgService.verListaCorreos(estudiantes);
     });
   }
 
-  crearEstudiante() {
-    this.dlgService.crearEditarEstudiante(null).subscribe((rEstudiante: RespuestaCRUD) => {
-      this.dlgService.mostrarSnackBar(rEstudiante.Response);
-      this.leerEstudiantes();
-    });
+  verEstadisticasPractica() {
+    this.router.navigate([RUTA_COORDINACION_PRACTICA_DOCENTE, RUTA_ESTADISTICAS_PRACTICA]);
   }
 
-  ver(estudiante: Estudiante) {
-
-  }
-
-  enviarCorreo() {
-    this.dlgService.enviarCorreoPractica().subscribe((rDatos: Correo) => {
-      const correos: Estudiante[] = [];
-      for (const estudiante of this.estudiantes) {
-        if (estudiante.Seleccionado) {
-          correos.push(estudiante);
-        }
-      }
-
-      const datosCorreo = {
-        Asunto: rDatos.asunto,
-        Mensaje: rDatos.mensaje,
-        Correos: JSON.stringify(correos)
-      };
-
-      const datos = JSON.stringify(datosCorreo);
-
-      this.enviando = true;
-      this.genService.postEnviarCorreoPractica(datos).subscribe((rCorreo: RespuestaCRUD) => {
-        this.enviando = false;
-        this.dlgService.mostrarSnackBar(rCorreo.Response);
-      });
-    });
-  }
-
-  editar(estudiante: Estudiante) {
-    this.dlgService.crearEditarEstudiante(estudiante).subscribe((rEstudiante: RespuestaCRUD) => {
-      this.dlgService.mostrarSnackBar(rEstudiante.Response);
-      this.leerEstudiantes();
-    });
-  }
-
-  eliminar(estudiante: Estudiante) {
-    this.dlgService.confirmacion('¿Está seguro de eliminar éste estudiante?').subscribe((Resp: boolean) => {
-      this.genService.deleteEstudiante(estudiante.IdEstudiante).subscribe((rEstudiante: RespuestaCRUD) => {
-        this.dlgService.mostrarSnackBar(rEstudiante.Response);
-        this.leerEstudiantes();
-      });
-    });
-  }
-
-  seleccionarTodos() {
-    for (const estudiante of this.estudiantes) {
-      estudiante.Seleccionado = true;
-    }
-  }
-
-  obtenerListaCorreos() {
-    this.dlgService.verListaCorreos(this.estudiantes);
-  }
-
-  estadisticasPractica() {
-    this.dlgService.verEstadisticasPractica(this.periodo.idperiodo);
+  verCartasPermisos() {
+    this.router.navigate([RUTA_COORDINACION_PRACTICA_DOCENTE, RUTA_CARTAS_PERMISOS_PRACTICA]);
   }
 
 }

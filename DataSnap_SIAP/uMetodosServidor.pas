@@ -627,6 +627,14 @@ type
     function cancelEstudiante(IdEstudiante: string): TJSONObject;
     function updateEnviarCorreoPractica(datos: TJSONObject): TJSONObject;
     function EstadisticasPeriodo(IdPeriodo: string): TJSONObject;
+    function updateCartaPermiso(datos: TJSONObject): TJSONObject;
+    function acceptCartaPermiso(datos: TJSONObject): TJSONObject;
+    function CartasPermisoByPeriodo(Periodo: string): TJSONObject;
+    function CartaPermiso(IdCarta: string): TJSONObject;
+    function cancelCartaPermiso(IdCarta: string): TJSONObject;
+    function EstudiantesByPeriodo(IdPeriodo: string): TJSONObject;
+    function updateEstudianteCarta(datos: TJSONObject): TJSONObject;
+    function cancelEstudianteCarta(IdEstudianteCarta: string): TJSONObject;
 
   end;
 {$METHODINFO OFF}
@@ -742,7 +750,7 @@ begin
       Query.SQL.Text :=
         'INSERT INTO siap_fechas_plan_mejoramiento (idfecha, fecha)' +
         ' VALUES (:idfecha, :fecha)';
-      Query.Params.ParamByName('idfecha').Value := generarID;
+      Query.Params.ParamByName('idfecha').Value := moduloDatos.generarID;
       Query.Params.ParamByName('fecha').Value := datos.GetValue('fecha').Value;
       Query.ExecSQL;
 
@@ -788,7 +796,8 @@ begin
         'titulo,fechainicio,fechafin,institucion,iddocente) VALUES (' +
         ':idformacion,:titulo,:fechainicio,:fechafin,:institucion,:iddocente)';
 
-      QFormacion.Params.ParamByName('idformacion').Value := generarID;
+      QFormacion.Params.ParamByName('idformacion').Value :=
+        moduloDatos.generarID;
       QFormacion.Params.ParamByName('titulo').Value :=
         datos.GetValue('titulo').Value;
       QFormacion.Params.ParamByName('fechainicio').Value :=
@@ -1718,7 +1727,7 @@ begin
     QPlan.SQL.Add(':observaciones, ');
     QPlan.SQL.Add(':estado_actual_accion)');
 
-    QPlan.Params.ParamByName('idplan').Value := generarID;
+    QPlan.Params.ParamByName('idplan').Value := moduloDatos.generarID;
 
     QPlan.Params.ParamByName('orden').Value :=
       StrToInt(PlanMejoramiento.GetValue('orden').Value);
@@ -3651,7 +3660,7 @@ begin
       ' idareaprofundizacion) VALUES (:idareadocente, :iddocente,' +
       ' :idareaprofundizacion)');
 
-    Query.Params.ParamByName('idareadocente').Value := generarID;
+    Query.Params.ParamByName('idareadocente').Value := moduloDatos.generarID;
     Query.Params.ParamByName('iddocente').Value :=
       StrToInt(datos.GetValue('iddocente').Value);
     Query.Params.ParamByName('idareaprofundizacion').Value :=
@@ -4211,7 +4220,8 @@ begin
         'iddocente,idgrupoinvestigacion,fechaingreso) VALUES (' +
         ':idgrupodocente,:iddocente,:idgrupoinvestigacion,:fechaingreso)';
 
-      QGrupoDoc.Params.ParamByName('idgrupodocente').Value := generarID;
+      QGrupoDoc.Params.ParamByName('idgrupodocente').Value :=
+        moduloDatos.generarID;
       QGrupoDoc.Params.ParamByName('iddocente').Value :=
         StrToInt(datos.GetValue('iddocente').Value);
       QGrupoDoc.Params.ParamByName('idgrupoinvestigacion').Value :=
@@ -4300,6 +4310,19 @@ begin
 
   if validarTokenHeader then
     Result := moduloPracticaDocente.postEstudiante(Estudiante)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
+function TMatematicas.updateEstudianteCarta(datos: TJSONObject): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.postEstudianteCarta(datos)
   else
   begin
     Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
@@ -4772,7 +4795,7 @@ begin
       ' nombre, direccion, iddocente) VALUES (:iddivulgacion, :nombre, ' +
       ':direccion, :iddocente)';
 
-    Query.Params.ParamByName('iddivulgacion').Value := generarID;
+    Query.Params.ParamByName('iddivulgacion').Value := moduloDatos.generarID;
     Query.Params.ParamByName('nombre').Value := enlace.GetValue('nombre').Value;
     Query.Params.ParamByName('direccion').Value :=
       enlace.GetValue('direccion').Value;
@@ -7573,6 +7596,19 @@ begin
   end;
 end;
 
+function TMatematicas.EstudiantesByPeriodo(IdPeriodo: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getEstudiantesByPeriodo(IdPeriodo)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 function TMatematicas.EvaluadoresTrabajosGrado: TJSONObject;
 var
   JsonContratos, JsonContrato, JsonTrabajoGrado, jsonDocente: TJSONObject;
@@ -8389,7 +8425,7 @@ begin
     Query.SQL.Add(':youtube, ');
     Query.SQL.Add(':evidencias )');
 
-    Query.Params.ParamByName('idseminario').Value := generarID;
+    Query.Params.ParamByName('idseminario').Value := moduloDatos.generarID;
     Query.Params.ParamByName('semestre').Value :=
       datos.GetValue('semestre').Value;
     Query.Params.ParamByName('numero').Value :=
@@ -9093,7 +9129,7 @@ begin
       Query.SQL.Add(':descripcion, ');
       Query.SQL.Add(':valor)');
 
-      Query.Params.ParamByName('idpresupuesto').Value := generarID;
+      Query.Params.ParamByName('idpresupuesto').Value := moduloDatos.generarID;
       Query.Params.ParamByName('idplan').Value :=
         datos.GetValue('idplan').Value;
       Query.Params.ParamByName('idfecha').Value :=
@@ -9188,7 +9224,8 @@ begin
         ProduccionDocente.GetValue('fecha_inicio').Value;
       QProduccionDocente.Params.ParamByName('iddocente').Value :=
         ProduccionDocente.GetValue('iddocente').Value;
-      QProduccionDocente.Params.ParamByName('idproduccion').Value := generarID;
+      QProduccionDocente.Params.ParamByName('idproduccion').Value :=
+        moduloDatos.generarID;
       QProduccionDocente.Params.ParamByName('idtipo').Value :=
         ProduccionDocente.GetValue('idtipo').Value;
       QProduccionDocente.Params.ParamByName('institucion').Value :=
@@ -10156,7 +10193,8 @@ begin
       factorCalidad.GetValue('factor').Value;
     QFactorCalidad.Params.ParamByName('orden').Value :=
       StrToInt(factorCalidad.GetValue('orden').Value);
-    QFactorCalidad.Params.ParamByName('idfactorcalidad').Value := generarID;
+    QFactorCalidad.Params.ParamByName('idfactorcalidad').Value :=
+      moduloDatos.generarID;
 
     QFactorCalidad.ExecSQL;
 
@@ -11369,6 +11407,19 @@ begin
 end;
 
 { Método INSERT - CategoriaDocente }
+function TMatematicas.updateCartaPermiso(datos: TJSONObject): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.postCartaPermiso(datos)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 function TMatematicas.updateCategoriaDocente(const token: string;
   const datos: TJSONObject): TJSONObject;
 var
@@ -11416,6 +11467,32 @@ begin
 end;
 
 { Método GET - CategoriaDocente }
+function TMatematicas.CartaPermiso(IdCarta: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getCartaPermiso(IdCarta)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
+function TMatematicas.CartasPermisoByPeriodo(Periodo: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getCartasPermisoByPeriodo(Periodo)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 function TMatematicas.CategoriaDocente(const ID: string): TJSONObject;
 var
   Json: TJSONObject;
@@ -11495,6 +11572,19 @@ begin
 end;
 
 { Método DELETE - CategoriaDocente }
+function TMatematicas.cancelCartaPermiso(IdCarta: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.deleteCartaPermiso(IdCarta)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 function TMatematicas.cancelCategoriaDocente(const token, ID: string)
   : TJSONObject;
 var
@@ -11533,6 +11623,19 @@ begin
 end;
 
 { Método UPDATE - CategoriaDocente }
+function TMatematicas.acceptCartaPermiso(datos: TJSONObject): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.putCartaPermiso(datos)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 function TMatematicas.acceptCategoriaDocente(const token: string;
   const datos: TJSONObject): TJSONObject;
 var
@@ -11817,6 +11920,20 @@ begin
   end;
 end;
 
+function TMatematicas.cancelEstudianteCarta(IdEstudianteCarta: string)
+  : TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.deleteEstudianteCarta(IdEstudianteCarta)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 { Método UPDATE - Error }
 function TMatematicas.acceptError(const token: string; const datos: TJSONObject)
   : TJSONObject;
@@ -11938,7 +12055,7 @@ begin
       QTipoProd.SQL.Text :=
         'INSERT INTO siap_tipo_produccion (idtipo,tipo,identificador) VALUES (:idtipo,:tipo)';
 
-      QTipoProd.Params.ParamByName('idtipo').Value := generarID;
+      QTipoProd.Params.ParamByName('idtipo').Value := moduloDatos.generarID;
       QTipoProd.Params.ParamByName('tipo').Value :=
         datos.GetValue('tipo').Value;
       QTipoProd.Params.ParamByName('identificador').Value :=
@@ -15695,7 +15812,7 @@ var
 begin
   datos := TJSONObject.create;
 
-  datos.AddPair('iderror', generarID);
+  datos.AddPair('iderror', moduloDatos.generarID);
   datos.AddPair('hora', hora);
   datos.AddPair('fecha', fecha);
   datos.AddPair('procedimiento', procedimiento);

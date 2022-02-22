@@ -1,0 +1,28 @@
+<app-titulo-dialogo [Titulo]="'Creando/Editando Carta Permiso ...'"></app-titulo-dialogo>
+
+<form ngNativeValidate (ngSubmit)="guardar()">
+
+    <div class="form-group">
+        <label class="font-weight-bold">Nombre del Rector</label>
+        <input class="form-control" [(ngModel)]="carta.Rector" name="Rector">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Institución</label>
+        <input class="form-control" required [(ngModel)]="carta.Institucion" name="Institucion">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Ciudad</label>
+        <input class="form-control" required disabled [(ngModel)]="carta.Ciudad" name="Ciudad">
+    </div>
+
+    <div class="form-group">
+        <label class="font-weight-bold">Fecha de Envío</label>
+        <input class="form-control" [(ngModel)]="carta.Fecha" name="Fecha">
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-success" type="submit">Guardar</button>
+    </div>
+</form>

@@ -1,4 +1,9 @@
-<app-titulo-dialogo [Titulo]="'Estadísticas de Inscripciones'"></app-titulo-dialogo>
+<div class="form-group">
+    <label class="font-weight-bold">Seleccione el semestre</label>
+    <select class="custom-select" [(ngModel)]="periodo.idperiodo" name="periodo">
+  <option [value]="periodo.idperiodo" *ngFor="let periodo of periodos">{{ periodo.periodo }}</option>
+</select>
+</div>
 
 <div class="modal-footer">
     <button [value]="'plan-mejoramiento.xls'" class="btn btn-outline-success btn-sm" onclick="crearExcel('plan-mejoramiento', value)"><i class="fas fa-file-excel"></i> Descargar como excel</button>

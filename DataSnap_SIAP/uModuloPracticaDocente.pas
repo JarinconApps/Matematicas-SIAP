@@ -32,6 +32,14 @@ type
     function deleteEstudiante(IdEstudiante: string): TJSONObject;
     function enviarCorreo(datos: TJSONObject): TJSONObject;
     function getEstadisticasPeriodo(IdPeriodo: string): TJSONObject;
+    function postCartaPermiso(datos: TJSONObject): TJSONObject;
+    function putCartaPermiso(datos: TJSONObject): TJSONObject;
+    function getCartasPermisoByPeriodo(IdPeriodo: string): TJSONObject;
+    function getCartaPermiso(IdCarta: string): TJSONObject;
+    function deleteCartaPermiso(IdCarta: string): TJSONObject;
+    function getEstudiantesByPeriodo(IdPeriodo: string): TJSONObject;
+    function postEstudianteCarta(datos: TJSONObject): TJSONObject;
+    function deleteEstudianteCarta(IdEstudianteCarta: string): TJSONObject;
   end;
 
 var
@@ -132,6 +140,57 @@ begin
   Query.Free;
 end;
 
+function TmoduloPracticaDocente.postCartaPermiso(datos: TJSONObject)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+  IdCarta: string;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'INSERT INTO siap_carta_autorizacion_practica (';
+    Query.SQL.Add('IdCarta, ');
+    Query.SQL.Add('Rector, ');
+    Query.SQL.Add('Institucion, ');
+    Query.SQL.Add('Ciudad, ');
+    Query.SQL.Add('Fecha, ');
+    Query.SQL.Add('IdPeriodo) VALUES (');
+    Query.SQL.Add(':IdCarta, ');
+    Query.SQL.Add(':Rector, ');
+    Query.SQL.Add(':Institucion, ');
+    Query.SQL.Add(':Ciudad, ');
+    Query.SQL.Add(':Fecha, ');
+    Query.SQL.Add(':IdPeriodo)');
+
+    IdCarta := moduloDatos.generarID;
+    Query.Params.ParamByName('IdCarta').Value := IdCarta;
+    Query.Params.ParamByName('Rector').Value := datos.GetValue('Rector').Value;
+    Query.Params.ParamByName('Institucion').Value :=
+      datos.GetValue('Institucion').Value;
+    Query.Params.ParamByName('Ciudad').Value := datos.GetValue('Ciudad').Value;
+    Query.Params.ParamByName('Fecha').Value := datos.GetValue('Fecha').Value;
+    Query.Params.ParamByName('IdPeriodo').Value :=
+      datos.GetValue('IdPeriodo').Value;
+
+    Query.ExecSQL;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'La carta se creó correctamente');
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
 function TmoduloPracticaDocente.postEstudiante(estudiante: TJSONObject)
   : TJSONObject;
 var
@@ -218,6 +277,107 @@ begin
   Query.Free;
 end;
 
+function TmoduloPracticaDocente.postEstudianteCarta(datos: TJSONObject)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+  IdEstudianteCarta: string;
+  estudiante: TJSONObject;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'INSERT INTO siap_estudiantes_carta (';
+    Query.SQL.Add('IdEstudianteCarta, ');
+    Query.SQL.Add('IdCarta, ');
+    Query.SQL.Add('IdEstudiante) VALUES (');
+    Query.SQL.Add(':IdEstudianteCarta, ');
+    Query.SQL.Add(':IdCarta, ');
+    Query.SQL.Add(':IdEstudiante)');
+
+    IdEstudianteCarta := moduloDatos.generarID;
+    Query.Params.ParamByName('IdEstudianteCarta').Value := IdEstudianteCarta;
+    Query.Params.ParamByName('IdCarta').Value :=
+      datos.GetValue('IdCarta').Value;
+    Query.Params.ParamByName('IdEstudiante').Value :=
+      datos.GetValue('IdEstudiante').Value;
+
+    Query.ExecSQL;
+
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM Siap_Estudiantes_Carta as ec' +
+      ' INNER JOIN Siap_Estudiantes as est ON ec.IdEstudiante = est.IdEstudiante '
+      + 'WHERE ec.IdEstudianteCarta=' + #39 + IdEstudianteCarta + #39;
+    Query.Open;
+
+    estudiante := TJSONObject.Create;
+    estudiante.AddPair('IdEstudianteCarta',
+      Query.FieldByName('IdEstudianteCarta').AsString);
+    estudiante.AddPair('IdEstudiante', Query.FieldByName('IdEstudiante')
+      .AsString);
+    estudiante.AddPair('IdCarta', Query.FieldByName('IdCarta').AsString);
+    estudiante.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
+    estudiante.AddPair('Documento', Query.FieldByName('Documento').AsString);
+    estudiante.AddPair('Correo', Query.FieldByName('Correo').AsString);
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'El estudiante se asigno correctamente');
+    result.AddPair(JSON_OBJECT, estudiante);
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
+function TmoduloPracticaDocente.putCartaPermiso(datos: TJSONObject)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+  IdCarta: string;
+begin
+  try
+    result := TJSONObject.Create;
+
+    IdCarta := datos.GetValue('IdCarta').Value;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'UPDATE siap_carta_autorizacion_practica SET ';
+    Query.SQL.Add('Rector=:Rector, ');
+    Query.SQL.Add('Institucion=:Institucion, ');
+    Query.SQL.Add('Ciudad=:Ciudad, ');
+    Query.SQL.Add('Fecha=:Fecha WHERE IdCarta=' + #39 + IdCarta + #39);
+
+    Query.Params.ParamByName('Rector').Value := datos.GetValue('Rector').Value;
+    Query.Params.ParamByName('Institucion').Value :=
+      datos.GetValue('Institucion').Value;
+    Query.Params.ParamByName('Ciudad').Value := datos.GetValue('Ciudad').Value;
+    Query.Params.ParamByName('Fecha').Value := datos.GetValue('Fecha').Value;
+
+    Query.ExecSQL;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'La carta se actualizó correctamente');
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
 function TmoduloPracticaDocente.putEstudiante(estudiante: TJSONObject)
   : TJSONObject;
 var
@@ -289,6 +449,40 @@ begin
   Query.Free;
 end;
 
+function TmoduloPracticaDocente.deleteCartaPermiso(IdCarta: string)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text :=
+      'DELETE FROM siap_carta_autorizacion_practica WHERE IdCarta=' + #39 +
+      IdCarta + #39;
+    Query.ExecSQL;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'La carta se eliminó correctamente');
+  except
+    on E: Exception do
+    begin
+      if E.Message.IndexOf('viola la llave foránea') >= 0 then
+        result.AddPair(JSON_RESPONSE,
+          'No se puede eliminar porque tiene estudiantes asociados')
+      else
+        result.AddPair(JSON_RESPONSE, E.Message);
+
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    end;
+  end;
+
+  Query.Free;
+end;
+
 function TmoduloPracticaDocente.deleteEstudiante(IdEstudiante: string)
   : TJSONObject;
 var
@@ -302,6 +496,35 @@ begin
     Query.Close;
     Query.SQL.Text := 'DELETE FROM Siap_Estudiantes WHERE IdEstudiante=' + #39 +
       IdEstudiante + #39;
+    Query.ExecSQL;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'El estudiante se eliminó correctamente');
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
+function TmoduloPracticaDocente.deleteEstudianteCarta(IdEstudianteCarta: string)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text :=
+      'DELETE FROM siap_estudiantes_carta WHERE IdEstudianteCarta=' + #39 +
+      IdEstudianteCarta + #39;
     Query.ExecSQL;
 
     result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
@@ -397,6 +620,157 @@ begin
   end;
 
   result := JSON;
+end;
+
+function TmoduloPracticaDocente.getCartaPermiso(IdCarta: string): TJSONObject;
+var
+  Query, QEstudiantes: TFDQuery;
+  i: Integer;
+  Carta, estudiante: TJSONObject;
+  Estudiantes: TJSONArray;
+  j: Integer;
+begin
+  try
+    result := TJSONObject.Create;
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    QEstudiantes := TFDQuery.Create(nil);
+    QEstudiantes.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM siap_carta_autorizacion_practica WHERE ' +
+      'IdCarta=' + #39 + IdCarta + #39;
+    Query.Open;
+
+    Carta := TJSONObject.Create;
+    Carta.AddPair('IdCarta', Query.FieldByName('IdCarta').AsString);
+    Carta.AddPair('Rector', Query.FieldByName('Rector').AsString);
+    Carta.AddPair('Institucion', Query.FieldByName('Institucion').AsString);
+    Carta.AddPair('Ciudad', Query.FieldByName('Ciudad').AsString);
+    Carta.AddPair('Fecha', Query.FieldByName('Fecha').AsString);
+    Carta.AddPair('IdPeriodo', Query.FieldByName('IdPeriodo').AsString);
+
+    QEstudiantes.Close;
+    QEstudiantes.SQL.Text := 'SELECT * FROM Siap_Estudiantes_Carta as ec' +
+      ' INNER JOIN Siap_Estudiantes as est ON ec.IdEstudiante = est.IdEstudiante'
+      + ' WHERE IdCarta=' + #39 + Query.FieldByName('IdCarta').AsString + #39;
+    QEstudiantes.Open;
+    QEstudiantes.First;
+
+    Estudiantes := TJSONArray.Create;
+    for j := 1 to QEstudiantes.RecordCount do
+    begin
+      estudiante := TJSONObject.Create;
+      estudiante.AddPair('IdEstudianteCarta',
+        QEstudiantes.FieldByName('IdEstudianteCarta').AsString);
+      estudiante.AddPair('IdEstudiante',
+        QEstudiantes.FieldByName('IdEstudiante').AsString);
+      estudiante.AddPair('IdCarta', QEstudiantes.FieldByName('IdCarta')
+        .AsString);
+      estudiante.AddPair('Nombre', QEstudiantes.FieldByName('Nombre').AsString);
+      estudiante.AddPair('Documento', QEstudiantes.FieldByName('Documento')
+        .AsString);
+      estudiante.AddPair('Correo', QEstudiantes.FieldByName('Correo').AsString);
+      estudiante.AddPair('Genero', QEstudiantes.FieldByName('Genero').AsString);
+
+      Estudiantes.AddElement(estudiante);
+      QEstudiantes.Next;
+    end;
+
+    Carta.AddPair('Estudiantes', Estudiantes);
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'La Carta se obtuvó correctamente');
+    result.AddPair(JSON_OBJECT, Carta);
+
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
+function TmoduloPracticaDocente.getCartasPermisoByPeriodo(IdPeriodo: string)
+  : TJSONObject;
+var
+  Query, QEstudiantes: TFDQuery;
+  i: Integer;
+  Carta, estudiante: TJSONObject;
+  Cartas, Estudiantes: TJSONArray;
+  j: Integer;
+begin
+  try
+    result := TJSONObject.Create;
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    QEstudiantes := TFDQuery.Create(nil);
+    QEstudiantes.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM siap_carta_autorizacion_practica WHERE ' +
+      'IdPeriodo=' + #39 + IdPeriodo + #39;
+    Query.Open;
+
+    Cartas := TJSONArray.Create;
+    for i := 1 to Query.RecordCount do
+    begin
+      Carta := TJSONObject.Create;
+      Carta.AddPair('IdCarta', Query.FieldByName('IdCarta').AsString);
+      Carta.AddPair('Rector', Query.FieldByName('Rector').AsString);
+      Carta.AddPair('Institucion', Query.FieldByName('Institucion').AsString);
+      Carta.AddPair('Ciudad', Query.FieldByName('Ciudad').AsString);
+      Carta.AddPair('Fecha', Query.FieldByName('Fecha').AsString);
+      Carta.AddPair('IdPeriodo', Query.FieldByName('IdPeriodo').AsString);
+
+      QEstudiantes.Close;
+      QEstudiantes.SQL.Text := 'SELECT * FROM Siap_Estudiantes_Carta as ec' +
+        ' INNER JOIN Siap_Estudiantes as est ON ec.IdEstudiante = est.IdEstudiante'
+        + ' WHERE IdCarta=' + #39 + Query.FieldByName('IdCarta').AsString + #39;
+      QEstudiantes.Open;
+      QEstudiantes.First;
+
+      Estudiantes := TJSONArray.Create;
+      for j := 1 to QEstudiantes.RecordCount do
+      begin
+        estudiante := TJSONObject.Create;
+        estudiante.AddPair('IdEstudianteCarta',
+          QEstudiantes.FieldByName('IdEstudianteCarta').AsString);
+        estudiante.AddPair('IdEstudiante',
+          QEstudiantes.FieldByName('IdEstudiante').AsString);
+        estudiante.AddPair('IdCarta', QEstudiantes.FieldByName('IdCarta')
+          .AsString);
+        estudiante.AddPair('Nombre', QEstudiantes.FieldByName('Nombre')
+          .AsString);
+        estudiante.AddPair('Documento', QEstudiantes.FieldByName('Documento')
+          .AsString);
+        estudiante.AddPair('Correo', QEstudiantes.FieldByName('Correo')
+          .AsString);
+
+        Estudiantes.AddElement(estudiante);
+        QEstudiantes.Next;
+      end;
+
+      Carta.AddPair('Estudiantes', Estudiantes);
+      Cartas.AddElement(Carta);
+      Query.Next;
+    end;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'Las Cartas se obtuvieron correctamente');
+    result.AddPair(JSON_RESULTS, Cartas);
+
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+  QEstudiantes.Free;
 end;
 
 function TmoduloPracticaDocente.getEstadisticasPeriodo(IdPeriodo: string)
@@ -511,6 +885,56 @@ begin
       estudiante.AddPair('Eps', Query.FieldByName('Eps').AsString);
       estudiante.AddPair('EstadoCivil', Query.FieldByName('EstadoCivil')
         .AsString);
+
+      Estudiantes.AddElement(estudiante);
+      Query.Next;
+    end;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE,
+      'La lista de estudiantes se obtuvo correctamente');
+    result.AddPair(JSON_RESULTS, Estudiantes);
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
+function TmoduloPracticaDocente.getEstudiantesByPeriodo(IdPeriodo: string)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+  i: Integer;
+  estudiante: TJSONObject;
+  Estudiantes: TJSONArray;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM Siap_Practica_Docente as pd INNER JOIN' +
+      ' Siap_Estudiantes as est ON pd.IdEstudiante = est.IdEstudiante WHERE ' +
+      'pd.IdPeriodo=' + #39 + IdPeriodo + #39 + ' ORDER BY est.Nombre';
+    Query.Open;
+    Query.First;
+
+    Estudiantes := TJSONArray.Create;
+
+    for i := 1 to Query.RecordCount do
+    begin
+      estudiante := TJSONObject.Create;
+      estudiante.AddPair('IdEstudiante', Query.FieldByName('IdEstudiante')
+        .AsString);
+      estudiante.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
+      estudiante.AddPair('Correo', Query.FieldByName('Correo').AsString);
+      estudiante.AddPair('Documento', Query.FieldByName('Documento').AsString);
 
       Estudiantes.AddElement(estudiante);
       Query.Next;

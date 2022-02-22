@@ -179,6 +179,11 @@ import { CrearEditarEstudianteComponent } from './factores/procesos_academicos/c
 import { EnviarCorreoPracticaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/enviar-correo-practica/enviar-correo-practica.component';
 import { VerListaCorreosComponent } from './factores/procesos_academicos/coordinacion-practica-docente/ver-lista-correos/ver-lista-correos.component';
 import { EstadisticasPracticaDocenteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estadisticas-practica-docente/estadisticas-practica-docente.component';
+import { EstudiantesPracticaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estudiantes-practica/estudiantes-practica.component';
+import { CartasPermisosPracticasComponent } from './factores/procesos_academicos/coordinacion-practica-docente/cartas-permisos-practicas/cartas-permisos-practicas.component';
+import { CrearEditarCartaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/cartas-permisos-practicas/crear-editar-carta/crear-editar-carta.component';
+import { SeleccionarEstudianteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estudiantes-practica/seleccionar-estudiante/seleccionar-estudiante.component';
+import { ExportarCartaPermisoComponent } from './factores/procesos_academicos/coordinacion-practica-docente/exportar-carta-permiso/exportar-carta-permiso.component';
 
 
 
@@ -439,6 +444,16 @@ import { EstadisticasPracticaDocenteComponent } from './factores/procesos_academ
 
     EstadisticasPracticaDocenteComponent,
 
+    EstudiantesPracticaComponent,
+
+    CartasPermisosPracticasComponent,
+
+    CrearEditarCartaComponent,
+
+    SeleccionarEstudianteComponent,
+
+    ExportarCartaPermisoComponent,
+
 
   ],
   imports: [
@@ -506,7 +521,9 @@ import { EstadisticasPracticaDocenteComponent } from './factores/procesos_academ
     CrearEditarEstudianteComponent,
     EnviarCorreoPracticaComponent,
     VerListaCorreosComponent,
-    EstadisticasPracticaDocenteComponent
+    EstadisticasPracticaDocenteComponent,
+    CrearEditarCartaComponent,
+    SeleccionarEstudianteComponent
   ],
   bootstrap: [AppComponent]
 })

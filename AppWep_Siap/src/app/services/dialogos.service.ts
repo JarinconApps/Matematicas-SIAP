@@ -11,7 +11,7 @@ import { EsperaComponent } from '../dialogos/espera/espera.component';
 import { MostrarParticipanteComponent } from '../dialogos/mostrar-participante/mostrar-participante.component';
 import { EvaluarResumenEmemComponent } from '../dialogos/evaluar-resumen-emem/evaluar-resumen-emem.component';
 import { SnackBarComponent } from '../dialogos/snack-bar/snack-bar.component';
-import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario, FechaPresupuestoPm, PresupuestoPm, Estudiante } from '../interfaces/interfaces.interfaces';
+import { Usuario, Resumen, ActaConsejoCurricular, PlanMejoramiento, FactorCalidad, Formacion, Docente, TipoProduccion, Producto, TrabajoGrado, GrupoInvestigacion, EnlaceDivulgacion, Seminario, FechaPresupuestoPm, PresupuestoPm, Estudiante, CartaPermiso } from '../interfaces/interfaces.interfaces';
 import { DlgTipoContratoComponent } from '../factores/docentes/tipos-contrato/dlg-tipo-contrato/dlg-tipo-contrato.component';
 import { DlgCategoriaDocenteComponent } from '../factores/docentes/categorias-docentes/dlg-categoria-docente/dlg-categoria-docente.component';
 import { DlgDocenteComponent } from '../factores/docentes/docentes/dlg-docente/dlg-docente.component';
@@ -56,6 +56,8 @@ import { CrearEditarEstudianteComponent } from '../factores/procesos_academicos/
 import { EnviarCorreoPracticaComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/enviar-correo-practica/enviar-correo-practica.component';
 import { VerListaCorreosComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/ver-lista-correos/ver-lista-correos.component';
 import { EstadisticasPracticaDocenteComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/estadisticas-practica-docente/estadisticas-practica-docente.component';
+import { CrearEditarCartaComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/cartas-permisos-practicas/crear-editar-carta/crear-editar-carta.component';
+import { SeleccionarEstudianteComponent } from '../factores/procesos_academicos/coordinacion-practica-docente/estudiantes-practica/seleccionar-estudiante/seleccionar-estudiante.component';
 
 @Injectable({
   providedIn: 'root'
@@ -496,6 +498,24 @@ export class DialogosService {
   verEstadisticasPractica(IdPeriodo: string) {
     const dialogRef = this.dialog.open(EstadisticasPracticaDocenteComponent, {
       width: '90%', height: '90%',
+      data: {IdPeriodo}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  crearEditarCartaPermiso(carta: CartaPermiso, IdPeriodo: string) {
+    const dialogRef = this.dialog.open(CrearEditarCartaComponent, {
+      width: '600px',
+      data: {carta, IdPeriodo}
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  seleccionarEstudiante(IdPeriodo: string) {
+    const dialogRef = this.dialog.open(SeleccionarEstudianteComponent, {
+      width: '80%', height: '80%',
       data: {IdPeriodo}
     });
 

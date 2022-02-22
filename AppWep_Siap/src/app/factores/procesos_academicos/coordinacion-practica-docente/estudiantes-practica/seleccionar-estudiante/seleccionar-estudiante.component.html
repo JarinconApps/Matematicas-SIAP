@@ -1,0 +1,29 @@
+<app-titulo-dialogo [Titulo]="'Lista de estudiantes de la práctica docente ...'"></app-titulo-dialogo>
+
+<div class="alert alert-success">
+    Seleccione un estudiante de la lista
+</div>
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>No</th>
+            <th>Nombre</th>
+            <th>Documento</th>
+            <th>Correo</th>
+            <th>Seleccionar</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let estudiante of estudiantes; let id = index">
+            <td>{{ id + 1 }}</td>
+            <td>{{ estudiante.Nombre }}</td>
+            <td>{{ estudiante.Documento }}</td>
+            <td>{{ estudiante.Correo }}</td>
+            <td>
+                <button class="btn btn-outline-success btn-sm" (click)="seleccionarEstudiante(estudiante)"><img class="mr-1" src="assets/Iconos/Aceptar.png" style="width: 24px;"> Seleccionar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -705,6 +705,7 @@ export interface RespuestaCRUD {
   Response?: string;
   Results?: any[];
   Status?: string;
+  Object?: any;
 }
 
 export interface Login {
@@ -797,4 +798,24 @@ export interface EstudiantePractica {
   Semestre?: string;
   Telefono?: string;
   TipoDocumento?: string;
+}
+
+export interface CartaPermiso {
+  IdCarta?: string;
+  Rector?: string;
+  Institucion?: string;
+  Ciudad?: string;
+  Fecha?: string;
+  IdPeriodo?: string;
+  Estudiantes?: EstudianteCarta[];
+}
+
+export interface EstudianteCarta {
+  IdEstudianteCarta?: string;
+  IdCarta?: string;
+  IdEstudiante?: string;
+  Nombre?: string;
+  Documento?: string;
+  Correo?: string;
+  Genero?: string;
 }

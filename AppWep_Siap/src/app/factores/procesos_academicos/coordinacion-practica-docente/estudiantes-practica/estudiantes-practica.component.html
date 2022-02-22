@@ -1,0 +1,52 @@
+<div class="form-group">
+    <label class="font-weight-bold">Seleccione el semestre</label>
+    <select class="custom-select" [(ngModel)]="periodo.idperiodo" name="periodo">
+    <option [value]="periodo.idperiodo" *ngFor="let periodo of periodos">{{ periodo.periodo }}</option>
+  </select>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-outline-info m-3" (click)="seleccionarTodos()">Seleccionar todos</button>
+</div>
+
+<div class="modal-footer">
+    <div class="alert alert-success" *ngIf="enviando">
+        <i class="fas fa-sync fa-1x text-success fa fa-spin"></i> Enviando correo
+    </div>
+    <button class="btn btn-outline-success" (click)="crearEstudiante()">Agregar Estudiante</button>
+</div>
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th></th>
+            <th>No</th>
+            <th>Documento</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Ver</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let estudiante of estudiantes; let id = index">
+            <td>
+                <input type="checkbox" class="form-check-input" [(ngModel)]="estudiante.Seleccionado" name="Seleccionado">
+            </td>
+            <td>{{ id + 1 }}</td>
+            <td>{{ estudiante.Documento }}</td>
+            <td>{{ estudiante.Nombre }}</td>
+            <td>{{ estudiante.Correo }}</td>
+            <td>
+                <button class="btn btn-outline-success btn-sm" (click)="ver(estudiante)">Ver</button>
+            </td>
+            <td>
+                <button class="btn btn-outline-warning btn-sm" (click)="editar(estudiante)">Editar</button>
+            </td>
+            <td>
+                <button class="btn btn-outline-danger btn-sm" (click)="eliminar(estudiante)">Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
