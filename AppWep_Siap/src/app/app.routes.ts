@@ -89,12 +89,13 @@ import { GrupoInvestigacionComponent } from './factores/investigacion/grupos-inv
 import { SeminarioComponent } from './factores/extension/seminario/seminario.component';
 import { EventosSeminarioComponent } from './factores/extension/seminario/eventos-seminario/eventos-seminario.component';
 import { FechasPresupuestosComponent } from './factores/procesos_academicos/plan-mejoramiento/fechas-presupuestos/fechas-presupuestos.component';
-import { RUTA_COORDINACION_PRACTICA_DOCENTE, RUTA_ESTUDIANTES_PRACTICA, RUTA_CARTAS_PERMISOS_PRACTICA, RUTA_ESTADISTICAS_PRACTICA, RUTA_EXPORTAR_CARTA_PERMISO } from './config/config';
+import { RUTA_COORDINACION_PRACTICA_DOCENTE, RUTA_ESTUDIANTES_PRACTICA, RUTA_CARTAS_PERMISOS_PRACTICA, RUTA_ESTADISTICAS_PRACTICA, RUTA_EXPORTAR_CARTA_PERMISO, RUTA_REPORTE_ESTUDIANTES_PRACTICA_BY_SECRETARIA } from './config/config';
 import { CoordinacionPracticaDocenteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/coordinacion-practica-docente.component';
 import { EstudiantesPracticaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estudiantes-practica/estudiantes-practica.component';
 import { CartasPermisosPracticasComponent } from './factores/procesos_academicos/coordinacion-practica-docente/cartas-permisos-practicas/cartas-permisos-practicas.component';
 import { EstadisticasPracticaDocenteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estadisticas-practica-docente/estadisticas-practica-docente.component';
 import { ExportarCartaPermisoComponent } from './factores/procesos_academicos/coordinacion-practica-docente/exportar-carta-permiso/exportar-carta-permiso.component';
+import { ReporteEstudiantesBySecretariaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/reporte-estudiantes-by-secretaria/reporte-estudiantes-by-secretaria.component';
 
 const routes: Routes = [
 
@@ -121,11 +122,13 @@ const routes: Routes = [
   {path: RUTA_DOCENTES_DIRECCION_TRABAJOS_GRADO, component: ReporteDireccionTrabajosGradoComponent},
   {path: RUTA_VER_TRABAJO_GRADO + '/:IdTrabajoGrado', component: VerTrabajoGradoComponent},
   {path: RUTA_CREAR_EDITAR_TRABAJO_GRADO + '/:Id', component: CrearEditarTrabajoGradoComponent},
+
   {path: RUTA_COORDINACION_PRACTICA_DOCENTE, component: CoordinacionPracticaDocenteComponent,
     children: [
       {path: RUTA_ESTUDIANTES_PRACTICA, component: EstudiantesPracticaComponent},
       {path: RUTA_CARTAS_PERMISOS_PRACTICA, component: CartasPermisosPracticasComponent},
       {path: RUTA_ESTADISTICAS_PRACTICA, component: EstadisticasPracticaDocenteComponent},
+      {path: RUTA_REPORTE_ESTUDIANTES_PRACTICA_BY_SECRETARIA, component: ReporteEstudiantesBySecretariaComponent},
       {path: '**', pathMatch: 'full', redirectTo: RUTA_ESTUDIANTES_PRACTICA}
     ]},
   {path: RUTA_EXPORTAR_CARTA_PERMISO + '/:Id', component: ExportarCartaPermisoComponent},

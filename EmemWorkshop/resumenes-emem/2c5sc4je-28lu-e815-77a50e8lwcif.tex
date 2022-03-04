@@ -1,0 +1,48 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Ajuste por Medio de Splines Bidimensionales para un Conjunto de Datos de Solidos Suspendidos Totales (SST)}
+\author{Jordy Felipe Diaz Bermeo \thanks{Universidad del quindio , jfdiazb@uqvirtual.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Sólidos suspendidos totales, Interpolacón, Splines cúbicos, Splines bidimensionales, Python
+\rule[0.25ex]{1\columnwidth}{1pt}
+Esté trabajo consiste en determinar la superficie asociada a un conjunto de datos de sólidos suspendidos totales (SST) en los meses octubre y noviembre del año 2018. En primer lugar, se someten estos datos al método de splines cúbicos en Python [1] para generar una curva suave que pueda predecir con más precisión
+el comportamiento de los datos y finalmente se construye la superficie utilizando splines bidimensionales [2].
+\begin{thebibliography}{1}
+\bibitem{ref1} Cerquera, Y. (2007). Interpolación con trazadores o splines.
+\bibitem{ref2}Baltazar, J. M., & Eça, L. R. (2006). Generación de Mallas Estructuradas en Superficie. Información tecnológica, 17(3), 107-116.
+\end{thebibliography}
+\end{document}

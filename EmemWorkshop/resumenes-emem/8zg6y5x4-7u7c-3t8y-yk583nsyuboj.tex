@@ -1,0 +1,64 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Ajuste de Curvas por Mínimos Cuadrados}
+\author{Efraín Alberto Hoyos Salcedo\thanks{Universidad del Quindío, eahoyos@uniquindio.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Ajuste de Curvas, Mínimos cuadrados
+\rule[0.25ex]{1\columnwidth}{1pt}
+El asunto a tratar resulta cuando se dispone de una información de datos relacionados, y se desea caracterizar la tendencia de dichos datos a partir de una función. Una manera para determinar la función es inspeccionar en forma visual los datos graficados y después trazar una “mejor” línea a través de los puntos. Aunque tales procedimientos “a ojo” apelan al sentido común y son válidos para cálculos “superficiales”, resultan deficientes por ser arbitrarios. Es decir, a menos que los puntos definan una línea recta perfecta. Aunque este primer paso es de suma importancia para suponer la ecuación de ajuste, se debe encontrar algún criterio para establecer una base para el ajuste. Una forma de hacerlo es obtener una curva que minimice la discrepancia entre los puntos y la curva. Una técnica para lograr tal objetivo es la llamada regresión por mínimos cuadrados.
+
+El presente cursillo pretende ofrecer mediante dos exposiciones, cada una de 90 minutos, una introducción a la técnica de ajuste de curvas por mínimos cuadrados y los temas a considerar son los siguientes:
+
+\begin{enumerate}
+\item Regresión lineal 
+\item La ecuación de una recta 
+\item Linealización de relaciones no lineales 
+\item La ecuación exponencial 
+\item La ecuación de potencias 
+\item La ecuación de razón del crecimiento 
+\item La ecuación de sinusoidales
+\item Regresión polinomial 
+\item Regresión lineal múltiple 
+\item Mínimos cuadrados lineales en general 
+\item Regresión no lineal 
+\end{enumerate}
+\textbf{Nota:} Las exposiciones estarán acompañadas con un software
+educativo que permitirá ejemplificar cada uno de los ajustes tratados.
+\begin{thebibliography}{1}
+\bibitem{ref1}Contreras, M.  (2011).  Herramientas de software aplicadas al método de regresión lineal .  (Tesis de Maestría).  Universidad Nacional de Colombia : Bogotá
+\end{thebibliography}
+\end{document}

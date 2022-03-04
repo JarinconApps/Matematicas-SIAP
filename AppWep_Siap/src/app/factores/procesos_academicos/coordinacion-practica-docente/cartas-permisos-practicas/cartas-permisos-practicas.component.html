@@ -28,6 +28,7 @@
         <tr *ngFor="let carta of cartas; let id = index">
             <td>{{ id + 1 }}</td>
             <td>{{ carta.Institucion }}</td>
+            <td>{{ carta.Secretaria }}</td>
             <td>{{ carta.Rector }}</td>
             <td>{{ carta.Fecha }}</td>
             <td>
@@ -35,6 +36,8 @@
                     <tbody>
                         <tr *ngFor="let estudiante of carta.Estudiantes">
                             <td>{{ estudiante.Nombre }}</td>
+                            <td>{{ estudiante.Horario }}</td>
+                            <td>{{ estudiante.Grado }}</td>
                             <td>
                                 <button class="btn btn-outline-info" (click)="eliminarEstudiante(estudiante, carta)"><img class="m-1" src="assets/Iconos/Eliminar.png" style="width: 24px;"></button>
                             </td>

@@ -12,6 +12,7 @@ export class ExportarCartaPermisoComponent implements OnInit {
 
   carta: CartaPermiso = {};
   IdCarta = '';
+  Titulo = '';
 
   constructor(private genService: GeneralService,
               private activatedRoute: ActivatedRoute) { }
@@ -30,12 +31,12 @@ export class ExportarCartaPermisoComponent implements OnInit {
       console.log(rCarta);
       this.carta = rCarta.Object;
 
-      let titulo = '';
+      this.Titulo = '';
       for (const estudiante of this.carta.Estudiantes) {
-        titulo = titulo + estudiante.Nombre + ' - ';
+        this.Titulo = this.Titulo + estudiante.Nombre + ' - ';
       }
 
-      document.title = titulo;
+      document.title = this.Titulo;
     });
   }
 

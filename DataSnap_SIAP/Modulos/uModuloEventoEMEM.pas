@@ -28,7 +28,7 @@ type
     function getPonenciasCronograma(IdEventoCronograma: string): TJSONArray;
     function getModalidadPonencia(IdModalidad: string): TJsonObject;
     function getContactoEvento(IdEvento: string): TJsonObject;
-    function getOrganizador(IdOrganizador,IdEvento: string): TJsonObject;
+    function getOrganizador(IdOrganizador, IdEvento: string): TJsonObject;
     function getFuncionesOrganizador(IdOrganizador, IdEvento: string)
       : TJSONArray;
     function postParticipante(datos: TJsonObject): TJsonObject;
@@ -267,7 +267,8 @@ begin
 
       IdOrganizador := Query.FieldByName('IdOrganizador').AsString;
       jsonOrganizador.AddPair('IdOrganizador', IdOrganizador);
-      jsonOrganizador.AddPair('Organizador', getOrganizador(IdOrganizador,IdEvento));
+      jsonOrganizador.AddPair('Organizador', getOrganizador(IdOrganizador,
+        IdEvento));
 
       jsonOrganizador.AddPair('IdEvento', Query.FieldByName('IdEvento')
         .AsString);
@@ -622,7 +623,8 @@ begin
   Query.Free;
 end;
 
-function TmoduloEventoEMEM.getOrganizador(IdOrganizador,IdEvento: string): TJsonObject;
+function TmoduloEventoEMEM.getOrganizador(IdOrganizador, IdEvento: string)
+  : TJsonObject;
 var
   JSON: TJsonObject;
   Organizadores: TJSONArray;
@@ -642,7 +644,7 @@ begin
     JSON.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
     JSON.AddPair('Correo', Query.FieldByName('Correo').AsString);
 
-    JSON.AddPair('Funciones', getFuncionesOrganizador(IdOrganizador,IdEvento));
+    JSON.AddPair('Funciones', getFuncionesOrganizador(IdOrganizador, IdEvento));
   except
     on E: Exception do
     begin
@@ -967,7 +969,8 @@ begin
         Query.SQL.Add(':TituloPonencia, ');
         Query.SQL.Add(':IdParticipante)');
 
-        Query.Params.ParamByName('IdParticipanteEvento').Value := generarID;
+        Query.Params.ParamByName('IdParticipanteEvento').Value :=
+          moduloDatos.generarID;
 
         Query.Params.ParamByName('IdEvento').Value :=
           datos.GetValue('IdEvento').Value;
@@ -1005,7 +1008,7 @@ begin
       Query.SQL.Add(':Institucion, ');
       Query.SQL.Add(':Titulo)');
 
-      IdParticipante := generarID;
+      IdParticipante := moduloDatos.generarID;
       Query.Params.ParamByName('IdParticipante').Value := IdParticipante;
       Query.Params.ParamByName('Nombre').Value :=
         datos.GetValue('Nombre').Value;
@@ -1033,7 +1036,8 @@ begin
       Query.SQL.Add(':TituloPonencia, ');
       Query.SQL.Add(':IdParticipante)');
 
-      Query.Params.ParamByName('IdParticipanteEvento').Value := generarID;
+      Query.Params.ParamByName('IdParticipanteEvento').Value :=
+        moduloDatos.generarID;
       Query.Params.ParamByName('IdEvento').Value :=
         datos.GetValue('IdEvento').Value;
       Query.Params.ParamByName('IdTipoParticipante').Value :=

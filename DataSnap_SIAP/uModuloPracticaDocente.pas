@@ -40,6 +40,9 @@ type
     function getEstudiantesByPeriodo(IdPeriodo: string): TJSONObject;
     function postEstudianteCarta(datos: TJSONObject): TJSONObject;
     function deleteEstudianteCarta(IdEstudianteCarta: string): TJSONObject;
+    function getEstudiantesBySecretaria(IdPeriodo: string): TJSONObject;
+    function getSecretarias: TJSONObject;
+    function putEstudianteCarta(datos: TJSONObject): TJSONObject;
   end;
 
 var
@@ -158,12 +161,14 @@ begin
     Query.SQL.Add('Institucion, ');
     Query.SQL.Add('Ciudad, ');
     Query.SQL.Add('Fecha, ');
+    Query.SQL.Add('IdSecretaria, ');
     Query.SQL.Add('IdPeriodo) VALUES (');
     Query.SQL.Add(':IdCarta, ');
     Query.SQL.Add(':Rector, ');
     Query.SQL.Add(':Institucion, ');
     Query.SQL.Add(':Ciudad, ');
     Query.SQL.Add(':Fecha, ');
+    Query.SQL.Add(':IdSecretaria, ');
     Query.SQL.Add(':IdPeriodo)');
 
     IdCarta := moduloDatos.generarID;
@@ -173,6 +178,8 @@ begin
       datos.GetValue('Institucion').Value;
     Query.Params.ParamByName('Ciudad').Value := datos.GetValue('Ciudad').Value;
     Query.Params.ParamByName('Fecha').Value := datos.GetValue('Fecha').Value;
+    Query.Params.ParamByName('IdSecretaria').Value :=
+      datos.GetValue('IdSecretaria').Value;
     Query.Params.ParamByName('IdPeriodo').Value :=
       datos.GetValue('IdPeriodo').Value;
 
@@ -293,9 +300,13 @@ begin
     Query.SQL.Text := 'INSERT INTO siap_estudiantes_carta (';
     Query.SQL.Add('IdEstudianteCarta, ');
     Query.SQL.Add('IdCarta, ');
+    Query.SQL.Add('Horario, ');
+    Query.SQL.Add('Grado, ');
     Query.SQL.Add('IdEstudiante) VALUES (');
     Query.SQL.Add(':IdEstudianteCarta, ');
     Query.SQL.Add(':IdCarta, ');
+    Query.SQL.Add(':Horario, ');
+    Query.SQL.Add(':Grado, ');
     Query.SQL.Add(':IdEstudiante)');
 
     IdEstudianteCarta := moduloDatos.generarID;
@@ -304,6 +315,9 @@ begin
       datos.GetValue('IdCarta').Value;
     Query.Params.ParamByName('IdEstudiante').Value :=
       datos.GetValue('IdEstudiante').Value;
+    Query.Params.ParamByName('Horario').Value :=
+      datos.GetValue('Horario').Value;
+    Query.Params.ParamByName('Grado').Value := datos.GetValue('Grado').Value;
 
     Query.ExecSQL;
 
@@ -322,6 +336,8 @@ begin
     estudiante.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
     estudiante.AddPair('Documento', Query.FieldByName('Documento').AsString);
     estudiante.AddPair('Correo', Query.FieldByName('Correo').AsString);
+    estudiante.AddPair('Horario', Query.FieldByName('Horario').AsString);
+    estudiante.AddPair('Grado', Query.FieldByName('Grado').AsString);
 
     result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
     result.AddPair(JSON_RESPONSE, 'El estudiante se asigno correctamente');
@@ -355,6 +371,7 @@ begin
     Query.SQL.Add('Rector=:Rector, ');
     Query.SQL.Add('Institucion=:Institucion, ');
     Query.SQL.Add('Ciudad=:Ciudad, ');
+    Query.SQL.Add('IdSecretaria=:IdSecretaria, ');
     Query.SQL.Add('Fecha=:Fecha WHERE IdCarta=' + #39 + IdCarta + #39);
 
     Query.Params.ParamByName('Rector').Value := datos.GetValue('Rector').Value;
@@ -362,6 +379,8 @@ begin
       datos.GetValue('Institucion').Value;
     Query.Params.ParamByName('Ciudad').Value := datos.GetValue('Ciudad').Value;
     Query.Params.ParamByName('Fecha').Value := datos.GetValue('Fecha').Value;
+    Query.Params.ParamByName('IdSecretaria').Value :=
+      datos.GetValue('IdSecretaria').Value;
 
     Query.ExecSQL;
 
@@ -438,6 +457,64 @@ begin
 
     result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
     result.AddPair(JSON_RESPONSE, 'El estudiante se actualizó correctamente');
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
+function TmoduloPracticaDocente.putEstudianteCarta(datos: TJSONObject)
+  : TJSONObject;
+var
+  Query: TFDQuery;
+  IdEstudianteCarta: string;
+  estudiante: TJSONObject;
+begin
+  try
+    result := TJSONObject.Create;
+
+    IdEstudianteCarta := datos.GetValue('IdEstudianteCarta').Value;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+    Query.SQL.Text := 'UPDATE siap_estudiantes_carta SET ';
+    Query.SQL.Add('Horario=:Horario, ');
+    Query.SQL.Add('Grado=:Grado WHERE IdEstudianteCarta=' + #39 +
+      IdEstudianteCarta + #39);
+
+    Query.Params.ParamByName('Horario').Value :=
+      datos.GetValue('Horario').Value;
+    Query.Params.ParamByName('Grado').Value := datos.GetValue('Grado').Value;
+
+    Query.ExecSQL;
+
+    Query.Close;
+    Query.SQL.Text := 'SELECT * FROM Siap_Estudiantes_Carta as ec' +
+      ' INNER JOIN Siap_Estudiantes as est ON ec.IdEstudiante = est.IdEstudiante '
+      + 'WHERE ec.IdEstudianteCarta=' + #39 + IdEstudianteCarta + #39;
+    Query.Open;
+
+    estudiante := TJSONObject.Create;
+    estudiante.AddPair('IdEstudianteCarta',
+      Query.FieldByName('IdEstudianteCarta').AsString);
+    estudiante.AddPair('IdEstudiante', Query.FieldByName('IdEstudiante')
+      .AsString);
+    estudiante.AddPair('IdCarta', Query.FieldByName('IdCarta').AsString);
+    estudiante.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
+    estudiante.AddPair('Documento', Query.FieldByName('Documento').AsString);
+    estudiante.AddPair('Correo', Query.FieldByName('Correo').AsString);
+    estudiante.AddPair('Horario', Query.FieldByName('Horario').AsString);
+    estudiante.AddPair('Grado', Query.FieldByName('Grado').AsString);
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'El estudiante se actualizó correctamente');
+    result.AddPair(JSON_OBJECT, estudiante);
   except
     on E: Exception do
     begin
@@ -671,6 +748,9 @@ begin
         .AsString);
       estudiante.AddPair('Correo', QEstudiantes.FieldByName('Correo').AsString);
       estudiante.AddPair('Genero', QEstudiantes.FieldByName('Genero').AsString);
+      estudiante.AddPair('Horario', QEstudiantes.FieldByName('Horario')
+        .AsString);
+      estudiante.AddPair('Grado', QEstudiantes.FieldByName('Grado').AsString);
 
       Estudiantes.AddElement(estudiante);
       QEstudiantes.Next;
@@ -709,8 +789,10 @@ begin
     QEstudiantes := TFDQuery.Create(nil);
     QEstudiantes.Connection := moduloDatos.Conexion;
     Query.Close;
-    Query.SQL.Text := 'SELECT * FROM siap_carta_autorizacion_practica WHERE ' +
-      'IdPeriodo=' + #39 + IdPeriodo + #39;
+    Query.SQL.Text := 'SELECT * FROM Siap_Carta_Autorizacion_Practica as cap ' +
+      'INNER JOIN Siap_Secretarias_Practica as sp ON ' +
+      'cap.IdSecretaria = sp.IdSecretaria WHERE' + ' cap.IdPeriodo=' + #39 +
+      IdPeriodo + #39;
     Query.Open;
 
     Cartas := TJSONArray.Create;
@@ -722,6 +804,7 @@ begin
       Carta.AddPair('Institucion', Query.FieldByName('Institucion').AsString);
       Carta.AddPair('Ciudad', Query.FieldByName('Ciudad').AsString);
       Carta.AddPair('Fecha', Query.FieldByName('Fecha').AsString);
+      Carta.AddPair('Secretaria', Query.FieldByName('Secretaria').AsString);
       Carta.AddPair('IdPeriodo', Query.FieldByName('IdPeriodo').AsString);
 
       QEstudiantes.Close;
@@ -746,6 +829,9 @@ begin
         estudiante.AddPair('Documento', QEstudiantes.FieldByName('Documento')
           .AsString);
         estudiante.AddPair('Correo', QEstudiantes.FieldByName('Correo')
+          .AsString);
+        estudiante.AddPair('Grado', QEstudiantes.FieldByName('Grado').AsString);
+        estudiante.AddPair('Horario', QEstudiantes.FieldByName('Horario')
           .AsString);
 
         Estudiantes.AddElement(estudiante);
@@ -955,6 +1041,93 @@ begin
   Query.Free;
 end;
 
+function TmoduloPracticaDocente.getEstudiantesBySecretaria(IdPeriodo: string)
+  : TJSONObject;
+var
+  Query, QSecretarias: TFDQuery;
+  i: Integer;
+  IdSecretaria: string;
+  Secretarias, Estudiantes: TJSONArray;
+  estudiante, secretaria: TJSONObject;
+  s: Integer;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.Close;
+
+    QSecretarias := TFDQuery.Create(nil);
+    QSecretarias.Connection := moduloDatos.Conexion;
+    QSecretarias.Close;
+
+    QSecretarias.SQL.Text := 'SELECT * FROM Siap_Secretarias_Practica ORDER' +
+      ' BY Secretaria';
+    QSecretarias.Open;
+    QSecretarias.First;
+
+    Secretarias := TJSONArray.Create;
+
+    for s := 1 to QSecretarias.RecordCount do
+    begin
+
+      // Leer los estudiantes de la secretaria departamental
+      secretaria := TJSONObject.Create;
+      secretaria.AddPair('IdSecretaria',
+        QSecretarias.FieldByName('IdSecretaria').AsString);
+      secretaria.AddPair('Secretaria', QSecretarias.FieldByName('Secretaria')
+        .AsString);
+      IdSecretaria := QSecretarias.FieldByName('IdSecretaria').AsString;
+
+      Query.SQL.Text := 'SELECT Nombre,Documento,Correo,Horario,Grado,Rector,' +
+        'Institucion,Ciudad FROM Siap_Carta_Autorizacion_Practica as cap' +
+        ' INNER JOIN Siap_Estudiantes_Carta as ec ON cap.IdCarta = ec.IdCarta' +
+        ' INNER JOIN Siap_Estudiantes as est ON ec.IdEstudiante = est.IdEstudiante'
+        + ' WHERE cap.IdSecretaria=' + #39 + IdSecretaria + #39 +
+        ' AND cap.IdPeriodo=' + #39 + IdPeriodo + #39 + ' ORDER BY Institucion';
+      Query.Open;
+      Query.First;
+
+      Estudiantes := TJSONArray.Create;
+      for i := 1 to Query.RecordCount do
+      begin
+        estudiante := TJSONObject.Create;
+        estudiante.AddPair('Nombre', Query.FieldByName('Nombre').AsString);
+        estudiante.AddPair('Documento', Query.FieldByName('Documento')
+          .AsString);
+        estudiante.AddPair('Correo', Query.FieldByName('Correo').AsString);
+        estudiante.AddPair('Horario', Query.FieldByName('Horario').AsString);
+        estudiante.AddPair('Grado', Query.FieldByName('Grado').AsString);
+        estudiante.AddPair('Rector', Query.FieldByName('Rector').AsString);
+        estudiante.AddPair('Institucion', Query.FieldByName('Institucion')
+          .AsString);
+        estudiante.AddPair('Ciudad', Query.FieldByName('Ciudad').AsString);
+
+        Estudiantes.AddElement(estudiante);
+        Query.Next;
+      end;
+
+      secretaria.AddPair('Estudiantes', Estudiantes);
+      Secretarias.AddElement(secretaria);
+      QSecretarias.Next;
+    end;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE, 'El informe se creo correctamente');
+    result.AddPair(JSON_RESULTS, Secretarias);
+
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
 function TmoduloPracticaDocente.getPeriodos: TJSONObject;
 var
   i: Integer;
@@ -988,6 +1161,50 @@ begin
     result.AddPair(JSON_RESPONSE, 'Los periodos se obtuvieron correctamente');
     result.AddPair(JSON_RESULTS, Periodos);
 
+  except
+    on E: Exception do
+    begin
+      result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+      result.AddPair(JSON_RESPONSE, E.Message);
+    end;
+  end;
+
+  Query.Free;
+end;
+
+function TmoduloPracticaDocente.getSecretarias: TJSONObject;
+var
+  Query: TFDQuery;
+  i: Integer;
+  secretaria: TJSONObject;
+  Secretarias: TJSONArray;
+begin
+  try
+    result := TJSONObject.Create;
+
+    Query := TFDQuery.Create(nil);
+    Query.Connection := moduloDatos.Conexion;
+    Query.SQL.Text := 'SELECT * FROM Siap_Secretarias_Practica';
+    Query.Open;
+    Query.First;
+
+    Secretarias := TJSONArray.Create;
+    for i := 1 to Query.RecordCount do
+    begin
+      secretaria := TJSONObject.Create;
+      secretaria.AddPair('IdSecretaria', Query.FieldByName('IdSecretaria')
+        .AsString);
+      secretaria.AddPair('Secretaria', Query.FieldByName('Secretaria')
+        .AsString);
+
+      Secretarias.AddElement(secretaria);
+      Query.Next;
+    end;
+
+    result.AddPair(JSON_STATUS, RESPONSE_CORRECTO);
+    result.AddPair(JSON_RESPONSE,
+      'Las secretarias se obtuvieron correctamente');
+    result.AddPair(JSON_RESULTS, Secretarias);
   except
     on E: Exception do
     begin
@@ -1084,7 +1301,7 @@ begin
           '(IdRegistro,IdPeriodo,IdEstudiante,EspacioAcademico) VALUES' +
           ' (:IdRegistro,:IdPeriodo,:IdEstudiante,:EspacioAcademico)';
 
-        Query.Params.ParamByName('IdRegistro').Value := generarID;
+        Query.Params.ParamByName('IdRegistro').Value := moduloDatos.generarID;
         Query.Params.ParamByName('IdPeriodo').Value := periodo;
         Query.Params.ParamByName('IdEstudiante').Value := IdEstudiante;
         Query.Params.ParamByName('EspacioAcademico').Value :=

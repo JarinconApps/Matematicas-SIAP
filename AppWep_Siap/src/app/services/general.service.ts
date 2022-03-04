@@ -130,12 +130,14 @@ export class GeneralService {
   private URL_PRESUPUESTOS_PM = 'presupuestosPm';
   private URL_ESTUDIANTES = 'Estudiantes';
   private URL_ESTUDIANTES_BY_PERIODO = 'EstudiantesByPeriodo';
+  private URL_ESTUDIANTES_BY_SECRETARIA = 'EstudiantesBySecretaria';
   private URL_ESTUDIANTE = 'Estudiante';
   private URL_ENVIAR_CORREO_PRACTICA = 'EnviarCorreoPractica';
   private URL_ESTADISTICAS_PERIODO = 'EstadisticasPeriodo';
   private URL_CARTAS_PERMISO_BY_PERIODO = 'CartasPermisoByPeriodo';
   private URL_CARTA_PERMISO = 'CartaPermiso';
   private URL_ESTUDIANTE_CARTA = 'EstudianteCarta';
+  private URL_SECRETARIAS = 'Secretarias';
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -2014,6 +2016,12 @@ export class GeneralService {
     return this.http.get(url, {headers});
   }
 
+  getEstudiantesBySecretaria(IdPeriodo: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTES_BY_SECRETARIA) + this.parametro(IdPeriodo);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
   getEstadisticasPeriodo(IdPeriodo: string) {
     const url = this.dataSnap_Path(this.URL_ESTADISTICAS_PERIODO) + this.parametro(IdPeriodo);
     const headers = this.headers;
@@ -2022,6 +2030,12 @@ export class GeneralService {
 
   getCartasPeriodo(IdPeriodo: string) {
     const url = this.dataSnap_Path(this.URL_CARTAS_PERMISO_BY_PERIODO) + this.parametro(IdPeriodo);
+    const headers = this.headers;
+    return this.http.get(url, {headers});
+  }
+
+  getSecretarias() {
+    const url = this.dataSnap_Path(this.URL_SECRETARIAS);
     const headers = this.headers;
     return this.http.get(url, {headers});
   }
@@ -2084,6 +2098,12 @@ export class GeneralService {
     const url = this.dataSnap_Path(this.URL_ESTUDIANTE_CARTA);
     const headers = this.headers;
     return this.http.post(url, datos, {headers});
+  }
+
+  putEstudianteCarta(datos: string) {
+    const url = this.dataSnap_Path(this.URL_ESTUDIANTE_CARTA);
+    const headers = this.headers;
+    return this.http.put(url, datos, {headers});
   }
 
   deleteEstudianteCarta(IdEstudianteCarta: string) {

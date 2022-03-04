@@ -1,0 +1,60 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Uso de la teoría de redes para el estudio de la red hidrológica de la cuenca del río Quindío}
+\author{Marcela Arroyave Espinosa\thanks{Universidad del Quindío , marroyavee@uqvirtual.edu.co}  , Lesly Garcia \thanks{Universidad del Quindio , lgarciab@uqvirtual.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Redes, Hidrología 
+\rule[0.25ex]{1\columnwidth}{1pt}
+El agua es un elemento vital para la supervivencia y la preservación de especies, en la actualidad la humanidad enfrenta uno de los mayores problemas de abastecimiento de agua potable, ya que este recurso se utiliza en la mayoría de actividades de desarrollo del ser humano y por ende se encuentra en un grave riesgo por la constante contaminación que genera la actividad humana y por la disminución de los recursos hídricos como consecuencia del calentamiento global. Según estudios de la Organización Mundial de la Salud, desde el año 2015 solo el 89 % de la población mundial tiene acceso a agua potable apta para el consumo y no es difícil pronosticar que este porcentaje continuará disminuyendo [1].
+A través de la historia la fuente más utilizada por el hombre para su abastecimiento y otros fines han sido los ríos, estas fuentes hídricas se han visto deterioradas por el mal manejo que se le han dado, ya que se han sobre explotado y no se han tomado medidas ambientales que permitan una buena calidad del agua y aseguren este recurso para
+futuras generaciones [2]. Una fuente hídrica importante para el departamento del Quindío es denominado río Quindío. El departamento cuenta con un número de
+574960 de habitantes [3] y se encuentra ubicado en el centro oeste del territorio colombiano [2]. El cauce principal del río Quindío nace en el nevado del Quindío con una altura de 3780 metros sobre el nivel del mar, es fuente principal de abastecimiento de los municipios: Salento, Calarcá, Armenia, Córdoba, Buenavista y la Tebaida; recorre el departamento del Quindío en sentido Oriente a Sur-Occidente, y cuenta con más de 16 quebradas. Se calcula que la demanda total de agua con aprovechamiento directo es de 1650 l/s para uso doméstico y 11600 l/s para uso energético [1], entre otros usos de índole agroindustriales tales como beneficio de café, plátano, cítricos, al igual que porcinos, bovinos, aves y procesos industriales como curtiembres o procesadoras de carne [6]. El tratamiento que se le ha dado a esta fuente hídrica a provocado preocupación en la población y medios Quindianos, respecto a la carencia de agua apta para el consumo y para las especies que la habitan [8].
+Esta situación induce a buscar nuevas alternativas para el uso del agua y para la generación de modelos y métodos para una mejoría en la calidad del agua [9]. Para este caso de estudio se utilizó la metodología planteada por Wu y otros [9] en el cual se construye la red hidrológica del departamento del Quindío en un grafo con ayuda del
+software Gephi. Se calcularon algunas medidas topológicas del grafo, proporcionando un enfoque diferente en las investigaciones sobre las propiedades de redes fluviales y permitiendo entender a nivel estructural la red de drenaje [7].
+
+\begin{thebibliography}{1}
+\bibitem{ref1} CRQ, Corporación autónoma regional del Quindío and Universidad del Tolima (2015). Plan de ordenamiento del recurso hídrico del río Quindío.
+\bibitem{ref2}CRQ, Corporación autónoma regional del Quindío (2011). Plan de manejo subcuenca río Quindío.
+\bibitem{ref3}DANE (2018). Censo nacional de población y vivienda. Fuente: https://www.dane.gov.co/files/censo2018/informacion-tecnica/cnpv-2018- presentacion-3ra-entrega.pdf.
+\bibitem{ref4}Estrada, E. (2012). The structure of complex networks: theory and applications. Oxford University Press
+\bibitem{ref5}Gálvez, Juan J. (2012). Cartilla Técnica: ¿Qué es cuenca hidrológica?. Sociedad Geográfica de Lima.
+\bibitem{ref6}Gómez-Duarte, O. G. (2018). Contaminación del agua en países de bajos y medianos recursos, un problema de salud pública. Revista de la Facultad de Medicina, 66(1), 7-8.
+\bibitem{ref7}Ramírez, S., & Alberto, C. (2016). Calidad del agua. Evaluación y diagnóstico. Sello Editorial de la Universidad de Medellín.
+\bibitem{ref8}Wang, Y., Cao, J., Jin, Z., Zhang, H., & Sun, G. Q. (2013). Impact of media coverage on epidemic spreading in complex networks. Physica A: Statistical Mechanics and its Applications, 392(23), 5824-5835.
+\bibitem{ref9}Wu, X. W., Li, L., & Qu, Y. G. (2013). Modelling and analysis of river networks based on complex networks theory. In Advanced Materials Research (Vol. 756, pp. 2728-2733). Trans Tech Publications.
+\end{thebibliography}
+\end{document}

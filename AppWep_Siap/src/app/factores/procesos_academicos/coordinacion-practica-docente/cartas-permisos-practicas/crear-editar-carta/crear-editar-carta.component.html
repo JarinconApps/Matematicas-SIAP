@@ -13,8 +13,15 @@
     </div>
 
     <div class="form-group">
+        <label class="font-weight-bold">Secretaria o Tipo de Vinculación</label>
+        <select class="custom-select" required [(ngModel)]="carta.IdSecretaria" name="IdSecretaria">
+          <option [value]="secretaria.IdSecretaria" *ngFor="let secretaria of secretarias">{{ secretaria.Secretaria }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
         <label class="font-weight-bold">Ciudad</label>
-        <input class="form-control" required disabled [(ngModel)]="carta.Ciudad" name="Ciudad">
+        <input class="form-control" required [(ngModel)]="carta.Ciudad" name="Ciudad">
     </div>
 
     <div class="form-group">

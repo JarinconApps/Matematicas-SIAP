@@ -1,0 +1,107 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Software para las aplicaciones de la Derivada}
+\author{Alexandra Sánchez Arias\thanks{Universidad del Quindío, asancheza_1@uqvirtual.edu.co}  , Julián Andrés Rincón Penagos\thanks{Universidad del Quindío, jarincon@uniquindio.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Software Educativo, Optimización de la derivada, Desarrollo de software, Enseñanza, Aprendizaje
+\rule[0.25ex]{1\columnwidth}{1pt}
+\section*{Resumen}
+
+\selectlanguage{english}%
+\noindent En el presente proyecto de investigación se pretende desarrollar
+un software educativo, que tenga como objetivo ser una herramienta
+eficaz al momento de enseñar a los estudiantes de la universidad del
+Quindío el concepto de optimización en las aplicaciones de la derivada,
+partiendo desde un análisis inicial que vislumbre las problemáticas
+presentadas actualmente, para iniciar con diversas propuestas desde
+el desarrollo del software modelado por una situación didáctica y,
+finalizar, en el proceso de confrontación del material obtenido en
+una población específica con el análisis preliminar de la investigación para evaluar de manera general el impacto
+generado en el proceso de enseñanza aprendizaje de dicho objeto matemático.
+\selectlanguage{spanish}%
+
+De igual manera, es necesario destacar que en la enseñanza matemática a nivel universitario se reflejan diversas situaciones problemáticas relacionadas con lo siguiente:
+según Dolores (2007) una gran cantidad de estudiantes obtiene derivadas aplicando fórmulas sin comprender el algoritmo que aplica, haciendo que se privilegie la excesiva mecanización, como lo afirman Corona, Rojas y Báez (2017), y hay que resaltar que como comenta López (2008) la conceptualización de la noción de derivada y sus aplicaciones, constituye uno de los mayores desafíos de la educación actual, ya que trae consigo numerosas dificultades relacionadas con un pensamiento numérico abstracto. Así que es ineficiente el proceso de memorización y mecanización de algoritmos al trabajar un concepto tan inconcreto como lo es las aplicaciones de la derivada.
+Además, como lo evidencia Hinojos y etal (2017), los estudiantes poseen problemas
+al graficar, debido a que como lo mencionan Corona Rojas y Báez (2017)
+solo se logra una comprensión parcial del concepto de derivada, y
+si existe un concepto incompleto, no se tendrá las herramientas necesarias
+para desarrollar los problemas de aplicación que se planteen.
+
+No obstante, cabe destacar que las problemáticas evidenciadas en los
+estudiantes, en ocasiones se deben a que las estrategias de enseñanza
+de algunos docentes no están enfocadas al aprendizaje (Cuicas, 2007),
+sino que se centran en una práctica logarítmica y algebraica sin adaptación
+a los modos de enseñanza (Cuevas, Rodríguez y González, 2014), promoviendo
+una polaridad en la enseñanza del cálculo, es decir, en un extremo
+se realiza estrictamente operativo, y en el otro con un gran contenido
+formal (López, 2008). Ante esta problemática, muchos docentes buscan
+en las herramientas tecnológicas, una ayuda para facilitar el proceso
+de enseñanza-aprendizaje, sin embargo, también se encuentran con varios
+inconvenientes en dichas herramientas, como la obsolescencia tanto
+de los programas de estudio, como de la inversión histórica en sus
+contenidos (López, 2008) o, como afirma Saavedra (2013) la poca implementación
+de metodologías provistas por la ingeniería de software para el diseño
+de software educativo, al igual que la carencia de teorías pedagógicas
+al diseñar un software educativo, por lo que también se nota cierto
+grado de polarización al momento de programar una herramienta educativa.
+Por último, cabe añadir que otra problemática evidenciada en este
+campo, es que los software existentes son enfocados a verificar resultados
+únicamente, desaprovechando la verdadera utilidad de ésta herramienta
+educativa.
+En ese orden de ideas, en el presente proyecto se espera obtener los siguientes resultados que sirvan como una posible respuesta a los anteriores cuestionamientos:
+\begin{itemize}
+\item Análisis de la enseñanza tradicional y sus efectos, en el cual se
+toma como referencia el uso de libros de texto y pruebas diagnóstico
+hechas a los estutdiantes, además de comparar la información con escuestas
+hechas a docentes.
+\item Sofrware el tratamiento de problemas de optimiazación de la derivada.
+\item Mejorar el proceso de enseñanza aprendizaje de problemas de optimización
+a través de la implementación de uns secuencia didáctica mediada por
+el software educativo.
+\item Análisis y comparación de los resultados predichos en la concepción
+de la secuencia didáctica con los datos recolectados en la experimentación.
+\end{itemize}
+\begin{thebibliography}{1}
+\bibitem{ref1}Corona , Rojas  & Baéz . (2017).Propuesta didáctica para la enseñanza del tema de optimización, apoyado con Excel y Geogebra, para  estudiantes de bachillerato . El cálculo y su enseñanza, Enseñanza de las ciencias y la matemática, 9, 52-63
+\bibitem{ref2}Cuevas, Rodríguez  & González . (2014).Introducción al concepto de derivada de una función real con apoyo de las tecnologías digitales . El cálculo y su enseñanza, 5 , 157-164
+\bibitem{ref3}Cuicas , etal. (2007).El software matemático como herramienta para el desarrollo de habilidades del pensamiento y   mejoramiento del aprendizaje de las matemáticas .  . Revista electrónica "Actualidades Investigativas en Educación", 7, 1-34 
+\bibitem{ref4}Hinojos , etal. (2017).Resolución de problemas de optimización en un entorno tecnológico . Revista electrónica AMIUTEM, 5, 82-91
+\bibitem{ref5}López ,  & . (2008).Nuevas tecnologías en la enseñanza-aprendizaje del cálculo: una aproximación al estado de la  cuestión . . (Tesis de Maestría). Universidad de Granada: Granada
+\bibitem{ref6}Saavedra , A. (2013).Diseño de un software educativo para el aprendizaje de funciones matemáticas en la institución   educativa de Rozo-Palmira .  . . (Tesis de Maestría). Universidad Nacional de Colombia: Palmira
+\end{thebibliography}
+\end{document}

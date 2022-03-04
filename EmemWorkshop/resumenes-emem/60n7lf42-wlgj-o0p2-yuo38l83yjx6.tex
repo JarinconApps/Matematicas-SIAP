@@ -1,0 +1,72 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Dinámica de propagación del VIH en un grupo poblacional considerando la infección en el sistema inmunológico de cada individuo infectado}
+\author{Sol de Amor Vásquez Quintero\thanks{Universidad del Quindío, svasquezq@uqvirtual.edu.co}  , Hernán Darío Toro\thanks{Uniquindio, hdtoro@uniquindio.edu.co}   \\ Dennis Alexánder Prieto Medellín\thanks{Universidad del Quindío, dpmedellin@gmail.com}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Modelo multiescala, red compleja, número básico de reproducción, terapia antirretroviral, VIH, prevalencia.
+\rule[0.25ex]{1\columnwidth}{1pt}
+1. Resumen del poster.
+
+La infección con el Virus de Inmunodeficiencia Humana (VIH) es una enfermedad grave que afecta a la población mundial y que hasta ahora no tiene cura. Según ONUSIDA, a finales del 2017 habían alrededor de 36.9 millones de personas infectadas por VIH a nivel mundial (ONUSIDA, 2018). Desde el momento en que el VIH entra en el organismo, empieza a atacar el sistema inmunológico, específicamente destruye los linfocitos T CD4, que son un tipo de células que se encargan de combatir las infecciones causadas por agentes externos. Una de las poblaciones más vulnerables a adquirir el virus es la de los jóvenes entre 15 y 24 años, ya que es en esta etapa en que se empieza la vida sexual y se pueden tener comportamientos sexuales más riesgosos. En el presente trabajo de investigación se propone un modelo multiescala, en el cual se modela la propagación del virus en la escala poblacional mediante una red compleja, la población que se toma son los jóvenes entre 15 y 24 años que se infectan por vía sexual y se consideran los estados de susceptible, portador sin tratamiento y portador con tratamiento. En la escala inmunológica se modela la dinámica de infección del virus en el cuerpo de cada individuo infectado de la población mediante un sistema de ecuaciones diferenciales ordinarias, en donde se considera el uso de la Terapia Antirretroviral para controlar la infección.   
+
+2. Resumen en extenso. 
+
+Se propone modelar la propagación del virus en la escala poblacional mediante una red compleja, donde se tienen en cuenta personas susceptibles, personas infectadas con tratamiento y personas infectadas sin tratamiento; la población que se toma son los jóvenes entre 15 y 24 años que se infectan por vía sexual. También se modela la escala inmunológica que considera la dinámica de infección del virus en el cuerpo de cada individuo infectado, se considera el uso de la Terapia Antirretroviral para controlar la infección, los medicamentos que se tienen en cuenta como estrategias de control son los inhibidores de la transcriptasa inversa (ITI) y los inhibidores de la proteasa (IP). 
+
+2.1. Descripción del modelo en la escala poblacional 
+
+Se considera una población finita de jóvenes entre 15 y 24 años de edad que se relacionan por medio de contactos sexuales, sin protección, a través del tiempo. La población tiene tres clasificaciones: personas susceptibles de adquirir la infección, personas portadoras de VIH que no reciben ningún tipo de tratamiento antirretroviral y personas portadoras de VIH que reciben tratamiento donde se tiene en cuenta los ITI y los IP. En la población también se considera el fracaso terapéutico, lo que significa que hay personas en la población que usaban la Terapia Antirretroviral y la dejan debido a diferentes factores como por ejemplo la falta de recursos económicos, el desarrollo de efectos secundarios (Potes Lopez, Botero, Tamayo, y Isaza Alvarez, 2011), entre otros. 
+
+Cada uno de los individuos de la población son representados por los nodos de la red y las aristas hacen referencia a los contactos sexuales entre estos individuos a través de los cuales el virus se puede propagar. En la población no se consideran nacimientos ni muertes durante el periodo de simulación, ni la red cambia su estructura en el tiempo de simulación.
+
+2.2. Descripción del modelo en la escala inmunológica 
+
+En cada nodo de la red se considera la dinámica del sistema inmunológico de cada persona, en particular de aquellas que adquieren el virus; de este modelo se estudia la concentración promedio de células T CD4 sanas e infectadas, la concentración promedio de células de respuesta celular inactivas y activas y la concentración promedio de partículas virales infecciosas y no infecciosas. Todo esto a través de un sistema de ecuaciones diferenciales ordinarias no lineales. 
+
+Los supuestos del modelo tienen encuenta que las células T CD4 son las encargadas de ayudar a coordinar la respuesta inmunitaria ante las infecciones que entran en el organismo (Bernal Cano, 2008), estas células son producidas en la medula ósea y también presentan apoptosis o muerte natural después de un determinado tiempo. Cuando el VIH entra en el organismo, las partículas virales entran en contacto con las células T CD4 y hay una probabilidad de que éstas sean infectadas. Una vez son infectadas estimulan la respuesta inmune del organismo, con lo que las células de respuesta celular pasan de ser inactivas a ser activas y se encargan de destruir las células T CD4 que ya han sido infectadas (Codina, Martin, y Ibarra). Cabe aclarar que los células T CD4 infectadas se replican a una tasa constante. Cuando las células T CD4 infectadas son destruidas por la respuesta celular se produce lisis celular, es decir, se rompen las membranas celulares lo que produce la salida del material intracelular que hace que se liberen nuevos viriones no infecciosos e infecciosos, que seguirán atando y destruyendo a las células T CD4 hasta conseguir unos niveles muy bajos de éstas, de esta forma el organismo queda debilitado en su defensa y es propenso a padecer cualquier otra enfermedad o infección (Menendez Martinez, 1995). 
+
+2.3. Describir el acople de ambos modelos 
+
+Se hace la modelación a nivel multiescala del modelo inmunológico y del modelo poblacional, por lo que las variables que se tendrán encuenta en la parte inmunológica, que además también servirán de criterios para tomar decisiones en la escala poblacional, para afectar el comportamiento de la red, son el conteo de células T CD4 infectadas, el número de células de respuesta celular y la carga viral. Así de acuerdo con los niveles de esas variables, se definen tres criterios (condiciones de riesgo) que afectan el comportamiento en la escala poblacional y en el número de nuevas personas portadoras de VIH. 
+\begin{thebibliography}{1}
+\bibitem{ref1}Bernal Cano, F. (2008). El virus de inmunodeficiencia humana VIH y el sistema nervioso. Principios generales. Acta Neurol Colomb, 24(3), 124-141. 
+\bibitem{ref2}Codina, C., Martin, M., & Ibarra, O. (s.f.). La infección por el virus de la inmunodeficiencia humana. En Farmacia Hospitalaria (págs. 1494-1515). 
+\bibitem{ref3}Menendez Martinez, M. A. (1995). Infección por VIH historía natural y marcadores de progresión. Madrid. España: Universidad Complutense de Madrid. 
+\bibitem{ref4}ONUSIDA. (2018). Hoja Informativa Dia Munidal del SIDA 2018., (pág. 6). 
+\bibitem{ref5}Potes Lopez, C., Botero, M., Tamayo, M., & Isaza Alvarez, V. (2011). Causales del abandono de la TAR apartir de los efectos adversos con la toma de los medicamentos en pacientes VIH en la IPS TODOMED LTDA. Santiago de Cali, Colombia: Universidad Católica de Manizales. 
+\end{thebibliography}
+\end{document}

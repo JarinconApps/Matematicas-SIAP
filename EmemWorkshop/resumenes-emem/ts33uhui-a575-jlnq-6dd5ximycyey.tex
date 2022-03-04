@@ -1,0 +1,140 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Modelo del proceso de fermentación del Café}
+\author{Rosa María Méndez Parra\thanks{Universidad del Quindío, rosamendez@uniquindio.edu.co}  , Jhonny Ancizar Tapiero Trejos\thanks{Universidad del Quindío, jatapiero@uniquindio.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Fermentación, Modelado matemático, Ecuaciones diferenciales
+\rule[0.25ex]{1\columnwidth}{1pt}
+El café es uno de los productos que desde tiempos pasados ha sido fundamental en la economía de diferentes países, principalmente en Colombia su importancia histórica
+y económica le han catalogado como el principal fruto de representación nacional y a su vez, uno de los principales productos presentes en los mercados mundiales.
+
+Este trabajo se centra en uno de los eslabones de la cadena productiva del café llamado fermentación, el cual es fundamental en todo este proceso.
+
+La fermentación es un proceso catabólico de oxidación de sustancias orgánicas para producir otros compuestos orgánicos y energía. Los microorganismos presentes en la fermentación, son seres microscópicos, con diferentes formas y requerimientos para su crecimiento, estos comprenden, las bacterias, los hongos, las levaduras, los virus y algunas algas. Estos microorganismos contribuyen al equilibrio ambiental y fuera de eso generan procesos de degradación en diferentes organismos[2].
+
+Según (Puerta, 2012) existen diferentes métodos de fermentación entre los que se encuentran:
+1. Fermentación sólida.
+2. Fermentaciones sumergidas.
+3. Sistemas abiertos o cerrados.
+4. Método fermaestro.
+
+Composición Química del mucílago de café.
+Principalmente el mucílago está compuesto por elementos esenciales tales como agua, azúcares, sustancias pécticas y de igual manera contiene levaduras de los
+géneros saccharomyces torulopsis, Candida y Rhodotorula.
+
+1. Sustrato: Elemento principal en el proceso de fermentación del café, su composición esta formada por los granos de café despulpados en el cual se
+    encuentra el mucílago que se fermenta.
+
+2. Temperatura: Factor fundamental en el proceso debido a que el crecimiento de las levaduras y las bacterias dependen de las condiciones ambientales.
+
+3. Azúcares: Existen dos tipos de azúcares presentes en la fermentación del café, se clasifican en reductores y no reductores.
+
+Cinética química del mucílago del café.
+Por medio de los estudios cinéticos, se establecen modelos matemáticos que describen el fenómeno que se desea analizar, esto se determina mediante ecuaciones que
+relacionan la degradación del fruto con factores variables tales como el tiempo, la temperatura, entre otros[3].
+
+Principales fermentaciones del mucílago del café:
+
+1. Alcohólica: En la cual el sustrato principalmente conformado por los azúcares reductores y totales mediante un proceso químico es transformado en etanol,
+    CO2 y energía por las levaduras.
+
+\begin{equation}
+C_{6}H_{12}O_{6}+ \textrm{levaduras} \longrightarrow 2CH_{3}CH_{2}OH+2CO_{2}+ATP
+\end{equation}
+
+2. Láctica: En esta se presentan fermentaciones homofermentativas y heterofermentativas, donde las diferentes bacterias transforman los azúcares en ácido acético y energía 
+    respectivamente.
+
+\begin{equation}
+C_{6}H_{12}O_{6}+ \textrm{Bacterias lácticas} \longrightarrow 2CH_{3}CHOHCOOH+ATP
+\end{equation} 
+
+\begin{equation}
+C_{6}H_{12}O_{6}+ \textrm{Bacterias lácticas} \rightarrow CH_{3}CHOHCOOH+CH_{3}CH_{2}OH+CO_{2}+ATP
+\end{equation}
+
+A partir de estas ecuaciones  estequiométricas se obtienen funciones que representan:
+
+Teniendo en cuenta que las degradaciones y las formaciones de los productos en la fermentación del café dependen del crecimiento y el metabolismo de las levaduras y
+las bacterias del mucílago, se estableció una función de decrecimiento para el caso de la degradación de los azúcares totales y reductores en función del tiempo de la siguiente manera[3]:
+
+\begin{equation}
+S(t)=\dfrac{Smax}{1+b\exp ^{kst}}
+
+\end{equation}
+
+donde;
+1.  S(t): Concentración del sustrato, azúcares totales y reductores dependientes del tiempo.
+2. Smax: Concentración máxima del sustrato.
+3. b: Coeficiente adimensional, que expresa la Relación entre la diferencia entre la concentración Smax estimada y la concentración real disponible en el tiempo
+    cero, dividido entre la concentración real disponible en el tiempo cero.
+4.  Ks: Coeficiente de la velocidad de degradación del sustrato.
+
+De esta función se desprende la expresión cinética con respecto al cambio de velocidades en la degradación del sustrato en el mucílago de café:
+
+\begin{equation}
+-\dfrac{dS}{dt}=\dfrac{ksSmaxb\exp ^{kst}}{1(+b\exp ^{kst})^2}
+\end{equation}
+
+Por otra parte en el caso de la formación de los productos se toma como partida la ecuación logística de crecimiento poblacional de (Verhulst), de esta manera se
+considera a la formación de productos se asimila al crecimiento de organismos, que en las primeras horas es exponencial pero que en algún momento en el tiempo no continua creciendo y por el contrario alcanza un valor máximo, en la cual la concentración pasa a ser constante[3].
+
+\begin{equation}
+P(t)= \dfrac{PmaxP_0\exp ^{kst}}{P_0(\exp ^{kst}-1)+Pmax}
+\end{equation}
+
+Donde:
+1.  P(t): Concentración del producto, alcohol o acidez, en un tiempo determinado.
+2.  P0: Concentración inicial del producto.
+3. Pmax: Concentración máxima del producto.
+4. Kp: Constante de velocidad de formación del producto.
+
+De igual manera dicha función representa la ecuación cinética que el cambio de las velocidades de formación de producto.
+
+\begin{equation}
+\dfrac{dP}{dt}=\dfrac{Kp(\exp ^{kpt})Pmax(Pmax-P_0)P_0}{(\exp ^{kpt}+P_0+Pmax-P_0)^2}
+\end{equation}
+
+
+
+
+\begin{thebibliography}{1}
+\bibitem{ref1}Landsberg, J. (1977) Some useful equations for bilogical studies.Expl Agric. 1(3) 273-286.
+\bibitem{ref2}Puerta, G. (2012). Factores, procesos y controles en la Fermentación del Café. Centro nacional de investigaciones de café, Manizales-Colombia.
+\bibitem{ref3}Puerta. G. (2013). Cinética química de la fermentación del mucílago de café a temperatura ambiente. Revista Cenicafé. 64(1): 42-59.
+\end{thebibliography}
+\end{document}

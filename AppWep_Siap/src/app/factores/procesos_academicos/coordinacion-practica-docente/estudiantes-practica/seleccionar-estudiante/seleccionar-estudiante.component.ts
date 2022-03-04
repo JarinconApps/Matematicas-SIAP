@@ -11,6 +11,8 @@ import { RespuestaCRUD, Estudiante } from '../../../../../interfaces/interfaces.
 export class SeleccionarEstudianteComponent implements OnInit {
 
   IdPeriodo = '';
+  Horario = '';
+  Grado = '';
   estudiantes: Estudiante[] = [];
 
   constructor(public dialogRef: MatDialogRef<SeleccionarEstudianteComponent>,
@@ -31,7 +33,13 @@ export class SeleccionarEstudianteComponent implements OnInit {
   }
 
   seleccionarEstudiante(estudiante: Estudiante) {
-    this.dialogRef.close(estudiante);
+    this.dialogRef.close(
+      {
+        estudiante,
+        Horario: this.Horario,
+        Grado: this.Grado
+      }
+    );
   }
 
 }

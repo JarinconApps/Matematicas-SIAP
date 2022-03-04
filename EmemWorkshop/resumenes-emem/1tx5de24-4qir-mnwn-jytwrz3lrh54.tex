@@ -1,0 +1,74 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Modelación de parámetros de calidad de agua DBO y OD, utilizando teoría de redes y ecuaciones diferenciales en una red hidrológica.}
+\author{Valentina Zuluaga Zuluaga\thanks{Universidad del Quindío, vzuluagaz@uqvirtual.edu.co}  , Mónica Jhoana Mesa Mazo\thanks{Universidad del Quindío, mjmesa@uniquindio.edu.co}   \\ Jorge Mario Garcia Usuga\thanks{Universidad del Quindío, jmgarcia@uniquindio.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Demanda Bioquímica de Oxígeno, Oxígeno Disuelto, redes, hidrología, ecuaciones diferenciales.
+\rule[0.25ex]{1\columnwidth}{1pt}
+Este trabajo tiene como objetivo principal mostrar que la teoría de redes es  una  herramienta idónea para la simulación de parámetros de calidad del agua.   Para la simulación se  construyó la red  hidrológica del río Quindío, usando la metodología planteada por Wu et al \cite{wu}, el software Gephi para la construcción de la red, los mapas del Instituto Geográfico Agustin Codazzi, los informes de la Corporación Autónoma Regional del Quindío CRQ  y Python para hacer los cálculos. Para la Demanda Bioquímica de Oxígeno DBO y el Oxígeno Disuelto  OD se uso una sistema de ecuaciones diferenciales parciales (EDP):
+\begin{equation}
+\left\{
+\begin{array}{rcl}
+\frac{\partial L}{\partial t} y = y -v\frac{\partial L}{\partial x}-K_rL \\
+\vspace{0.1cm} y \vspace{0.1cm} y\\
+\frac{\partial C}{\partial t} y= y-v\frac{\partial C}{\partial x}-K_dL+K_aC_s-K_aC
+\end{array}
+\right.
+\label{sistema}
+\end{equation}
+Donde:\\
+\begin{itemize}
+	\item $v$: velocidad media de flujo,
+	\item $L$: cantidad total de materia orgánica remanente en $t$ (siendo $t$ el tiempo),
+	\item $K_r$: tasa total de remoción de DBO,
+	\item $C$: concentración resultante de OD en el agua,
+	\item $K_d$: constante de desoxigenación (1/día),
+	\item $L$: cantidad total de materia orgánica remanente en $t$,
+	\item $K_a$: coeficiente de reaireación,
+	\item $C_s$: oxígeno de saturación.
+\end{itemize}
+
+Para resolver el sistema se usaron condiciones iniciales constantes con  $L(x,0)=\alpha$ y $C(x,0)=\beta$, el cual fue resuelto analíticamente por el método de las características \cite{Chapra, Sierra}. Los resultados de dichas simulaciones mostraron que la zona media baja de la cuenca, en especial la zona donde hay presencia  de asentamientos humanos  y algunas industrias procesadoras de pieles, presentan niveles altos  de contaminación, viéndose reflejada  en la superación de valores del DBO asignados por la ley 0631 del 2015 y en contraparte la disminución significativa de los valores de OD. Por otra parte, la zona baja de la cuenca presenta niveles óptimos de DBO, pero a pesar de ello los niveles de OD, no logran satisfacer las necesidades de mucha fauna presente en este sector del río, lo que conlleva a que el agua que va en dirección al río la Vieja no tenga las mejores condiciones y deba ser tratada antes de ser consumida. Además,   los dos parámetros estudiados   muestran  una posible relación con otros parámetros como los Coliformes (fecales y totales), debido a que estos   tienen  concentraciones altas en la  misma zona de la cuenca.  En conclusión,  la representación de la red hidrográfica de la cuenca del río Quindío usando la teoría de redes planteada y el modelo propuesto con el sistema de ecuaciones diferenciales (\ref{sistema}), permitió determinar los sitios en la cuenca que  están más expuestos a niveles relativamente altos de contaminación. Además,  muestra otros sitios de la red que  son potencialmente vulnerables. 
+
+
+\begin{thebibliography}{1}
+\bibitem{ref1}Chapra, S. C. (2008). Surface water-quality modeling. Waveland press.
+\bibitem{ref2}Estrada, E. (2012). The structure of complex networks: theory and applications. Oxford University Press.
+\bibitem{ref3}Ramírez, S., & Alberto, C. (2016). Calidad del agua. Evaluación y diagnóstico. Sello Editorial de la Universidad de Medellín.
+\bibitem{ref4}Wu, X. W., Li, L., & Qu, Y. G. (2013). Modelling and analysis of river networks based on complex networks theory. In Advanced Materials Research (Vol. 756, pp. 2728-2733). Trans Tech Publications.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,58 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Análisis de datos mediante regresión }
+\author{Hamilthon Gil Castañeda\thanks{Universidad del Quíndio, hgilc@uqvirtual.edu.co}  , Julián Andrés Rincón Penagos\thanks{Universidad del Quindío, jarincon@uniquindio.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Análisis de datos, Regresión, Desarrollo de software
+\rule[0.25ex]{1\columnwidth}{1pt}
+En este trabajo de grado se diseñará una aplicación en la plataforma Delphi para el análisis datos usando regresión, la idea surge al observar que en varios softwares como SPSS (Norman H. Dale H. 1975), Stata (StataCorp. 1985), R-Project (Ross I. Gentleman R.), HidroEsta (Villón M), el usuario ingresa los datos y obtiene el modelo de regresión sin un buen análisis de datos, además en la mayoría de los casos una de las problemáticas es la importación de los mismos datos, por ejemplo, se deben introducir manualmente o en otros casos se deben exportar a formatos poco conocidos para los usuarios.
+En si lo que se pretende es hacer una aplicación que sea amigable para el usuario al momento de ingresar los datos obtenidos de cualquier experimento, ya ingresados los datos se tendría la opción para que el usuario pueda exportar todo el análisis a un archivo de Word, cuyo archivo es adaptado para que el usuario lo pueda anexar en su trabajo de grado, tesis, etc. 
+Se planea implementar en primer lugar la regresión lineal, luego sigue la regresión cuadrática, exponencial, logarítmica, polinómica y logística. Al momento de culminar cada regresión y obtener algunos datos como ejemplo, se compararán con los datos obtenidos con otras aplicaciones de la comunidad científica para optimizar tanto el análisis de datos como la interfaz de la aplicación.
+
+\begin{thebibliography}{1}
+\bibitem{ref1}Bertoa & Vallecillo. (2006).Medidas de usabilidad para componentes de software   Transacciones IEEE en América Latina, 4, 136 - 143
+\bibitem{ref2}Carrasquilla, etal. (2016).Regresión lineal simple y múltiple: aplicación en la predicción de variables naturales relacionadas  con el crecimiento microalgal   Tecnología en Marcha, 30,  33-45 
+\bibitem{ref3}Contreras, M.  (2011).  Herramientas de software aplicadas al método de regresión lineal .  (Tesis de Maestría).  Universidad Nacional de Colombia : Bogotá
+\bibitem{ref4}Cooke, C.  (2011).  Análisis a los algoritmos utilizados por el Software BI Lámpsakos, 5, 50-52 
+\bibitem{ref5}Marabel & Álvarez.  (2014).  Estimación de biomasa en herbáceas a partir de datos hiperespectrales,  regresión PLS y la transformación continuum removal Revista de Teledetección  , 42, 49-60
+\bibitem{ref6}Mena, C.  (2006).  Comparación de redes neuronales y regresión lineal para estimar productividad  de sitio en plantaciones forestales, utilizando geomática Bosque, 27, 35-43 
+\bibitem{ref7}Ortiz, etal. (2015).Análisis espacial del precio del suelo con modelos de regresion lineal múltiple (MRLM) y sistemas de información geográfica  (SIG), resistencia (argentina)   Revista Geográfica de Valparaíso, 51, 57-74
+\bibitem{ref8}Torres, J.  (2001).Comparación de tres métodos de regresión lineal usando procedimientos  de simulación Revista Colombiana de Estadística, 24, 33-43
+\bibitem{ref9}Vega & Guzmán. (2011).Regresión PLS y PCA como solución al problema de multicolinealidad en regresión múltiple  Revista de Matemática Teoría y Aplicaciones, 18, 9–20
+\bibitem{ref10}Villón, M.  (2005).  HidroEsta, software para cálculos hidrológicos Tecnología en Marcha, 18,  67-75
+\end{thebibliography}
+\end{document}

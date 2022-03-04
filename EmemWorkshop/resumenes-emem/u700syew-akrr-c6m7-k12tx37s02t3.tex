@@ -1,0 +1,75 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Estimación Bayesiana de parámetros en el modelo SIR}
+\author{Monica Paola De La Cruz\thanks{Universidad del Quindío, paoladelacruzc23@gmail.com}  , Diana Milena Galvis\thanks{Universidad del Quindío, dianagalvis@uniquindio.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Parámetros, Estimación, Modelo SIR, Métodos MCMC
+\rule[0.25ex]{1\columnwidth}{1pt}
+Los modelos matemáticos epidémicos son herramientas utilizadas para comprender la propagación de las enfermedades infecciosas, en particular para evaluar escenarios, predecir evoluciones epidémicas y manejar emergencias de salud que pueden beneficiar a un amplio sector de individuos, incluyendo a los responsables de la salud pública. Algunos de estos modelos matemáticos,  consisten en sistemas de ecuaciones diferenciales ordinarias o parciales, que relacionan los estados epidemiológicos por los cuales pueden pasar los individuos y las tasas de transición entre estados (Fleitas, 2017).
+
+Los modelos matemáticos básicos para las epidemias son: SI, SIS y SIR, donde S=S(t) denota la subclase Susceptible al tiempo t, I=I(t) representa la subclase infectada al tiempo t y R=R(t) simboliza la subclase recuperada al tiempo t; el modelo SI,  representa situaciones donde los individuos susceptibles se infectan mediante el contacto con infectados y no vuelven a ser susceptibles; el modelo SIS, por su parte establece la relación entre susceptibles, infectados y susceptibles, y se usa en situaciones donde los individuos después de recuperarse vuelven hacer susceptibles; el modelo SIR, muestra la relación entre susceptibles, infectados y recuperados, se emplea en escenarios donde los individuos después de infectarse se recuperan de la enfermedad y guardan inmunidad permanente ante futuros brotes (Avila, 2016).
+
+Estos modelos no admiten una solución analítica y por ello se recurre a métodos computacionales que brinden una aproximación de la solución, sin embargo, ésta no siempre es precisa debido a la poca información sobre el rango en el que varían los parámetros, pues sus valores asignados generalmente son elegidos de forma  hipotética, lo anterior dificulta el ajuste de  estos modelos a datos reales, es aquí donde la estadística proporciona un conjunto métodos y técnicas que permite cuantificar el valor de los parámetros, llamado Inferencia Estadística (Brauer, 2012).
+
+La Inferencia Estadística se encarga de hacer deducciones, es decir, de inferir propiedades, conclusiones y tendencias a partir de una muestra y se clasifica en Inferencia Paramétrica e Inferencia no Paramétrica, la primera tiene como objetivo estimar los parámetros de la población conociendo la distribución de las variables en estudio y la segunda se origina cuando no se conoce la distribución de la muestra y se suponen propiedades. Hay dos tipos de Inferencia Paramétrica, la Inferencia Clásica y la Inferencia Bayesina: la Inferencia Clásica, se encarga de estimar los parámetros de una población dada una muestra; la Inferencia Bayesiana, se basa en el teorema de Bayes y es útil para obtener creencias actualizadas de los valores de los parámetros (Correa y Barrera, 2018).
+
+El problema de estimar los parámetros de los modelos epidemiológicos a través de Inferencia Paramétrica se conoce como problema inverso y desempeña un rol crucial en la elección de estrategias para controlar brotes futuros, no obstante, son pocas las investigaciones en la estimación de parámetros de modelos epidémicos y hasta el momento existen algunos estudios haciendo uso de los siguientes métodos estadísticos: método de Newton, método de Gauss-Newton, método de Levenberg-Marquardt, los estimadores de máxima verosimilitud (MLE), los estimadores del método de momentos (MME), el error cuadrático medio mínimo (MMSE), entre otros  (Samsuzzoha, Singh y Lucy, 2013). 
+
+Las investigaciones en estimación de parámetros a través de Inferencia Paramétrica en los sistemas de ecuaciones diferenciales ordinarias y parciales son pocas y la mayoría de estudios se han afrontado mediante algunas técnicas de Inferencia Clásica; solo a partir del 2014 con el objetivo de obtener valores actualizados de los parámetros de acuerdo a la muestra e información previa de ellos, se inicia la búsqueda de técnicas que unifiquen la teoría de la modelación de epidemias con las nociones de estimación de parámetros vía Inferencia Bayesiana (Duran, 2014). 
+
+En el enfoque Bayesiano, la estimación de los parámetros depende de las distribuciones de verosimilitud de los datos y a priori de los parámetros, estas distribuciones se eligen de acuerdo a los criterios del autor y debido al amplio número de distribuciones que pueden seleccionarse, aún son inciertas aquellas que brinden el mejor ajuste del modelo a los datos. En los estudios hechos por Avila, 2016; Brauer, 2012; Cerda, 2018; Fleitas, 2017; Li Martin, 2019;  Lozano, 2018 se encuentra que hasta el momento los primeros estudios de estimación de parámetros de los modelos clásicos de ecología, epidemiología y de enfermedades infecciosas provocadas por vectores, usan distribuciones de Poisson, Uniforme y Normal para los datos muestrales y distribuciones Uniforme, Gamma y Beta para las creencias iniciales de los parámetros.
+
+En este trabajo se estimarán los parámetros del modelo SIR determinístico por medio de Inferencia Bayesiana específicamente se usará una distribución de Poisson para analizar el número de nuevos reportes y una distribución Gamma para las distribuciones a priori de los parámetros involucrados en el modelo. Esta metodología será evaluada vía simulación.
+
+
+
+
+
+
+
+\begin{thebibliography}{1}
+\bibitem{ref1} Avila, R. (2016).  Inferencias de Modelos Epidemiológicos Compartiméntales en Redes Sociales (Tesis de maestría). Centro de Investigación en Matemáticas, A.C., Guanajuato.
+\bibitem{ref2}Brauer, F. (2012). Mathematical models for communicable diseases (Vol. 84). SIAM.
+\bibitem{ref3}Cerda, J. A. (2018). Estimación Bayesiana en el Modelo Lotka-Volterra (Tesis de maestría). Universidad Autónoma de Guerrero, México.
+\bibitem{ref4}Correa Morales, J. C., & Barrera Causil, C. J. (2018). Introducción a la estadística bayesiana: notas de clase. Instituto Tecnológico Metropolitano.
+\bibitem{ref5}Duran Aguilar, J. (2014). Inferencia Bayesiana en el Modelo SIR (Tesis de maestría). Centro de Investigación en Matemáticas, A.C., Guanajuato.
+\bibitem{ref6}Fleitas Imbert, A. (2017). Modelo logístico de orden fraccionario: Un análisis Bayesiano (Master's thesis, Universidad Autónoma de Guerrero (México)).
+\bibitem{ref7}Li Martin, A. (2019). Estimación bayesiana de los parámetros en dos sistemas dinámicos que describen la transmisión de la enfermedad del dengue (Tesis de maestría). Universidad Autónoma de Guerrero, México.
+\bibitem{ref8}Lozano Salado, D. (2018). Modelación Bayesiana de una variable ordinal aleatorizada (Tesis de maestría). Universidad Autónoma de Guerrero, México.
+\bibitem{ref9}Samsuzzoha, M., Singh, M., & Lucy, D. (2013). Parameter estimation of influenza epidemic model. Applied Mathematics and Computation, 220, 616-629.
+\end{thebibliography}
+\end{document}

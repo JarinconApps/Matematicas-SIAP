@@ -634,7 +634,10 @@ type
     function cancelCartaPermiso(IdCarta: string): TJSONObject;
     function EstudiantesByPeriodo(IdPeriodo: string): TJSONObject;
     function updateEstudianteCarta(datos: TJSONObject): TJSONObject;
+    function acceptEstudianteCarta(datos: TJSONObject): TJSONObject;
     function cancelEstudianteCarta(IdEstudianteCarta: string): TJSONObject;
+    function EstudiantesBySecretaria(IdPeriodo: string): TJSONObject;
+    function Secretarias: TJSONObject;
 
   end;
 {$METHODINFO OFF}
@@ -1673,12 +1676,17 @@ function TMatematicas.updatePlanMejoramiento(PlanMejoramiento: TJSONObject)
 var
   QPlan: TFDQuery;
   JsonResp: TJSONObject;
+  fs: TFormatSettings;
 begin
   try
     QPlan := TFDQuery.create(nil);
     QPlan.Connection := Conexion;
 
     JsonResp := TJSONObject.create;
+
+    fs := TFormatSettings.create;
+    fs.DateSeparator := '-';
+    fs.ShortDateFormat := 'yyyy-mm-dd';
 
     QPlan.Close;
     QPlan.SQL.Clear;
@@ -1754,10 +1762,10 @@ begin
       PlanMejoramiento.GetValue('metas').Value;
 
     QPlan.Params.ParamByName('fecha_inicio').AsDate :=
-      FechaJS_To_FechaDelphi(PlanMejoramiento.GetValue('fecha_inicio').Value);
+      StrToDate(PlanMejoramiento.GetValue('fecha_inicio').Value, fs);
 
     QPlan.Params.ParamByName('fecha_fin').AsDate :=
-      FechaJS_To_FechaDelphi(PlanMejoramiento.GetValue('fecha_fin').Value);
+      StrToDate(PlanMejoramiento.GetValue('fecha_fin').Value, fs);
 
     QPlan.Params.ParamByName('actividades').AsWideMemo :=
       PlanMejoramiento.GetValue('actividades').Value;
@@ -2111,12 +2119,16 @@ var
   QPlan: TFDQuery;
   JsonResp: TJSONObject;
   IdPlan: string;
+  fs: TFormatSettings;
 begin
   try
     QPlan := TFDQuery.create(nil);
     QPlan.Connection := Conexion;
 
     JsonResp := TJSONObject.create;
+    fs := TFormatSettings.create;
+    fs.DateSeparator := '-';
+    fs.ShortDateFormat := 'yyyy-mm-dd';
 
     IdPlan := PlanMejoramiento.GetValue('idplan').Value;
 
@@ -2170,10 +2182,10 @@ begin
       PlanMejoramiento.GetValue('metas').Value;
 
     QPlan.Params.ParamByName('fecha_inicio').AsDate :=
-      FechaJS_To_FechaDelphi(PlanMejoramiento.GetValue('fecha_inicio').Value);
+      StrToDate(PlanMejoramiento.GetValue('fecha_inicio').Value, fs);
 
     QPlan.Params.ParamByName('fecha_fin').AsDate :=
-      FechaJS_To_FechaDelphi(PlanMejoramiento.GetValue('fecha_fin').Value);
+      StrToDate(PlanMejoramiento.GetValue('fecha_fin').Value, fs);
 
     QPlan.Params.ParamByName('actividades').AsWideMemo :=
       PlanMejoramiento.GetValue('actividades').Value;
@@ -6470,6 +6482,19 @@ begin
   Result := moduloPracticaDocente.putEstudiante(Estudiante);
 end;
 
+function TMatematicas.acceptEstudianteCarta(datos: TJSONObject): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.putEstudianteCarta(datos)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
 { Método GET - Configuracion }
 function TMatematicas.Configuracion(const ID: string): TJSONObject;
 var
@@ -7602,6 +7627,19 @@ begin
 
   if validarTokenHeader then
     Result := moduloPracticaDocente.getEstudiantesByPeriodo(IdPeriodo)
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
+end;
+
+function TMatematicas.EstudiantesBySecretaria(IdPeriodo: string): TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getEstudiantesBySecretaria(IdPeriodo)
   else
   begin
     Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
@@ -9318,6 +9356,7 @@ var
   Planes: TJSONArray;
   i: integer;
   ID: string;
+  fs: TFormatSettings;
 begin
   try
     QPlanes := TFDQuery.create(nil);
@@ -9325,6 +9364,10 @@ begin
 
     JsonPlanes := TJSONObject.create;
     Planes := TJSONArray.create;
+
+    fs := TFormatSettings.create;
+    fs.ShortDateFormat := 'yyyy-mm-dd';
+    fs.DateSeparator := '-';
 
     QPlanes.Close;
     QPlanes.SQL.Text := 'SELECT * FROM siap_plan_mejoramiento ORDER BY orden';
@@ -9362,9 +9405,9 @@ begin
       JsonPlan.AddPair('metas', QPlanes.FieldByName('metas').AsString);
 
       JsonPlan.AddPair('fecha_inicio',
-        FechaDelphi_To_FechaJS(QPlanes.FieldByName('fecha_inicio').AsString));
-      JsonPlan.AddPair('fecha_fin',
-        FechaDelphi_To_FechaJS(QPlanes.FieldByName('fecha_fin').AsString));
+        DateToStr(QPlanes.FieldByName('fecha_inicio').AsDateTime, fs));
+      JsonPlan.AddPair('fecha_fin', DateToStr(QPlanes.FieldByName('fecha_fin')
+        .AsDateTime, fs));
 
       JsonPlan.AddPair('actividades', QPlanes.FieldByName('actividades')
         .AsString);
@@ -9414,6 +9457,7 @@ var
   JsonPlan: TJSONObject;
   i: integer;
   ID: string;
+  fs: TFormatSettings;
 begin
   try
     QPlan := TFDQuery.create(nil);
@@ -9425,6 +9469,10 @@ begin
     QPlan.Open;
 
     JsonPlan := TJSONObject.create;
+
+    fs := TFormatSettings.create;
+    fs.DateSeparator := '-';
+    fs.ShortDateFormat := 'yyyy-mm-dd';
 
     JsonPlan.AddPair('idplan', QPlan.FieldByName('idplan').AsString);
     JsonPlan.AddPair('orden', QPlan.FieldByName('orden').AsString);
@@ -9452,10 +9500,10 @@ begin
       QPlan.FieldByName('causas_principales').AsString);
     JsonPlan.AddPair('metas', QPlan.FieldByName('metas').AsString);
 
-    JsonPlan.AddPair('fecha_inicio',
-      FechaDelphi_To_FechaJS(QPlan.FieldByName('fecha_inicio').AsString));
-    JsonPlan.AddPair('fecha_fin',
-      FechaDelphi_To_FechaJS(QPlan.FieldByName('fecha_fin').AsString));
+    JsonPlan.AddPair('fecha_inicio', DateToStr(QPlan.FieldByName('fecha_inicio')
+      .AsDateTime, fs));
+    JsonPlan.AddPair('fecha_fin', DateToStr(QPlan.FieldByName('fecha_fin')
+      .AsDateTime, fs));
 
     JsonPlan.AddPair('actividades', QPlan.FieldByName('actividades').AsString);
     JsonPlan.AddPair('responsable_ejecucion',
@@ -15946,6 +15994,19 @@ procedure TMatematicas.limpiarConsulta(Query: TFDQuery);
 begin
   Query.Close;
   Query.SQL.Clear;
+end;
+
+function TMatematicas.Secretarias: TJSONObject;
+begin
+  Result := TJSONObject.create;
+
+  if validarTokenHeader then
+    Result := moduloPracticaDocente.getSecretarias
+  else
+  begin
+    Result.AddPair(JSON_STATUS, RESPONSE_INCORRECTO);
+    Result.AddPair(JSON_RESPONSE, AccesoDenegado);
+  end;
 end;
 
 procedure TMatematicas.SELECT(nombreTabla, OrdenarPor: string; Query: TFDQuery);

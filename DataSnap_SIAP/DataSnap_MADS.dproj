@@ -133,17 +133,17 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="uFCertificados.pas">
             <Form>FCertificados</Form>
         </DCCReference>
-        <DCCReference Include="..\..\..\..\Dropbox\MIS_PROYECTOS\7000_Librerias\Utilidades\Utilidades.pas"/>
+        <DCCReference Include="Utilidades.pas"/>
         <DCCReference Include="uModuloDatos.pas">
             <Form>moduloDatos</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\Formularios\uFVisorContenido.pas">
+        <DCCReference Include="uFVisorContenido.pas">
             <Form>FVisorContenido</Form>
         </DCCReference>
-        <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTAttribute.pas"/>
-        <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTCRUDModel.pas"/>
-        <DCCReference Include="..\..\..\..\Google Drive\MIS_PROYECTOS\7000_Librerias\EntidadRelacion\Models\uTValidateToken.pas"/>
+        <DCCReference Include="uTAttribute.pas"/>
+        <DCCReference Include="uTCRUDModel.pas"/>
+        <DCCReference Include="uTValidateToken.pas"/>
         <DCCReference Include="Modulos\uModuloEventoEMEM.pas">
             <Form>moduloEventoEMEM</Form>
             <DesignClass>TDataModule</DesignClass>
@@ -217,10 +217,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="js\base64.js" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="images\collapse.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
-                        <RemoteDir>.\js\</RemoteDir>
-                        <RemoteName>base64.js</RemoteName>
+                        <RemoteDir>.\images\</RemoteDir>
+                        <RemoteName>collapse.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -681,10 +681,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="images\collapse.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="js\base64.js" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
-                        <RemoteDir>.\images\</RemoteDir>
-                        <RemoteName>collapse.png</RemoteName>
+                        <RemoteDir>.\js\</RemoteDir>
+                        <RemoteName>base64.js</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

@@ -72,12 +72,17 @@ export class CartasPermisosPracticasComponent implements OnInit {
   }
 
   agregarEstudiante(carta: CartaPermiso) {
-    this.dlgService.seleccionarEstudiante(this.periodo.idperiodo).subscribe((rEstudiante: EstudianteCarta) => {
+    this.dlgService.seleccionarEstudiante(this.periodo.idperiodo).subscribe((rEstudiante: any) => {
       console.log(rEstudiante);
       const estudianteCarta: EstudianteCarta = {
         IdCarta: carta.IdCarta,
-        IdEstudiante: rEstudiante.IdEstudiante
+        IdEstudiante: rEstudiante.estudiante.IdEstudiante,
+        Horario: rEstudiante.Horario,
+        Grado: rEstudiante.Grado
       };
+
+      console.log(estudianteCarta);
+
       const datos = JSON.stringify(estudianteCarta);
 
       this.genService.postEstudianteCarta(datos).subscribe((rEstudianteCarta: RespuestaCRUD) => {

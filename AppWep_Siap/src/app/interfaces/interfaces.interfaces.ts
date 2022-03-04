@@ -808,6 +808,8 @@ export interface CartaPermiso {
   Fecha?: string;
   IdPeriodo?: string;
   Estudiantes?: EstudianteCarta[];
+  Secretaria?: string;
+  IdSecretaria?: string;
 }
 
 export interface EstudianteCarta {
@@ -818,4 +820,15 @@ export interface EstudianteCarta {
   Documento?: string;
   Correo?: string;
   Genero?: string;
+  Grado?: string;
+  Horario?: string;
+  Ciudad?: string;
+  Institucion?: string;
+  Rector?: string;
+}
+
+export interface SecretariaPractica {
+  IdSecretaria?: string;
+  Secretaria?: string;
+  Estudiantes?: EstudianteCarta[];
 }

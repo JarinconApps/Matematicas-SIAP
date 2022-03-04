@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CartaPermiso, RespuestaCRUD } from '../../../../../interfaces/interfaces.interfaces';
+import { CartaPermiso, RespuestaCRUD, SecretariaPractica } from '../../../../../interfaces/interfaces.interfaces';
 import { GeneralService } from '../../../../../services/general.service';
 
 @Component({
@@ -17,8 +17,11 @@ export class CrearEditarCartaComponent implements OnInit {
     Institucion: '',
     Ciudad: 'Armenia, Quindío',
     Fecha: '',
-    IdPeriodo: ''
+    IdPeriodo: '',
+    IdSecretaria: ''
   };
+
+  secretarias: SecretariaPractica[] = [];
 
   constructor(public dialogRef: MatDialogRef<CrearEditarCartaComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -33,6 +36,11 @@ export class CrearEditarCartaComponent implements OnInit {
     }
 
     this.carta.IdPeriodo = this.IdPeriodo;
+
+    this.genService.getSecretarias().subscribe((rSecretarias: RespuestaCRUD) => {
+      console.log(rSecretarias);
+      this.secretarias = rSecretarias.Results;
+    });
   }
 
   guardar() {

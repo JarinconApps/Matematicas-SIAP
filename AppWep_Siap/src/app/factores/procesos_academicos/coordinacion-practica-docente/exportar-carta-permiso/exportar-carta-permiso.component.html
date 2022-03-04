@@ -1,15 +1,21 @@
-<div class="m-5" style="font-size: 24px">
-    <div class="text-center">
+<div class="modal-footer">
+    <button [value]="Titulo" class="btn btn-outline-info m-3" id="botonesDescargar" style="width: 250px;" onclick="crearWord(value, value + '.doc')"><i class="fas fa-file-word"></i> Exportar como Word</button>
+</div>
+
+{{ Titulo }}
+
+<div class="m-5" [attr.id]="Titulo">
+    <!-- <div class="text-center">
         <img src="assets/Iconos/logo-uq-2.png" style="width: 128px">
-    </div>
+    </div> -->
 
     <p class="text-justify">
         Armenia, {{ carta.Fecha }}
     </p>
 
     <p class="text-justify" style="margin-top: 50px">
-        Señor <br>
-        <span class="font-weight-bold">{{ carta.Rector | uppercase }}</span> <br> Rector <br> Institución Educativa: {{ carta.Institucion }} <br> {{ carta.Ciudad }}
+        Señor(a) <br>
+        <span class="font-weight-bold">{{ carta.Rector | uppercase }}</span> <br> Rector(a) <br> Institución Educativa: {{ carta.Institucion }} <br> {{ carta.Ciudad }}
     </p>
 
     <p class="text-justify" style="margin-top: 50px">
@@ -27,7 +33,7 @@
     </p>
 
     <p class="text-justify" style="margin-top: 50px">
-        Los estudiantes deberán cumplir a cabalidad con los procesos pactados con el Docente de la Práctica y a su vez cumplir como mínimo tres (3) horas semanales de asistencia a la práctica.
+        Los estudiantes deberán cumplir a cabalidad con los procesos pactados con el Docente de la Práctica y a su vez cumplir como mínimo cuatro (4) horas semanales de asistencia a la práctica.
     </p>
 
     <p class="text-justify" style="margin-top: 50px">
@@ -35,6 +41,6 @@
     </p>
 
     <p class="text-justify" style="margin-top: 150px">
-        Hernán Dario Toro Zapata <br> Director Programa Licenciatura en Matemáticas
+        Hernán Darío Toro Zapata <br> Director Programa Licenciatura en Matemáticas
     </p>
 </div>

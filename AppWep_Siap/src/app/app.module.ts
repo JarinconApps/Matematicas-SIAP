@@ -184,6 +184,8 @@ import { CartasPermisosPracticasComponent } from './factores/procesos_academicos
 import { CrearEditarCartaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/cartas-permisos-practicas/crear-editar-carta/crear-editar-carta.component';
 import { SeleccionarEstudianteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estudiantes-practica/seleccionar-estudiante/seleccionar-estudiante.component';
 import { ExportarCartaPermisoComponent } from './factores/procesos_academicos/coordinacion-practica-docente/exportar-carta-permiso/exportar-carta-permiso.component';
+import { ReporteEstudiantesBySecretariaComponent } from './factores/procesos_academicos/coordinacion-practica-docente/reporte-estudiantes-by-secretaria/reporte-estudiantes-by-secretaria.component';
+import { EditarDatosEstudianteComponent } from './factores/procesos_academicos/coordinacion-practica-docente/estudiantes-practica/editar-datos-estudiante/editar-datos-estudiante.component';
 
 
 
@@ -453,6 +455,10 @@ import { ExportarCartaPermisoComponent } from './factores/procesos_academicos/co
     SeleccionarEstudianteComponent,
 
     ExportarCartaPermisoComponent,
+
+    ReporteEstudiantesBySecretariaComponent,
+
+    EditarDatosEstudianteComponent,
 
 
   ],

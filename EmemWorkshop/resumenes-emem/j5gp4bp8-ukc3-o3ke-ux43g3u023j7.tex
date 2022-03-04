@@ -1,0 +1,48 @@
+\documentclass[12pt,twoside,twocolumn,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{longtable}
+\tolerance = 10000
+\pretolerance = 10000
+\setlength{\parindent}{0pt}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[RO]{5 Workshop de Educación Matemática, Estadística y Matemáticas - EMEM 2019, 5-7 de noviembre de 2019, Armenia, Colombia.}
+
+\fancyfoot[LO]{  \rule[0.25ex]{1\columnwidth}{1pt} \\ Programa de Licenciatura en Matemáticas, Universidad del Quindío \hfill{} \thepage}
+
+\setlength\columnsep{1cm}
+
+\makeatother
+
+\begin{document}
+\title{Modelo de control biológico aplicado a la etapa adulta del mosquito Ae. aegypti}
+\author{Carlos Alberto Abello Muñoz\thanks{Universidad del Quindío, carlosalbert15@gmail.com}  , Juan Felipe Ciro Solórzano\thanks{Universidad del Quindío, jfciros@uqvirtual.edu.co}  }
+\date{Noviembre del 2019}
+\maketitle
+\thispagestyle{fancy}
+\subsection*{Palabras Clave}
+Aedes aegypti, Depredación, Control biológico, Crecimiento logístico, Modelo matemático.
+\rule[0.25ex]{1\columnwidth}{1pt}
+El mosquito Ae. aegypti es el principal transmisor de virus como el dengue, el chikungunya y el zika. Habita principalmente en zonas tropicales y subtropicales que permiten su reproducción y propagación convirtiéndose en una problemática de salud pública, dado que cerca de dos tercios de la población mundial conviven con este vector en áreas urbanas. En la actualidad existen varios estudios que buscan encontrar la manera más óptima de mitigar dicha problemática, siendo una de ellas el control biológico presa-depredador, que consiste en la introducción de especies autóctonas que logren controlar o reducir la plaga de algún modo. En este estudio se plantea un modelo presa-depredador donde el mosquito presenta un crecimiento constante y su depredador un crecimiento logístico siendo codependientes el uno del otro, pero dejando al depredador de manera implícita (Vease como una especie que se alimenta de mosquitos adultos). De este estudio se espera proponer un modelo de control biológico tipo presa-depredador que busca determinar la viabilidad de los depredadores de Ae. aegypti en su etapa adulta, para diseñar una alternativa en la reducción de las tasas de infección de enfermedades transmitidas por el vector.
+\begin{thebibliography}{1}
+\bibitem{ref1}Organización mundial de la salud, Control Biológico. https://www.who.int/denguecontrol/control-strategies/biological-control/es
+\bibitem{ref2}Pinheiro FP. Dengue in the Americas. Epidemiological Bulletin panamerican health organization. ISSN 0256-1859. Vol 10. No.1 1989. Epidemiol. Bull. PAHO. 1989. 1-8. http://hist.library.paho.org/English/EPID/8345.pdf
+\bibitem{ref3}Rivera García, Oscar \textit{Aedes aegypti}, virus dengue, chinkugunia, zika y el cambio climático. Máxima alerta médica y oficial REDVET. Revista Electrónica de Veterinaria, vol. 15, núm. 10, octubre, 2014, pp. 1-10 http://www.redalyc.org/pdf/636/63637999001.pdf
+\end{thebibliography}
+\end{document}
