@@ -27,7 +27,6 @@ export class SeleccionarEstudianteComponent implements OnInit {
 
   obtenerEstudiantes() {
     this.genService.getEstudiantesByPeriodo(this.IdPeriodo).subscribe((rEstudiantes: RespuestaCRUD) => {
-      console.log(rEstudiantes);
       this.estudiantes = rEstudiantes.Results;
     });
   }

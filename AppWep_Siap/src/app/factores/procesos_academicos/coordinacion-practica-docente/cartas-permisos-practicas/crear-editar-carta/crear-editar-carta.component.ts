@@ -38,7 +38,6 @@ export class CrearEditarCartaComponent implements OnInit {
     this.carta.IdPeriodo = this.IdPeriodo;
 
     this.genService.getSecretarias().subscribe((rSecretarias: RespuestaCRUD) => {
-      console.log(rSecretarias);
       this.secretarias = rSecretarias.Results;
     });
   }
@@ -46,16 +45,12 @@ export class CrearEditarCartaComponent implements OnInit {
   guardar() {
     const datos = JSON.stringify(this.carta);
 
-    console.log(this.carta);
-
     if (this.accion === 'Crear') {
       this.genService.postCartaPermiso(datos).subscribe((rCarta: RespuestaCRUD) => {
-        console.log(rCarta);
         this.dialogRef.close(rCarta);
       });
     } else {
       this.genService.putCartaPermiso(datos).subscribe((rCarta: RespuestaCRUD) => {
-        console.log(rCarta);
         this.dialogRef.close(rCarta);
       });
     }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TrabajoGrado } from '../../../../interfaces/interfaces.interfaces';
+import { TrabajoGrado, RespuestaCRUD } from '../../../../interfaces/interfaces.interfaces';
 import { GeneralService } from '../../../../services/general.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -54,12 +54,21 @@ export class VerTrabajoGradoComponent implements OnInit {
     estadoproyecto: ''
   };
 
+  idtrabajogrado = '';
+  leyendo = false;
+
   constructor(public dialogRef: MatDialogRef<VerTrabajoGradoComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private genService: GeneralService) { }
 
   ngOnInit() {
+    this.idtrabajogrado = this.data.trabajoGrado.idtrabajogrado;
 
-    this.trabajogrado = this.data.trabajoGrado;
+    this.leyendo = true;
+    this.genService.getTrabajoGrado(this.idtrabajogrado).subscribe((rTrabajoGrado: TrabajoGrado) => {
+      this.trabajogrado = rTrabajoGrado;
+      this.leyendo = false;
+    });
   }
 
 }

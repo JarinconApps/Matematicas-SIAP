@@ -33,7 +33,6 @@ export class ReporteEstudiantesBySecretariaComponent implements OnInit {
 
   obtenerReporte() {
     this.genService.getEstudiantesBySecretaria(this.periodo.idperiodo).subscribe((rSecretarias: any) => {
-      console.log(rSecretarias);
       this.secretarias = rSecretarias.Results;
     });
   }

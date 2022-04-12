@@ -27,7 +27,6 @@ export class CartasPermisosPracticasComponent implements OnInit {
 
   crearCarta() {
     this.dlgService.crearEditarCartaPermiso(null, this.periodo.idperiodo).subscribe((rCarta: RespuestaCRUD) => {
-      console.log(rCarta);
 
       this.dlgService.mostrarSnackBar(rCarta.Response);
 
@@ -37,7 +36,6 @@ export class CartasPermisosPracticasComponent implements OnInit {
 
   obtenerCartas() {
     this.genService.getCartasPeriodo(this.periodo.idperiodo).subscribe((rCartas: RespuestaCRUD) => {
-      console.log(rCartas);
       this.cartas = rCartas.Results;
     });
   }
@@ -53,7 +51,6 @@ export class CartasPermisosPracticasComponent implements OnInit {
 
   editar(carta: CartaPermiso) {
     this.dlgService.crearEditarCartaPermiso(carta, this.periodo.idperiodo).subscribe((rCarta: RespuestaCRUD) => {
-      console.log(rCarta);
       this.dlgService.mostrarSnackBar(rCarta.Response);
       this.obtenerCartas();
     });
@@ -64,7 +61,6 @@ export class CartasPermisosPracticasComponent implements OnInit {
       if (rEliminar) {
         this.genService.deleteCartaPermiso(carta.IdCarta).subscribe((rCarta: RespuestaCRUD) => {
           this.dlgService.mostrarSnackBar(rCarta.Response);
-          console.log(rCarta);
           this.obtenerCartas();
         });
       }
@@ -73,7 +69,6 @@ export class CartasPermisosPracticasComponent implements OnInit {
 
   agregarEstudiante(carta: CartaPermiso) {
     this.dlgService.seleccionarEstudiante(this.periodo.idperiodo).subscribe((rEstudiante: any) => {
-      console.log(rEstudiante);
       const estudianteCarta: EstudianteCarta = {
         IdCarta: carta.IdCarta,
         IdEstudiante: rEstudiante.estudiante.IdEstudiante,
@@ -81,13 +76,10 @@ export class CartasPermisosPracticasComponent implements OnInit {
         Grado: rEstudiante.Grado
       };
 
-      console.log(estudianteCarta);
-
       const datos = JSON.stringify(estudianteCarta);
 
       this.genService.postEstudianteCarta(datos).subscribe((rEstudianteCarta: RespuestaCRUD) => {
         this.dlgService.mostrarSnackBar(rEstudianteCarta.Response);
-        console.log(rEstudianteCarta);
         carta.Estudiantes.push(rEstudianteCarta.Object);
       });
     });
@@ -97,7 +89,6 @@ export class CartasPermisosPracticasComponent implements OnInit {
     this.dlgService.confirmacion('¿Está seguro de eliminar a éste estudiante?').subscribe((rEliminar: boolean) => {
       if (rEliminar) {
         this.genService.deleteEstudianteCarta(estudiante.IdEstudianteCarta).subscribe((rEstudianteCarta: RespuestaCRUD) => {
-          console.log(rEstudianteCarta);
           this.dlgService.mostrarSnackBar(rEstudianteCarta.Response);
 
           const id = carta.Estudiantes.indexOf(estudiante);

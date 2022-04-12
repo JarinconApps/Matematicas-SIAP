@@ -11,11 +11,11 @@
 
         <div class="card shadow mb-3">
             <div class="card-header bg-dark text-white">
-                <h5 class="card-title">Opciones de Búsqueda</h5>
+                <h5 class="card-title">Buscar por nombre de Estudiante</h5>
             </div>
 
             <div class="card-body">
-                <div class="form-group">
+                <!--  <div class="form-group">
                     <label class="font-weight-bold text-info">Título</label>
                     <input class="form-control" [(ngModel)]="filtroBusqueda.titulo" name="titulo">
                 </div>
@@ -23,14 +23,14 @@
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Director</label>
                     <input class="form-control" [(ngModel)]="filtroBusqueda.director" name="director">
-                </div>
+                </div> -->
 
                 <div class="form-group">
                     <label class="font-weight-bold text-info">Estudiante</label>
                     <input class="form-control" [(ngModel)]="filtroBusqueda.estudiante" name="estudiante">
                 </div>
 
-                <div class="form-group">
+                <!--  <div class="form-group">
                     <label class="font-weight-bold text-info">Fecha de Inicio</label>
                     <app-date-picker [Fecha]="filtroBusqueda.fechaInicio" (CambioFecha)="filtroBusqueda.fechaInicio = $event"></app-date-picker>
                 </div>
@@ -70,7 +70,7 @@
                       <option value="">Todos</option>
                       <option [value]="grupo.nombre" *ngFor="let grupo of GruposInvestigacion">{{ grupo.nombre | capitalizado }}</option>
                     </select>
-                </div>
+                </div> -->
 
                 <button class="btn btn-outline-success btn-block" (click)="leerTrabajosGrado()"><i class="fas fa-search"></i> Buscar</button>
                 <button class="btn btn-outline-danger btn-block" (click)="eliminarFiltro()"><i class="fas fa-trash-alt"></i> Eliminar Filtro</button>
@@ -114,7 +114,7 @@
                 <button class="btn btn-outline-success" (click)="agregarTrabajoGrado()" style="margin: 5px;"><i class="fas fa-plus-circle"></i> Crear Trabajo Grado</button>
             </div>
 
-            <h2 class="text-info">Se encontraron {{ bTrabajosGrado.length }} resultados de {{ filtroBusqueda.paginacion.total}}</h2>
+            <h2 class="text-info">Se encontraron {{ bTrabajosGrado.length }} resultados</h2>
             <h6 class="text-info">tiempo de búsqueda {{ tiempo | tiempo }}</h6>
             <hr>
 
@@ -134,9 +134,9 @@
                 </div>
             </div>
 
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button class="btn btn-outline-success" (click)="verExcel()"><i class="fas fa-file-excel"></i> Descargar como Excel</button>
-            </div>
+            </div> -->
 
             <ul class="list-group" *ngIf="verDescripciones">
                 <li class="list-group-item list-group-item-action m-3" *ngFor="let trabajogrado of bTrabajosGrado; let id = index">
@@ -146,7 +146,13 @@
                             <h4 class="text-info">{{ trabajogrado.titulo | capitalizado }}</h4>
                             <hr>
 
-                            <div class="row">
+                            <ul class="list-group">
+                                <li class="list-group-item list-group-item-action">{{ trabajogrado.estudiante1 | capitalizado}}</li>
+                                <li class="list-group-item list-group-item-action" *ngIf="trabajogrado.estudiante2.length > 0">{{ trabajogrado.estudiante2 | capitalizado}}</li>
+                                <li class="list-group-item list-group-item-action" *ngIf="trabajogrado.estudiante3.length > 0">{{ trabajogrado.estudiante3 | capitalizado}}</li>
+                            </ul>
+
+                            <!-- <div class="row">
                                 <div class="col">
                                     <h5 class="text-info">Autor(es)</h5>
                                     <hr>
@@ -222,7 +228,7 @@
                                         <li><b>Años: </b>{{ trabajogrado.cantidadsemestresejecucion.Anos}}</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="modal-footer">
                                 <button class="btn btn-outline-info" (click)="verTrabajoGrado(trabajogrado)"><i class="fas fa-search"></i> Ver</button>
@@ -243,18 +249,18 @@
                             <th>No</th>
                             <th>Título</th>
                             <th>Estudiante(s)</th>
-                            <th>Director</th>
-                            <th>Codirector (Si Aplica)</th>
+                            <!-- <th>Director</th>
+                            <th>Codirector (Si Aplica)</th> -->
                             <th>Ver</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
                             <th>Acta de la Propuesta</th>
-                            <th>Jurado (Revisor)</th>
+                            <!--  <th>Jurado (Revisor)</th>
                             <th>Jurado 2</th>
                             <th>Jurado 3</th>
                             <th>Modalidad</th>
                             <th>Área de Profundización</th>
-                            <th>Grupo de Investigación</th>
+                            <th>Grupo de Investigación</th> -->
                             <th>Evaluación Prpuesta</th>
                             <th>Evaluación Trabajo Escrito</th>
                             <th>Evaluación Sustentación</th>
@@ -262,8 +268,8 @@
                             <th>Fecha de Inicio Ejecución</th>
                             <th>Fecha de Sustentación</th>
                             <th>Estado del Trabajo de Grado</th>
-                            <th>Meses en Ejecución</th>
-                            <th>Se ceden los derechos</th>
+                            <!-- <th>Meses en Ejecución</th>
+                            <th>Se ceden los derechos</th> -->
                         </tr>
                     </thead>
 
@@ -284,8 +290,8 @@
                                     </tr>
                                 </table>
                             </td>
-                            <td>{{ trabajo.director.nombre | capitalizado }}</td>
-                            <td>{{ trabajo.codirector.nombre | capitalizado }}</td>
+                            <!-- <td>{{ trabajo.director.nombre | capitalizado }}</td>
+                            <td>{{ trabajo.codirector.nombre | capitalizado }}</td> -->
                             <td>
                                 <button class="btn btn-outline-info" (click)="verTrabajoGrado(trabajo)"><img src="assets/Iconos/Ver.png" style="height: 32px;" > Ver</button>
                             </td>
@@ -300,12 +306,12 @@
                             </button>
                             </td>
                             <td>{{ trabajo.actapropuesta | capitalizado }}</td>
-                            <td>{{ trabajo.jurado1.nombre | capitalizado }}</td>
+                            <!-- <td>{{ trabajo.jurado1.nombre | capitalizado }}</td>
                             <td>{{ trabajo.jurado2.nombre | capitalizado }}</td>
                             <td>{{ trabajo.jurado3.nombre | capitalizado }}</td>
                             <td>{{ trabajo.modalidad.nombre | capitalizado }}</td>
                             <td>{{ trabajo.areaProfundizacion.nombre | capitalizado }}</td>
-                            <td>{{ trabajo.grupoInvestigacion.nombre | capitalizado }}</td>
+                            <td>{{ trabajo.grupoInvestigacion.nombre | capitalizado }}</td> -->
                             <td>{{ trabajo.evaluacionpropuesta | capitalizado }}</td>
                             <td>{{ trabajo.evaluaciontrabajoescrito | capitalizado }}</td>
                             <td>{{ trabajo.evaluacionsustentacion | capitalizado }}</td>
@@ -313,8 +319,8 @@
                             <td>{{ trabajo.fechainicioejecucion | capitalizado }}</td>
                             <td>{{ trabajo.fechasustentacion | capitalizado }}</td>
                             <td>{{ trabajo.estadoproyecto | capitalizado }}</td>
-                            <td>{{ trabajo.cantidadsemestresejecucion.Meses | capitalizado }}</td>
-                            <td>{{ trabajo.estudiantecedederechos | capitalizado }}</td>
+                            <!-- <td>{{ trabajo.cantidadsemestresejecucion.Meses | capitalizado }}</td>
+                            <td>{{ trabajo.estudiantecedederechos | capitalizado }}</td> -->
 
                         </tr>
                     </tbody>

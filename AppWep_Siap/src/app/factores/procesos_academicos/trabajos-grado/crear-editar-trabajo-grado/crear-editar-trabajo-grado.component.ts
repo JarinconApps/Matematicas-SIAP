@@ -171,6 +171,8 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
       return;
     }
 
+    // Validar que esten completos los tres jurados
+
     this.guardando = true;
 
     if (this.id === 'Crear') {
@@ -212,7 +214,6 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
 
       const datos = JSON.stringify(this.trabajogrado);
       this.genService.postTrabajoGrado(datos).subscribe((rRespuesta: any) => {
-
         this.dlgService.mostrarSnackBar(rRespuesta.Respuesta || rRespuesta.Error);
         this.genService.navegar([RUTA_TRABAJOSGRADO]);
       });

@@ -19,7 +19,6 @@ export class ExportarCartaPermisoComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((rParams: any) => {
-      console.log(rParams);
       this.IdCarta = rParams.Id;
 
       this.obtenerCarta();
@@ -28,7 +27,6 @@ export class ExportarCartaPermisoComponent implements OnInit {
 
   obtenerCarta() {
     this.genService.getCartaPermiso(this.IdCarta).subscribe((rCarta: RespuestaCRUD) => {
-      console.log(rCarta);
       this.carta = rCarta.Object;
 
       this.Titulo = '';

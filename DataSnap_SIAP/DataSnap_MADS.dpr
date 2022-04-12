@@ -21,7 +21,6 @@ uses
   uFCertificados in 'uFCertificados.pas' {FCertificados},
   Utilidades in 'Utilidades.pas',
   uModuloDatos in 'uModuloDatos.pas' {moduloDatos: TDataModule},
-  uFVisorContenido in 'uFVisorContenido.pas' {FVisorContenido},
   uTAttribute in 'uTAttribute.pas',
   uTCRUDModel in 'uTCRUDModel.pas',
   uTValidateToken in 'uTValidateToken.pas',
@@ -43,7 +42,6 @@ begin
   Application.CreateForm(TFDataSnapMatematicas, FDataSnapMatematicas);
   Application.CreateForm(TFResumenes, FResumenes);
   Application.CreateForm(TFCertificados, FCertificados);
-  Application.CreateForm(TFVisorContenido, FVisorContenido);
   Application.CreateForm(TmoduloEventoEMEM, moduloEventoEMEM);
   Application.CreateForm(TFVistaJSON, FVistaJSON);
   Application.CreateForm(TModuloUtilidades, ModuloUtilidades);

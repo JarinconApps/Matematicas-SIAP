@@ -59,15 +59,8 @@ export class TrabajosGradoComponent implements OnInit {
   };
 
   filtroBusqueda: FiltroBusquedaTrabajosGrado = {
-    titulo: '',
+    titulo: 'Enseñanza',
     estudiante: '',
-    director: '',
-    idModalidad: '',
-    idAreaProfundizacion: '',
-    idGrupoInvestigacion: '',
-    estadoProyecto: '',
-    fechaInicio: '2008-08-20',
-    fechaFin: '2021-08-20',
     paginacion: {
       todos: 'no',
       contenido: [],
@@ -218,11 +211,12 @@ export class TrabajosGradoComponent implements OnInit {
     const datos = JSON.stringify(this.filtroBusqueda);
 
     this.genService.getTrabajosGrado(datos).subscribe((rTrabajosGrado: FiltroBusquedaTrabajosGrado) => {
+      this.leyendo = false;
+
       this.filtroBusqueda = rTrabajosGrado;
       this.TrabajosGrado = rTrabajosGrado.paginacion.contenido;
       this.bTrabajosGrado = this.TrabajosGrado;
 
-      this.leyendo = false;
       const t2 = new Date();
 
       this.tiempo = Number(Number(t2) - Number(t1));

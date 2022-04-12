@@ -1,4 +1,9 @@
-<div class="media m-3" #trabajoGrado>
+<div class="text-center" style="margin: 40px;" *ngIf="leyendo">
+    <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
+    <h3>Leyendo trabajo ...</h3>
+</div>
+
+<div class="media m-3" #trabajoGrado *ngIf="!leyendo">
 
     <div class="media-body">
         <h1 class="text-info text-center font-weight-bold">Universidad del Quindío</h1>

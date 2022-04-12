@@ -138,9 +138,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <Form>moduloDatos</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="uFVisorContenido.pas">
-            <Form>FVisorContenido</Form>
-        </DCCReference>
         <DCCReference Include="uTAttribute.pas"/>
         <DCCReference Include="uTCRUDModel.pas"/>
         <DCCReference Include="uTValidateToken.pas"/>

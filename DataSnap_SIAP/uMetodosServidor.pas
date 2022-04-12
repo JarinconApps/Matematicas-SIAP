@@ -95,7 +95,7 @@ uses System.SysUtils, System.Classes, dialogs, System.Json, Contnrs,
   IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdMessageClient,
   IdSMTPBase, IdSMTP, uFCertificados, Utilidades, ComObj,
   Datasnap.DSHTTPWebBroker,
-  Web.HTTPApp, uModuloDatos, uFVisorContenido, uConstantes, uModuloEventoEMEM,
+  Web.HTTPApp, uModuloDatos, {uFVisorContenido,} uConstantes, uModuloEventoEMEM,
   uModuloSeminario, uModuloPracticaDocente;
 
 type
@@ -133,6 +133,7 @@ type
 
     function transformarNombre(sNombre: string): string;
     function extractYearFromDate(fecha: string): word;
+    function cadenaToPostgres(cadena: string): string;
   public
 
     procedure limpiarConsulta(Query: TFDQuery);
@@ -3294,9 +3295,7 @@ var
   fs: TFormatSettings;
   desde, hasta, cantidad, total: integer;
   attrOrdenar: TJSONArray;
-  titulo, Estudiante, director, IdModalidad, idareaprofundizacion,
-    idgrupoinvestigacion, estadoProyecto, OrdenarPor, fechaInicio,
-    fechaFin: string;
+  titulo, Estudiante, fechaInicio, fechaFin: string;
   jsonDocente, paginacion: TJSONObject;
 begin
   Query := TFDQuery.create(nil);
@@ -3307,59 +3306,21 @@ begin
 
     titulo := filtroBusqueda.GetValue('titulo').Value;
     Estudiante := filtroBusqueda.GetValue('estudiante').Value;
-    director := filtroBusqueda.GetValue('director').Value;
-    IdModalidad := filtroBusqueda.GetValue('idModalidad').Value;
-    idareaprofundizacion := filtroBusqueda.GetValue
-      ('idAreaProfundizacion').Value;
-    idgrupoinvestigacion := filtroBusqueda.GetValue
-      ('idGrupoInvestigacion').Value;
-    estadoProyecto := filtroBusqueda.GetValue('estadoProyecto').Value;
-    fechaInicio := filtroBusqueda.GetValue('fechaInicio').Value;
-    fechaFin := filtroBusqueda.GetValue('fechaFin').Value;
 
     limpiarConsulta(Query);
     Query.Close;
     Query.SQL.Clear;
 
-    Query.SQL.Add('SELECT * FROM siap_trabajosgrado AS stg');
-    Query.SQL.Add('INNER JOIN siap_docentes AS sd');
-    Query.SQL.Add('ON stg.iddirector=sd.iddocente WHERE ');
-    Query.SQL.Add('(POSITION(' + #39 + titulo + #39 +
-      ' IN LOWER(titulo)) > 0) AND ');
-    Query.SQL.Add('((POSITION(' + #39 + Estudiante + #39 +
-      ' IN LOWER(estudiante1)) > 0) OR ');
-    Query.SQL.Add('(POSITION(' + #39 + Estudiante + #39 +
-      ' IN LOWER(estudiante2)) > 0) OR ');
-    Query.SQL.Add('(POSITION(' + #39 + Estudiante + #39 +
-      ' IN LOWER(estudiante3)) > 0)) AND ');
-    Query.SQL.Add('(POSITION(' + #39 + director + #39 +
-      ' IN LOWER(sd.nombre)) > 0) AND ');
-    Query.SQL.Add('(POSITION(' + #39 + IdModalidad + #39 +
-      ' IN stg.idmodalidad) > 0) AND ');
-    Query.SQL.Add('(POSITION(' + #39 + idareaprofundizacion + #39 +
-      ' IN stg.idareaprofundizacion) > 0) AND ');
-    Query.SQL.Add('(POSITION(' + #39 + idgrupoinvestigacion + #39 +
-      ' IN stg.idgrupoinvestigacion) > 0) AND ');
-    Query.SQL.Add('(POSITION(' + #39 + estadoProyecto + #39 +
-      ' IN stg.estadoproyecto) > 0) ORDER BY stg.titulo');
-
+    Query.SQL.Text := 'SELECT * FROM siap_trabajosgrado WHERE ';
+    Query.SQL.Add('lower(Estudiante1) LIKE ' + cadenaToPostgres(Estudiante)
+      + ' or ');
+    Query.SQL.Add('lower(Estudiante2) LIKE ' + cadenaToPostgres(Estudiante)
+      + ' or ');
+    Query.SQL.Add('lower(Estudiante3) LIKE ' + cadenaToPostgres(Estudiante));
     Query.Open;
     Query.First;
 
-    total := Query.RecordCount;
-    paginacion := TJSONObject.create;
-    paginacion := TJSONObject.ParseJSONValue
-      (filtroBusqueda.GetValue('paginacion').ToJSON) as TJSONObject;
-
-    todos := paginacion.GetValue('todos').Value;
-    desde := StrToInt(paginacion.GetValue('desde').Value);
-    cantidad := StrToInt(paginacion.GetValue('cantidad').Value);
-    hasta := desde + cantidad - 1;
-
-    if hasta > total then
-      hasta := total;
-    if desde < 1 then
-      desde := 1;
+    Json.AddPair('SQL', Query.SQL.Text);
 
     if todos = 'si' then
     begin
@@ -3367,33 +3328,43 @@ begin
       hasta := total;
     end;
 
+    total := Query.RecordCount;
+
     Resultados := 'Registros ' + IntToStr(desde) + '-' + IntToStr(hasta) +
       ' de ' + IntToStr(total);
 
     for i := 1 to total do
     begin
-      if (i >= desde) and (i <= hasta) then
-      begin
-        JsonLinea := TJSONObject.create;
-        JsonLinea.AddPair('idtrabajogrado', Query.FieldByName('idtrabajogrado')
-          .AsString);
-        JsonLinea.AddPair('titulo', Query.FieldByName('titulo').AsString);
+      JsonLinea := TJSONObject.create;
+      JsonLinea.AddPair('idtrabajogrado', Query.FieldByName('idtrabajogrado')
+        .AsString);
+      JsonLinea.AddPair('titulo', Query.FieldByName('titulo').AsString);
 
-        JsonLinea.AddPair('estudiante1', Query.FieldByName('estudiante1')
-          .AsString);
-        JsonLinea.AddPair('estudiante2', Query.FieldByName('estudiante2')
-          .AsString);
-        JsonLinea.AddPair('estudiante3', Query.FieldByName('estudiante3')
-          .AsString);
-        JsonLinea.AddPair('estudiante1_tm', Query.FieldByName('estudiante1_tm')
-          .AsString);
-        JsonLinea.AddPair('estudiante2_tm', Query.FieldByName('estudiante2_tm')
-          .AsString);
-        JsonLinea.AddPair('estudiante3_tm', Query.FieldByName('estudiante3_tm')
-          .AsString);
+      JsonLinea.AddPair('estudiante1', Query.FieldByName('estudiante1')
+        .AsString);
+      JsonLinea.AddPair('estudiante2', Query.FieldByName('estudiante2')
+        .AsString);
+      JsonLinea.AddPair('estudiante3', Query.FieldByName('estudiante3')
+        .AsString);
+      JsonLinea.AddPair('actanombramientojurados',
+        Query.FieldByName('actanombramientojurados').AsString);
+      JsonLinea.AddPair('actapropuesta', Query.FieldByName('actapropuesta')
+        .AsString);
+      JsonLinea.AddPair('evaluacionpropuesta',
+        Query.FieldByName('evaluacionpropuesta').AsString);
+      JsonLinea.AddPair('evaluaciontrabajoescrito',
+        Query.FieldByName('evaluaciontrabajoescrito').AsString);
+      JsonLinea.AddPair('fechasustentacion',
+        Query.FieldByName('fechasustentacion').AsString);
+      JsonLinea.AddPair('calificacionfinal',
+        Query.FieldByName('calificacionfinal').AsString);
+      JsonLinea.AddPair('fechainicioejecucion',
+        Query.FieldByName('fechainicioejecucion').AsString);
+      JsonLinea.AddPair('estadoproyecto', Query.FieldByName('estadoproyecto')
+        .AsString);
 
-        { Fechas de Trabajo de Grado }
-        fs := TFormatSettings.create;
+      { Fechas de Trabajo de Grado }
+      { fs := TFormatSettings.create;
         fs.DateSeparator := '-';
         fs.ShortDateFormat := 'yyyy-mm-dd';
 
@@ -3401,20 +3372,20 @@ begin
         sFecha2 := Query.FieldByName('fechasustentacion').AsString;
 
         try
-          fecha1 := StrToDate(sFecha1, fs);
-          fecha2 := StrToDate(sFecha2, fs);
-          fecha3 := StrToDate(fechaInicio, fs);
-          fecha4 := StrToDate(fechaFin, fs);
-          diasEntre := fecha2 - fecha1;
-          dias := round(diasEntre);
-          meses := round(dias) / 30;
-          semestres := round(dias) / 180;
-          anos := round(dias) / 365;
+        fecha1 := StrToDate(sFecha1, fs);
+        fecha2 := StrToDate(sFecha2, fs);
+        fecha3 := StrToDate(fechaInicio, fs);
+        fecha4 := StrToDate(fechaFin, fs);
+        diasEntre := fecha2 - fecha1;
+        dias := round(diasEntre);
+        meses := round(dias) / 30;
+        semestres := round(dias) / 180;
+        anos := round(dias) / 365;
         except
-          dias := 0;
-          meses := 0;
-          semestres := 0;
-          anos := 0;
+        dias := 0;
+        meses := 0;
+        semestres := 0;
+        anos := 0;
         end;
 
         JsonTiempo := TJSONObject.create;
@@ -3468,37 +3439,33 @@ begin
         JsonLinea.AddPair('grupoInvestigacion', GrupoInvestigacion(ID));
 
         JsonLinea.AddPair('actapropuesta',
-          Query.FieldByName('actanombramientojurados').AsString);
+        Query.FieldByName('actanombramientojurados').AsString);
 
         JsonLinea.AddPair('evaluacionpropuesta',
-          Query.FieldByName('evaluacionpropuesta').AsString);
+        Query.FieldByName('evaluacionpropuesta').AsString);
 
         JsonLinea.AddPair('evaluaciontrabajoescrito',
-          Query.FieldByName('evaluaciontrabajoescrito').AsString);
+        Query.FieldByName('evaluaciontrabajoescrito').AsString);
 
         JsonLinea.AddPair('evaluacionsustentacion',
-          Query.FieldByName('evaluacionsustentacion').AsString);
+        Query.FieldByName('evaluacionsustentacion').AsString);
 
         JsonLinea.AddPair('fechasustentacion',
-          Query.FieldByName('fechasustentacion').AsString);
+        Query.FieldByName('fechasustentacion').AsString);
 
         JsonLinea.AddPair('calificacionfinal',
-          Query.FieldByName('calificacionfinal').AsString);
+        Query.FieldByName('calificacionfinal').AsString);
 
         JsonLinea.AddPair('estudiantecedederechos',
-          Query.FieldByName('estudiantecedederechos').AsString);
+        Query.FieldByName('estudiantecedederechos').AsString);
 
         JsonLinea.AddPair('fechainicioejecucion',
-          Query.FieldByName('fechainicioejecucion').AsString);
+        Query.FieldByName('fechainicioejecucion').AsString);
 
         JsonLinea.AddPair('estadoproyecto', Query.FieldByName('estadoproyecto')
-          .AsString);
+        .AsString); }
 
-        { Para buscar entre fechas }
-        if (fecha1 >= fecha3) and (fecha1 <= fecha4) and (fecha2 >= fecha3) and
-          (fecha2 <= fecha4) then
-          ArrayJson.AddElement(JsonLinea);
-      end;
+      ArrayJson.AddElement(JsonLinea);
       Query.Next;
     end;
 
@@ -3513,14 +3480,7 @@ begin
 
     Json.AddPair('titulo', titulo);
     Json.AddPair('estudiante', Estudiante);
-    Json.AddPair('director', director);
-    Json.AddPair('estadoProyecto', estadoProyecto);
-    Json.AddPair('idModalidad', IdModalidad);
-    Json.AddPair('idAreaProfundizacion', idareaprofundizacion);
-    Json.AddPair('idGrupoInvestigacion', idgrupoinvestigacion);
     Json.AddPair('paginacion', paginacion);
-    Json.AddPair('fechaInicio', fechaInicio);
-    Json.AddPair('fechaFin', fechaFin);
 
   except
     on E: Exception do
@@ -5867,6 +5827,26 @@ begin
 end;
 
 { Método DELETE - ActividadDocente }
+function TMatematicas.cadenaToPostgres(cadena: string): string;
+var
+  resp: string;
+begin
+  resp := AnsiLowerCase(cadena);
+  resp := StringReplace(resp, 'á', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'é', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'í', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ó', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ú', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ä', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ë', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ï', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ö', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ü', '_', [rfReplaceAll]);
+  resp := StringReplace(resp, 'ñ', '_', [rfReplaceAll]);
+
+  Result := chr(39) + '%' + resp + '%' + chr(39);
+end;
+
 function TMatematicas.cancelActividadDocente(const token, ID: string)
   : TJSONObject;
 var

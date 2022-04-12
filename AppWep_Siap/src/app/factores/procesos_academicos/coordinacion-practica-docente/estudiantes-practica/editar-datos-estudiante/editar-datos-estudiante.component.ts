@@ -22,7 +22,6 @@ export class EditarDatosEstudianteComponent implements OnInit {
 
   guardar() {
     /* this.genService.putEstudianteCarta().subscribe((rEstudiante: RespuestaCRUD) => {
-      console.log(rEstudiante);
 
     }); */
   }

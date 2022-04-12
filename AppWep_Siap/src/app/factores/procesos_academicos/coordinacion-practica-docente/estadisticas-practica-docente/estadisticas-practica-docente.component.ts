@@ -31,7 +31,6 @@ export class EstadisticasPracticaDocenteComponent implements OnInit {
 
   leerDatos() {
     this.genService.getEstadisticasPeriodo(this.periodo.idperiodo).subscribe((rEstadisticas: RespuestaCRUD) => {
-      console.log(rEstadisticas);
       this.EstudiantesPractica = rEstadisticas.Results;
     });
   }
