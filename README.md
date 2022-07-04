@@ -102,6 +102,7 @@ Esta aplicación contiene sistemas para organizar la información del programa d
 53. Hacer un estudio de los estudiantes mediante el PRAEX, el estudio se realiza por cohortes.
 54. Subir la productividad de los docentes.
 55. Crear página dinámica del EMEM adminstrable desde el SIAP.
+56. Actualizar proyecto.
 
 ## Actualizaciones
 
