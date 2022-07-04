@@ -27,7 +27,7 @@ export class DocentesComponent implements OnInit {
   tipoContrato = 'Todos';
   categoriaDocente = 'Todas';
   documento = '';
-
+  docentesActivos = 'si';
   resultados = '';
 
   constructor(private genService: GeneralService,
@@ -45,8 +45,8 @@ export class DocentesComponent implements OnInit {
     this.resultados = this.bDocentes.length.toString() + ' Resultados';
   }
 
-  cambiarTipoOrden(tipo: string) {
-    this.ordenarPor = tipo;
+  cambiarTipoOrden() {
+    console.log(this.ordenarPor);
     this.leerDocentes();
   }
 
@@ -124,12 +124,23 @@ export class DocentesComponent implements OnInit {
     this.leyendo = true;
 
     this.genService.getDocentes(this.ordenarPor).subscribe((rDocentes: any) => {
+      console.log(rDocentes);
       this.Docentes = rDocentes.Docentes;
-      this.bDocentes = this.Docentes;
 
-      this.contarResultados();
+      this.seleccionarDocentesActivos();
       this.leyendo = false;
     });
+  }
+
+  seleccionarDocentesActivos() {
+    this.bDocentes = [];
+    for (const docente of this.Docentes) {
+      if (docente.activo === this.docentesActivos) {
+        this.bDocentes.push(docente);
+      }
+    }
+
+    this.contarResultados();
   }
 
   agregarDocente() {

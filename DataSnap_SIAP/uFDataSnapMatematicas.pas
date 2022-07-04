@@ -3,7 +3,7 @@ unit uFDataSnapMatematicas;
 interface
 
 uses
-  Winapi.Messages, System.SysUtils, System.Variants,
+  Winapi.Messages, System.SysUtils, System.Variants, inifiles,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.AppEvnts, Vcl.StdCtrls, IdHTTPWebBrokerBridge, Web.HTTPApp, Vcl.ComCtrls,
   Vcl.ExtCtrls, Vcl.Buttons, System.ImageList, Vcl.ImgList, IdBaseComponent,

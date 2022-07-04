@@ -48,26 +48,26 @@
             <div *ngIf="vista[0]">
 
                 <div id="reporte-word">
-                    <table class="table table-bordered" id="reporte-servicios-programas">
-                        <thead style="background-color: $999999;">
-                            <tr>
-                                <th>No</th>
-                                <th>Asignatura</th>
-                                <th>I/H</th>
-                                <th>I/S</th>
-                                <th>Grupo</th>
-                                <th>Profesor</th>
+                    <table class="table" style="border-width: 0.1px; border-style: solid;" id="reporte-servicios-programas">
+                        <thead style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" style="background-color: $999999;">
+                            <tr style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">
+                                <th style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">No</th>
+                                <th style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">Asignatura</th>
+                                <th style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">I/H</th>
+                                <th style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">I/S</th>
+                                <th style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">Grupo</th>
+                                <th style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">Profesor</th>
                             </tr>
                         </thead>
 
-                        <tbody *ngFor="let servicio of ReportesServicios; let id = index">
-                            <tr>
-                                <td rowspan="6">{{ id + 1 }}</td>
-                                <td class="font-weight-bold">{{ servicio.asignatura | capitalizado }}</td>
-                                <td rowspan="6">{{ servicio.horas }}</td>
-                                <td rowspan="6">{{ servicio.horsem }}</td>
-                                <td rowspan="6">{{ servicio.grupo }}</td>
-                                <td>{{ servicio.nombre | capitalizado }}</td>
+                        <tbody style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" *ngFor="let servicio of ReportesServicios; let id = index">
+                            <tr style="border-width: 0.1px; border-style: solid; border-collapse: collapse;">
+                                <td style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" rowspan="6">{{ id + 1 }}</td>
+                                <td style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" class="font-weight-bold">{{ servicio.asignatura | capitalizado }}</td>
+                                <td style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" rowspan="6">{{ servicio.horas }}</td>
+                                <td style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" rowspan="6">{{ servicio.horsem }}</td>
+                                <td style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" rowspan="6">{{ servicio.grupo }}</td>
+                                <td style="border-width: 0.1px; border-style: solid; border-collapse: collapse;" >{{ servicio.nombre | capitalizado }}</td>
                             </tr>
 
                             <tr>

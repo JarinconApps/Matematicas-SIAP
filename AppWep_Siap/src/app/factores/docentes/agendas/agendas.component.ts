@@ -1,10 +1,11 @@
 import { GeneralService } from './../../../services/general.service';
 import { Component, OnInit } from '@angular/core';
 import { TransferService } from '../../../services/transfer.service';
-import { TipoContrato, Docente, AgendaServicio, ServicioPrograma, Periodo, ActividadFuncionDocente, FuncionDocente } from '../../../interfaces/interfaces.interfaces';
+import { TipoContrato, Docente, AgendaServicio, ServicioPrograma, Periodo, ActividadFuncionDocente, FuncionDocente, Contrato } from '../../../interfaces/interfaces.interfaces';
 import { DialogosService } from '../../../services/dialogos.service';
 import { Utilidades } from '../../../utilidades/utilidades.class';
-import { RUTA_FACTOR_DOCENTES, RUTA_EXPORTAR_AGENDA_DOCENTE, RUTA_EXPORTAR_AGENDAS_FACULTAD, RUTA_SERVICIOSPROGRAMA, RUTA_SERVICIOPROGRAMA, RUTA_AGENDAS, RUTA_ESTADO_AGENDAS, RUTA_ESTADISTICAS_HORAS_FACULTADES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA } from '../../../config/config';
+import { RUTA_FACTOR_DOCENTES, RUTA_EXPORTAR_AGENDA_DOCENTE, RUTA_EXPORTAR_AGENDAS_FACULTAD, RUTA_SERVICIOSPROGRAMA, RUTA_SERVICIOPROGRAMA, RUTA_AGENDAS, RUTA_ESTADO_AGENDAS, RUTA_ESTADISTICAS_HORAS_FACULTADES, RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA, ID_DOCENTE_DEFECTO } from '../../../config/config';
+import { ActivatedRoute } from '@angular/router';
 
 interface Opcion {
   Titulo?: string;
@@ -55,6 +56,8 @@ export class AgendasComponent implements OnInit {
   observacion = '';
 
   posDoc = 0;
+  paramIdDocente = '';
+  paramTipoContrato = '';
 
   Opciones: Opcion[] = [
     {
@@ -81,7 +84,8 @@ export class AgendasComponent implements OnInit {
 
   constructor(private transfer: TransferService,
               private genService: GeneralService,
-              private dlgService: DialogosService) { }
+              private dlgService: DialogosService,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.transfer.enviarTituloAplicacion('Agendas');
@@ -94,7 +98,12 @@ export class AgendasComponent implements OnInit {
     5. leerAgendaServicios(), que llama luego a,
     6. leerActividadesFuncionesDocentes()  */
 
-    this.leerPeriodos();
+    this.activatedRoute.params.subscribe((rParams: any) => {
+      console.log(rParams);
+      this.paramIdDocente = rParams.idDocente;
+      this.paramTipoContrato = rParams.tipoContrato;
+      this.leerPeriodos();
+    })
   }
 
   leerPeriodos() {
@@ -111,28 +120,46 @@ export class AgendasComponent implements OnInit {
     });
   }
 
-  cambiarPeriodo() {
-    this.Opciones[0].Ruta[2] = this.periodo;
-    this.Opciones[1].Ruta[2] = this.periodo;
+  leerContratos() {
+    this.leyendo = true;
 
-    this.leerAgendasServicio();
+    this.genService.getTiposContrato().subscribe((rContratos: any) => {
+      this.contratos = rContratos.TiposContratos;
+
+      for (const tipo of this.contratos) {
+        if (tipo.contrato === this.paramTipoContrato) {
+          this.tipoContrato = tipo.idtipocontrato;
+        }
+      }
+
+      this.leerDocentes();
+    });
   }
 
-  abrirOpcion(ruta: string[]) {
-
-    this.genService.navegar(ruta);
+  cambiarTipoContrato(contrato: TipoContrato) {
+    this.genService.navegar([RUTA_FACTOR_DOCENTES, RUTA_AGENDAS, contrato.contrato, ID_DOCENTE_DEFECTO]);
   }
 
-  eliminarAgendaServicio(agenda: AgendaServicio) {
-    this.genService.deleteAgendaServicio(agenda.idagendaservicio).subscribe((rRespuesta: any) => {
-      this.dlgService.mostrarSnackBar(rRespuesta.Respuesta || rRespuesta.Error);
-      this.leerAgendasServicio();
+  leerDocentes() {
+    for (const cont of this.contratos) {
+      if (cont.idtipocontrato === this.tipoContrato) {
+        this.nombreContrato = cont.contrato;
+      }
+    }
+
+    this.genService.getDocentesPorContrato(this.tipoContrato).subscribe((rDocentes: any) => {
+      this.Docentes = rDocentes.Docentes;
+      this.bDocentes = this.Docentes;
+
+      this.seleccionarDocente(this.Docentes[this.posDoc]);
     });
   }
 
   leerAgendasServicio() {
 
     this.genService.getAgendasServicio(this.docenteSeleccionado.iddocente, this.periodo).subscribe((rAgendasServicio: any) => {
+
+      console.log(rAgendasServicio);
 
       this.AgendasServicio = rAgendasServicio.AgendasServicios;
       if (this.AgendasServicio.length > 0) {
@@ -161,6 +188,8 @@ export class AgendasComponent implements OnInit {
   leerActividadesFuncionesDocente() {
     this.genService.getActividadesFuncionesDocente(this.docenteSeleccionado.iddocente, this.periodo).subscribe((rFunciones: any) => {
 
+      console.log(rFunciones);
+
       this.horasFunciones = rFunciones.horasFunciones;
       this.horasDocencia = rFunciones.horasDocencia;
       this.horasTotales = rFunciones.horasTotales;
@@ -171,11 +200,32 @@ export class AgendasComponent implements OnInit {
     });
   }
 
+  seleccionarDocenteLista(docente: Docente) {
+    this.genService.navegar([RUTA_FACTOR_DOCENTES, RUTA_AGENDAS, this.paramTipoContrato, docente.iddocente]);
+  }
+
   seleccionarDocente(docente: Docente) {
 
-    this.soloCatedraticos = (this.tipoContrato === 'catedrático');
-    this.docenteSeleccionado = docente;
+    if (this.paramIdDocente !== 'docente') {
+      this.docenteSeleccionado = this.buscarDocenteByID(this.paramIdDocente);
+    } else {
+      this.soloCatedraticos = (this.tipoContrato === 'catedrático');
+      this.docenteSeleccionado = docente;
+    }
+
     this.leerAgendasServicio();
+  }
+
+  buscarDocenteByID(Id: string): Docente {
+    console.log(this.Docentes);
+
+    for (const docente of this.Docentes) {
+      if (docente.iddocente === Id) {
+        return docente;
+      }
+    }
+
+   return this.Docentes[this.posDoc];
   }
 
   exportarAgenda() {
@@ -225,30 +275,7 @@ export class AgendasComponent implements OnInit {
     });
   }
 
-  leerContratos() {
-    this.leyendo = true;
 
-    this.genService.getTiposContrato().subscribe((rContratos: any) => {
-      this.contratos = rContratos.TiposContratos;
-      this.tipoContrato = this.contratos[0].idtipocontrato;
-      this.leerDocentes();
-    });
-  }
-
-  leerDocentes() {
-    for (const cont of this.contratos) {
-      if (cont.idtipocontrato === this.tipoContrato) {
-        this.nombreContrato = cont.contrato;
-      }
-    }
-
-    this.genService.getDocentesPorContrato(this.tipoContrato).subscribe((rDocentes: any) => {
-      this.Docentes = rDocentes.Docentes;
-      this.bDocentes = this.Docentes;
-
-      this.seleccionarDocente(this.Docentes[this.posDoc]);
-    });
-  }
 
   agregarFuncion() {
     this.dlgService.DlgFuncionesDocente('Crear', this.docenteSeleccionado.iddocente, '', this.periodo).subscribe((rRespuesta: any) => {
@@ -301,6 +328,25 @@ export class AgendasComponent implements OnInit {
 
   editarServicio(IdServicio: string) {
     this.genService.navegar([RUTA_FACTOR_DOCENTES, RUTA_SERVICIOPROGRAMA, IdServicio, RUTA_AGENDAS]);
+  }
+
+  cambiarPeriodo() {
+    this.Opciones[0].Ruta[2] = this.periodo;
+    this.Opciones[1].Ruta[2] = this.periodo;
+
+    this.leerAgendasServicio();
+  }
+
+  abrirOpcion(ruta: string[]) {
+
+    this.genService.navegar(ruta);
+  }
+
+  eliminarAgendaServicio(agenda: AgendaServicio) {
+    this.genService.deleteAgendaServicio(agenda.idagendaservicio).subscribe((rRespuesta: any) => {
+      this.dlgService.mostrarSnackBar(rRespuesta.Respuesta || rRespuesta.Error);
+      this.leerAgendasServicio();
+    });
   }
 
 

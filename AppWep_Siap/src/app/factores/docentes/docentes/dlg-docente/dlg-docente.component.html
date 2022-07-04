@@ -1,5 +1,4 @@
-<h1>Crear/Editar un Docente</h1>
-<hr>
+<app-titulo-dialogo [Titulo]="'Creando/Editando Docente ...'"></app-titulo-dialogo>
 
 <div class="text-center" style="margin: 20px;" *ngIf="guardando">
     <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
@@ -59,6 +58,6 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" class="btn btn-outline-success float-right"><i class="fas fa-save"></i> Guardar</button>
+        <button type="submit" class="btn btn-outline-success float-right"><img src="assets/Iconos/Guardar.png" style="width: 24px;"> Guardar</button>
     </div>
 </form>

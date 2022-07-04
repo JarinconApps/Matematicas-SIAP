@@ -252,3 +252,8 @@ footer {
     width: auto;
     height: 100%;
 }
+
+.linea-tabla {
+  border-style: solid !important;
+  border-width: 0.1mm;
+}

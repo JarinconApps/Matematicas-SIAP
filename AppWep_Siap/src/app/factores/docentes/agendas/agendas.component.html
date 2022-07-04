@@ -23,9 +23,10 @@
 
                     <div class="form-group">
                         <label class="font-weight-bold">Tipo de Contrato</label>
-                        <select class="custom-select" [(ngModel)]="tipoContrato" name="tipoContrato" (change)="leerDocentes()">
-                          <option *ngFor="let contrato of contratos" [value]="contrato.idtipocontrato">{{contrato.contrato | capitalizado}}</option>
-                        </select>
+
+                        <ul class="list-group puntero-manito">
+                          <li class="list-group-item list-group-item-action" (click)="cambiarTipoContrato(contrato)" *ngFor="let contrato of contratos">{{ contrato.contrato | capitalizado }}</li>
+                        </ul>
                     </div>
 
                     <ul class="list-group list-group-flush">
@@ -54,7 +55,7 @@
                     </div>
 
                     <div class="list-group list-group-flush">
-                        <a class="list-group-item list-group-item-action puntero-manito" *ngFor="let docente of bDocentes" (click)="seleccionarDocente(docente)">
+                        <a class="list-group-item list-group-item-action puntero-manito" *ngFor="let docente of bDocentes" (click)="seleccionarDocenteLista(docente)">
                             <img [src]="docente.foto | noImagen" class="icono32w" style="border-radius: 100%;"> {{ docente.nombre | capitalizado }}
                         </a>
                     </div>

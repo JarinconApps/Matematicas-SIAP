@@ -65,7 +65,11 @@
 
                     <p *ngIf="agenda.jornada === 'virtual'">Virtual</p>
                 </td>
-                <td>{{ agenda.aulas | uppercase }}</td>
+                <td>
+                  <ul *ngIf="agenda.jornada !== 'virtual'">
+                    <li *ngFor="let horario of agenda.horarios">({{ horario.aula }})</li>
+                  </ul>
+                </td>
                 <td></td>
             </tr>
 

@@ -10913,7 +10913,7 @@ begin
   except
     on E: Exception do
     begin
-      Json.AddPair(JsonError, E.Message);
+      Json.AddPair(JsonError, E.Message + ' - ' + OrdenarPor);
       enviarError(TimeToStr(now), DateToStr(now), 'getAllDocente',
         E.Message + '-no data-');
     end;

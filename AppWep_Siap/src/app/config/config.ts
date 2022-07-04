@@ -4,6 +4,9 @@ export const LS_USUARIO = 'usuario';
 export const LS_CLAVE = 'clave';
 export const LS_ULTIMA_RUTA = 'ultima-ruta';
 
+export const TIPO_CONTRATO_DEFECTO = 'carrera';
+export const ID_DOCENTE_DEFECTO = 'docente';
+
 // %%%%%%% Identificadores productos %%%%%%%
 export const ID_LIBRO = 'Libro';
 export const ID_ARTICULO = 'Artículo';

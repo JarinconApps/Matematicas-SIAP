@@ -65,26 +65,16 @@ export class MenuComponent implements OnInit {
     {nombre: 'SIGMA - Seminario Interdisciplinario y Grupo de Matemática Aplicada'}
   ];
 
-  version = '2.21.9.2';
+  version = '3.22.7.3.1832';
 
   nuevosCambios = `<ol>
-    <li>Se arregló el formulario para crear docentes que no estaba funcionando</li>
-    <li>Se agregaron los atributos areaProfundizacion y TituloMayorFormacion al formulario de Director/Jurado</li>
-    <li>Se dejaron los datos básicos del docente en dos columnas</li>
-    <li>Cuando se quiere agregar un integrante al grupo de investigación, se cambió el título del botón Agregar Director/Jurado por Agregar Integrante</li>
-    <li>Se agregaron dos enlaces nuevos de divulgación para los docentes</li>
-    <li>Se cambio el título de la ventana de crear/editar enlace de divulgación de forma correcta</li>
-    <li>Se mejoró el diseño de las tarjetas que describen los seminarios</li>
-    <li>Se ordenó los seminarios por fecha de menor a mayor</li>
-    <li>Se creó una vista de seminario en una ventana modal</li>
-    <li>Se mejoró el diseño del editor de plan de mejoramiento</li>
-    <li>Se arregló la vista de viñetas y formato en la vista del plan de mejoramiento</li>
-    <li>Se creó la ventana para exportar el plan de mejoramiento a Excel</li>
-    <li>Se creó el editor de fechas de presupuestos</li>
-    <li>Se creó una tabla de presupuestos dinámicos para el plan de mejoramiento</li>
-    <li>Se agregó la tabla de presupuestos a la vista de oportunidad de mejora</li>
-    <li>Se exportaron los presupuestos en formato de Excel y se calculan los totales</li>
-    <li>Se creó la opción de exportar cada oportunidad de mejora en formato Word</li>
+    <li>Se arreglo la columna de las aulas en la opción de exportar agenda de docente.</li>
+    <li>Se arreglo el error: Cuando se exporta la agenda de un docente y se regresa siempre empezaba por el primero en la lista (Carlos Alberto Abello Muñoz) se agrego a la ruta de búsqueda el tipo de contrato y el ID del docente.</li>
+    <li>Se arreglo la búsqueda de programas en el Reporte de Servicios por Programa.</li>
+    <li>Se agregaron bordes a las tablas exportadas de Word para el Reporte de Servicios por Programa.</li>
+    <li>En el menú de Reporte de Servicios por Programa se arreglo la opción de que al hacer clic en una materia que esta muy abajo, automáticamente se muestra la parte superior de la página.</li>
+    <li>Se ocultaron los docentes activos y se creó un filtro para la búsqueda.</li>
+    <li>Se organizo la tabla de docentes poniendo debajo de la foto de perfil tres iconos para la edición rápida.</li>
   </ol>`;
 
   permisoNavegar = false;

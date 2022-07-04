@@ -133,6 +133,7 @@ export class EfdServiciosProgramaComponent implements OnInit {
 
   buscarProgramas() {
     this.bProgramas = [];
+    this.filtroProgrma = this.filtroProgrma.toLowerCase();
 
     if (this.filtroProgrma.length === 0) {
       this.bProgramas = this.Programas;
@@ -140,7 +141,7 @@ export class EfdServiciosProgramaComponent implements OnInit {
     }
 
     for (const programa of this.Programas) {
-      if (programa.programa.indexOf(this.filtroProgrma) > 0) {
+      if (programa.programa.toLowerCase().indexOf(this.filtroProgrma) >= 0) {
         this.bProgramas.push(programa);
       }
     }
@@ -154,6 +155,8 @@ export class EfdServiciosProgramaComponent implements OnInit {
 
     this.transfer.enviarTituloAplicacion('Reporte de Servicios por Programa (' + programa.programa.toUpperCase() + ')');
     this.obtenerReportePrograma(programa.idprograma, this.periodo);
+
+    window.scrollTo(0, 0);
   }
 
   cambiarOpciones() {

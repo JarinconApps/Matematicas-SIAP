@@ -5,95 +5,118 @@
 
 <div class="m-3" *ngIf="!leyendo">
 
-    <h3 class="float-left">{{ resultados }}</h3>
+    <div class="row">
 
+      <div class="col-md-2">
 
+        <div class="card shadow">
+          <div class="card-header text-white text-center bg-dark">
+            <h3>{{ bDocentes.length }} docentes</h3>
+          </div>
 
-    <div class="modal-footer">
-        <div class="dropdown">
-            <button class="btn btn-outline-info dropdown-toggle float-right m-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-sort-alpha-up-alt"></i> Ordenar Lista por
-        </button>
-            <div class="dropdown-menu puntero-manito" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" (click)="cambiarTipoOrden('documento')">Documento</a>
-                <a class="dropdown-item" (click)="cambiarTipoOrden('nombre')">Nombre</a>
-                <a class="dropdown-item" (click)="cambiarTipoOrden('correo')">Correo</a>
-                <a class="dropdown-item" (click)="cambiarTipoOrden('telefono')">Teléfono</a>
-                <a class="dropdown-item" (click)="cambiarTipoOrden('contrato')">Tipo Contrato</a>
-                <a class="dropdown-item" (click)="cambiarTipoOrden('categoria')">Categoria</a>
-            </div>
+          <div class="card-body">
+
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <div class="form-group">
+                  <label class="font-weight-bold">Ordenar por</label>
+                  <select class="custom-select" [(ngModel)]="ordenarPor" name="ordenarPor" (change)="cambiarTipoOrden()">
+                    <option value="documento">Documento</option>
+                    <option value="nombre">Nombre</option>
+                    <option value="correo">Correo</option>
+                    <option value="telefono">Teléfono</option>
+                    <option value="contrato">Tipo Contrato</option>
+                    <option value="categoria">Categoria</option>
+                  </select>
+                </div>
+              </li>
+
+              <li class="list-group-item">
+                <label class="font-weight-bold">Ver docentes</label>
+                <select class="custom-select" [(ngModel)]="docentesActivos" name="docentesActivos" (change)="seleccionarDocentesActivos()">
+                  <option value="si">Activos</option>
+                  <option value="no">No Activos</option>
+                </select>
+              </li>
+
+              <li class="list-group-item">
+                <button class="btn btn-outline-success btn-block" (click)="agregarDocente()"><img style="width: 32px;" src="assets/Iconos/Agregar.png"> Agregar Docente</button>
+              </li>
+            </ul>
+
+          </div>
         </div>
+      </div>
 
-        <button class="btn btn-outline-success m-1" (click)="agregarDocente()"><i class="fas fa-plus-circle"></i> Agregar Docente</button>
+      <div class="col-md-10">
+        <table class="table table-hover puntero-manito">
+          <thead class="table-dark">
+              <tr>
+                  <th>No</th>
+                  <th>Documento de Identificación</th>
+                  <th>Foto</th>
+                  <th>Nombre</th>
+                  <th>Teléfono</th>
+                  <th>Correo</th>
+                  <th>Categoría</th>
+                  <th>Tipo Contrato</th>
+              </tr>
+          </thead>
+
+          <tbody>
+              <tr>
+                  <td></td>
+                  <td>
+                      <input class="form-control" [(ngModel)]="documento" name="documento" (keyup)="buscarPorDocumento()">
+                  </td>
+                  <td></td>
+                  <td>
+                      <input class="form-control" [(ngModel)]="termino" name="termino" (keyup)="buscarPorNombre()">
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                      <select class="custom-select" [(ngModel)]="categoriaDocente" name="categoriaDocente" (change)="buscarPorCategoria()">
+                        <option value="Todas">Todas</option>
+                        <option [value]="categoria.categoria" *ngFor="let categoria of Categorias">{{categoria.categoria | capitalizado}}</option>
+                      </select>
+                  </td>
+                  <td>
+                      <select class="custom-select" [(ngModel)]="tipoContrato" name="tipoContrato" (change)="buscarPorTipoContrato()">
+                        <option value="Todos">Todos</option>
+                        <option [value]="contrato.contrato" *ngFor="let contrato of tiposContrato">{{contrato.contrato | capitalizado}}</option>
+                      </select>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+              </tr>
+
+              <tr *ngFor="let docente of bDocentes; let id = index" [ngClass]="{'text-danger': docente.activo === 'no', 'text-dark': docente.activo === 'si'}">
+                  <td>{{ id + 1 }}</td>
+                  <td>{{ docente.documento | number }}</td>
+                  <td>
+                      <img (click)="verDocente(docente)" [src]="docente.foto | noImagen" [alt]="docente.nombre" style="width: 96px; height: 96px; border-radius: 100%; margin: 15px;">
+
+                      <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-info" (click)="verDocente(docente)"> <img src="assets/Iconos/Ver.png" style="height: 24px;"> </button>
+                        <button type="button" class="btn btn-outline-info" (click)="editarDocente(docente)"> <img src="assets/Iconos/Editar.png" style="height: 24px;"> </button>
+                        <button type="button" class="btn btn-outline-info" (click)="eliminarDocente(docente)"> <img src="assets/Iconos/Eliminar.png" style="height: 24px;"> </button>
+                      </div>
+
+
+
+
+                  </td>
+                  <td class="font-weight-bold">{{ docente.nombre | capitalizado }}</td>
+                  <td>{{ docente.telefono }}</td>
+                  <td>{{ docente.correo }}</td>
+                  <td>{{ docente.categoria | capitalizado }}</td>
+                  <td>{{ docente.contrato | capitalizado }}</td>
+              </tr>
+          </tbody>
+      </table>
+      </div>
     </div>
 
-    <table class="table table-hover puntero-manito">
-        <thead class="table-dark">
-            <tr>
-                <th>No</th>
-                <th>Documento de Identificación</th>
-                <th>Foto</th>
-                <th>Nombre</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-                <th>Categoría</th>
-                <th>Tipo Contrato</th>
-                <th>Ver</th>
-                <th>Editar</th>
-                <th>Eliminar</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td></td>
-                <td>
-                    <input class="form-control" [(ngModel)]="documento" name="documento" (keyup)="buscarPorDocumento()">
-                </td>
-                <td></td>
-                <td>
-                    <input class="form-control" [(ngModel)]="termino" name="termino" (keyup)="buscarPorNombre()">
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                    <select class="custom-select" [(ngModel)]="categoriaDocente" name="categoriaDocente" (change)="buscarPorCategoria()">
-                      <option value="Todas">Todas</option>
-                      <option [value]="categoria.categoria" *ngFor="let categoria of Categorias">{{categoria.categoria | capitalizado}}</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="custom-select" [(ngModel)]="tipoContrato" name="tipoContrato" (change)="buscarPorTipoContrato()">
-                      <option value="Todos">Todos</option>
-                      <option [value]="contrato.contrato" *ngFor="let contrato of tiposContrato">{{contrato.contrato | capitalizado}}</option>
-                    </select>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            <tr *ngFor="let docente of bDocentes; let id = index" [ngClass]="{'text-danger': docente.activo === 'no', 'text-dark': docente.activo === 'si'}">
-                <td>{{ id + 1 }}</td>
-                <td>{{ docente.documento | number }}</td>
-                <td>
-                    <img (click)="verDocente(docente)" [src]="docente.foto | noImagen" [alt]="docente.nombre" style="width: 96px; height: 96px; border-radius: 100%;">
-                </td>
-                <td class="font-weight-bold">{{ docente.nombre | capitalizado }}</td>
-                <td>{{ docente.telefono }}</td>
-                <td>{{ docente.correo }}</td>
-                <td>{{ docente.categoria | capitalizado }}</td>
-                <td>{{ docente.contrato | capitalizado }}</td>
-                <td>
-                    <img src="assets/Iconos/Ver.png" style="height: 32px;" (click)="verDocente(docente)">
-                </td>
-                <td>
-                    <img src="assets/Iconos/Editar.png" style="height: 32px;" (click)="editarDocente(docente)">
-                </td>
-                <td>
-                    <img src="assets/Iconos/Eliminar.png" style="height: 32px;" (click)="eliminarDocente(docente)">
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>

@@ -7,7 +7,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.PG,
-  FireDAC.Phys.PGDef, uMd5, Utilidades, uTAttribute, uTCRUDModel,
+  FireDAC.Phys.PGDef, uMd5, Utilidades, uTAttribute, uTCRUDModel, inifiles,
   uModuloUtilidades, System.NetEncoding, IdHashMessageDigest, idHash, IdGlobal;
 
 type
@@ -46,7 +46,14 @@ implementation
 {$R *.dfm}
 
 procedure TmoduloDatos.DataModuleCreate(Sender: TObject);
+var
+  FDDrivers: tinifile;
 begin
+  FDDrivers := tinifile.Create(ExtractFilePath(ParamStr(0)) + 'FDDrivers.ini');
+  FDDrivers.WriteString('PG', 'VendorLib', ExtractFilePath(ParamStr(0)) +
+    'lib\libpq.dll');
+  FDDrivers.Free;
+
   Conexion.Connected := true;
 end;
 
@@ -82,7 +89,7 @@ end;
 function TmoduloDatos.generarNuevoToken: string;
 begin
   FtokenServidor := ModuloUtilidades.generarToken;
-  Result := FtokenServidor;
+  result := FtokenServidor;
 end;
 
 function TmoduloDatos.postLoginUsuario(usuario: TJSONObject): TJSONObject;
@@ -93,9 +100,9 @@ var
   Contra1, Contra2: string;
 begin
   try
-    JsonLogin := TJSONObject.create;
+    JsonLogin := TJSONObject.Create;
 
-    QUsuario := TFDQuery.create(nil);
+    QUsuario := TFDQuery.Create(nil);
     QUsuario.Connection := Conexion;
 
     Cedula := usuario.GetValue('cedula').Value;
@@ -113,7 +120,7 @@ begin
 
       if Contra1 = Contra2 then
       begin
-        JsonUsuario := TJSONObject.create;
+        JsonUsuario := TJSONObject.Create;
         JsonUsuario.AddPair('cedula', QUsuario.FieldByName('cedula').AsString);
         JsonUsuario.AddPair('correo', QUsuario.FieldByName('correo').AsString);
         JsonUsuario.AddPair('nombre', QUsuario.FieldByName('nombre').AsString);
@@ -136,7 +143,7 @@ begin
 
   end;
 
-  Result := JsonLogin;
+  result := JsonLogin;
   QUsuario.Free;
 end;
 
@@ -156,8 +163,8 @@ var
 begin
   hashMessageDigest5 := nil;
   try
-    hashMessageDigest5 := TIdHashMessageDigest5.create;
-    Result := IdGlobal.IndyLowerCase(hashMessageDigest5.HashStringAsHex(texto));
+    hashMessageDigest5 := TIdHashMessageDigest5.Create;
+    result := IdGlobal.IndyLowerCase(hashMessageDigest5.HashStringAsHex(texto));
   finally
     hashMessageDigest5.Free;
   end;

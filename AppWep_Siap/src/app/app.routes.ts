@@ -162,7 +162,7 @@ const routes: Routes = [
       {path: RUTA_PROGRAMAS, component: ProgramasComponent, canActivate: [RutaNavegarService]},
       {path: RUTA_SERVICIOSPROGRAMA, component: ServiciosProgramaComponent, canActivate: [RutaNavegarService]},
       {path: RUTA_SERVICIOPROGRAMA + '/:id/:donde', component: ServicioProgramaComponent, canActivate: [RutaNavegarService]},
-      {path: RUTA_AGENDAS, component: AgendasComponent, canActivate: [RutaNavegarService]},
+      {path: RUTA_AGENDAS + '/:tipoContrato/:idDocente', component: AgendasComponent, canActivate: [RutaNavegarService]},
       {path: RUTA_ESTADISTICAS_FACTOR_DOCENTES, component: EstadisticasFactorDocentesComponent, canActivate: [RutaNavegarService]},
       {path: RUTA_ESTADISTICAS_SERVICIOS_PROGRAMA, component: EfdServiciosProgramaComponent, canActivate: [RutaNavegarService]},
       {path: RUTA_ESTADISTICAS_HORAS_FACULTADES, component: EfdHorasFacultadesComponent, canActivate: [RutaNavegarService]},

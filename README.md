@@ -69,7 +69,6 @@ Esta aplicación contiene sistemas para organizar la información del programa d
 26. xportar cada oportunidad del plan de mejoramiento a word, excel y pdf.
 27. Agregar los filtros y estadísticas al seminario de licenciatura
 28. Crear un reporte de docentes de carrera y contrato con las actividades complementarias que estan desarrollando. Este informe se puede sacar en el menú de agendas. Es un reporte que pone en una tabla a cada profesor con sus respectivos datos y al frente un campo en el cual se puede ingresar un seguimiento. Lo puedo hacer con un modal en el cual pueda editar con el editor-quill
-29. Crear un grafo de como estan distribuidos los docentes en las facultades, se crean las facultades como nodos y de allí se agregan los docentes. Los nodos deben tener el color de cada facultad. 
 30. Grafo del docente con datos de perfil del docente y una pequeña red de profesionales. 
 31. En el componente de gráficos agregar un dialogo para configurar toda la gráfica que se empiecen a agregar muchos tipos de funciones y estoy pensando en crear un el delphi el componente de tipos de gráficas v2.0 para que se exporten y se expongan como servicios y que se puedan descargar o mostrar en vez o en complemento a ng2charts
 32. En el grupo de investigación poner las líneas de investigación y dejas así: misión, líneas  y director.
@@ -88,10 +87,36 @@ Esta aplicación contiene sistemas para organizar la información del programa d
 	</ul>  
 39. Crear opción para descargar una copia de seguridad así como se hizo en la plataforma de Olimpiadas
 40. Activar de nuevo el botón de exportar trabajos de grado como excel haciendo un método en delphi que lleve todos los datos usando una superconsulta de SQL.
+42. A partir del 2022-1  se debe modificar los factores de la agenda de docentes docencia directa 1.0 preparación 1.5, posgrado d.d 1.0 PEA 1.5 y bonificación 2.0. En los ocasionales lo mismo pero la escala es d.d 1.0, PEA 1.0 y Bonificación 2.0
+43. ¿Agenda completa no esta guardando?
+44. En Cesar no se esta guardando el # del contrato
+46. Agregar las nuevas funciones a los docentes (en agendas anteriores conservar las funciones)
+47. Cuando se inactiva un docente no se puede exportar los periodos del docente
+
+
+48. Copiar las funciones del semestre anterior. Pregunar por el docente en un diálogo.
+49. Crear una base de datos de prestamos y hacer el inventario de todo lo que hay.
+50. En trabajos de grado crear una columna y relacionar con el # del trabajo de grado en físico.
+51. Agregar la opción de subir los PDF de los trabajos de grado.
+52. Crear tabla en base de datos para la evaluación docente y determinar cuáles son los docentes que necesitan ser evaluados.
+53. Hacer un estudio de los estudiantes mediante el PRAEX, el estudio se realiza por cohortes.
+54. Subir la productividad de los docentes.
+55. Crear página dinámica del EMEM adminstrable desde el SIAP.
 
 ## Actualizaciones
+
+### 3 de Julio de 2022
+
+1. Se arreglo la columna de las aulas en la opción de exportar agenda de docente.
+2. Se arreglo el error: Cuando se exporta la agenda de un docente y se regresa siempre empezaba por el primero en la lista (Carlos Alberto Abello Muñoz) se agrego a la ruta de búsqueda el tipo de contrato y el ID del docente.
+3. Se arreglo la búsqueda de programas en el Reporte de Servicios por Programa.
+4. Se agregaron bordes a las tablas exportadas de Word para el Reporte de Servicios por Programa.
+5. En el menú de Reporte de Servicios por Programa se arreglo la opción de que al hacer clic en una materia que esta muy abajo, automáticamente se muestra la parte superior de la página.
+6. Se ocultaron los docentes activos y se creó un filtro para la búsqueda.
+7. Se organizo la tabla de docentes poniendo debajo de la foto de perfil tres iconos para la edición rápida.
 
 ### 11 de Abril de 2022
 
 1. Se arreglo el problema para crear trabajos de grado
-2. Se optimizó la búsqueda y lectura de los trabajos de grado
+2. Se optimizó la búsqueda y lectura de los trabajos de grado.
+
