@@ -15,8 +15,8 @@ export class GeneralService {
 
   private token = '';
   private ENCABEZADO_HTTP = 'http://';
-  private IP_SERVIDOR = '201.185.240.142';
-  private PUERTO = ':1952';
+  private IP_SERVIDOR = 'mads.uniquindio.edu.co';
+  private PUERTO = ':8080';
   private GENERAL = '/datasnap/rest/tmatematicas/';
 
   private URL_AFILIACION = 'Afiliacion';

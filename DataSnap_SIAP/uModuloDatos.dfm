@@ -1,8 +1,8 @@
 object moduloDatos: TmoduloDatos
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 735
-  Width = 811
+  Height = 705
+  Width = 892
   object Conexion: TFDConnection
     Params.Strings = (
       'Database=siap'
@@ -18,7 +18,7 @@ object moduloDatos: TmoduloDatos
     Top = 32
   end
   object Encriptador: TMD5
-    Left = 640
-    Top = 496
+    Left = 280
+    Top = 72
   end
 end

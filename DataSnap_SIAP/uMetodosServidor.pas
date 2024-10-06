@@ -2236,7 +2236,7 @@ var
   Json: TJSONObject;
   QTrabajoGrado: TFDQuery;
   objWebModule: TWebModule;
-  token: string;
+  token, fecha: string;
   sDat: TStringList;
 begin
   try
@@ -2375,8 +2375,12 @@ begin
       QTrabajoGrado.Params.ParamByName('evaluacionsustentacion').Value :=
         datos.GetValue('evaluacionsustentacion').Value;
 
-      QTrabajoGrado.Params.ParamByName('fechasustentacion').Value :=
-        datos.GetValue('fechasustentacion').Value;
+      // Determinar si la fecha de sustentación es válida
+      fecha := datos.GetValue('fechasustentacion').Value;
+      if fecha = 'Año...-Mes...-Día...' then
+        fecha := datos.GetValue('fechainicioejecucion').Value;
+
+      QTrabajoGrado.Params.ParamByName('fechasustentacion').Value := fecha;
 
       QTrabajoGrado.Params.ParamByName('calificacionfinal').Value :=
         datos.GetValue('calificacionfinal').Value;
@@ -2402,7 +2406,7 @@ begin
   except
     on E: Exception do
     begin
-      Json.AddPair(JsonError, E.Message);
+      Json.AddPair(JsonError, 'updateTrabajoGrado => ' + E.Message);
       enviarError(TimeToStr(now), DateToStr(now), 'updateTrabajoGrado',
         E.Message + datos.toString);
     end;
@@ -3293,7 +3297,7 @@ var
   fecha1, fecha2, fecha3, fecha4, diasEntre: TDate;
   ID, sFecha1, sFecha2, Resultados, todos: string;
   fs: TFormatSettings;
-  desde, hasta, cantidad, total: integer;
+  desde, hasta, cantidad, total, cont: integer;
   attrOrdenar: TJSONArray;
   titulo, Estudiante, fechaInicio, fechaFin: string;
   jsonDocente, paginacion: TJSONObject;
@@ -3306,6 +3310,8 @@ begin
 
     titulo := filtroBusqueda.GetValue('titulo').Value;
     Estudiante := filtroBusqueda.GetValue('estudiante').Value;
+    paginacion := TJSONObject.ParseJSONValue
+      (filtroBusqueda.GetValue('paginacion').ToJSON) as TJSONObject;
 
     limpiarConsulta(Query);
     Query.Close;
@@ -3320,154 +3326,174 @@ begin
     Query.Open;
     Query.First;
 
-    Json.AddPair('SQL', Query.SQL.Text);
+    cantidad := StrToInt(paginacion.GetValue('cantidad').Value);
 
-    if todos = 'si' then
+    if Estudiante = '' then
+    begin
+      todos := paginacion.GetValue('todos').Value;
+      desde := StrToInt(paginacion.GetValue('desde').Value);
+      hasta := desde + cantidad - 1;
+    end
+    else
     begin
       desde := 1;
-      hasta := total;
+      hasta := desde + cantidad - 1;
     end;
 
     total := Query.RecordCount;
 
-    Resultados := 'Registros ' + IntToStr(desde) + '-' + IntToStr(hasta) +
-      ' de ' + IntToStr(total);
+    if todos = 'si' then
+    begin
+      hasta := total;
+    end;
+
+    cont := 0;
 
     for i := 1 to total do
     begin
-      JsonLinea := TJSONObject.create;
-      JsonLinea.AddPair('idtrabajogrado', Query.FieldByName('idtrabajogrado')
-        .AsString);
-      JsonLinea.AddPair('titulo', Query.FieldByName('titulo').AsString);
+      if (i >= desde) and (i <= hasta) then
+      begin
+        Inc(cont);
 
-      JsonLinea.AddPair('estudiante1', Query.FieldByName('estudiante1')
-        .AsString);
-      JsonLinea.AddPair('estudiante2', Query.FieldByName('estudiante2')
-        .AsString);
-      JsonLinea.AddPair('estudiante3', Query.FieldByName('estudiante3')
-        .AsString);
-      JsonLinea.AddPair('actanombramientojurados',
-        Query.FieldByName('actanombramientojurados').AsString);
-      JsonLinea.AddPair('actapropuesta', Query.FieldByName('actapropuesta')
-        .AsString);
-      JsonLinea.AddPair('evaluacionpropuesta',
-        Query.FieldByName('evaluacionpropuesta').AsString);
-      JsonLinea.AddPair('evaluaciontrabajoescrito',
-        Query.FieldByName('evaluaciontrabajoescrito').AsString);
-      JsonLinea.AddPair('fechasustentacion',
-        Query.FieldByName('fechasustentacion').AsString);
-      JsonLinea.AddPair('calificacionfinal',
-        Query.FieldByName('calificacionfinal').AsString);
-      JsonLinea.AddPair('fechainicioejecucion',
-        Query.FieldByName('fechainicioejecucion').AsString);
-      JsonLinea.AddPair('estadoproyecto', Query.FieldByName('estadoproyecto')
-        .AsString);
+        JsonLinea := TJSONObject.create;
+        JsonLinea.AddPair('idtrabajogrado', Query.FieldByName('idtrabajogrado')
+          .AsString);
+        JsonLinea.AddPair('titulo', Query.FieldByName('titulo').AsString);
 
-      { Fechas de Trabajo de Grado }
-      { fs := TFormatSettings.create;
-        fs.DateSeparator := '-';
-        fs.ShortDateFormat := 'yyyy-mm-dd';
-
-        sFecha1 := Query.FieldByName('fechainicioejecucion').AsString;
-        sFecha2 := Query.FieldByName('fechasustentacion').AsString;
-
-        try
-        fecha1 := StrToDate(sFecha1, fs);
-        fecha2 := StrToDate(sFecha2, fs);
-        fecha3 := StrToDate(fechaInicio, fs);
-        fecha4 := StrToDate(fechaFin, fs);
-        diasEntre := fecha2 - fecha1;
-        dias := round(diasEntre);
-        meses := round(dias) / 30;
-        semestres := round(dias) / 180;
-        anos := round(dias) / 365;
-        except
-        dias := 0;
-        meses := 0;
-        semestres := 0;
-        anos := 0;
-        end;
-
-        JsonTiempo := TJSONObject.create;
-        JsonTiempo.AddPair('Dias', floatTostr(dias));
-        JsonTiempo.AddPair('Meses', FloatToStrF(meses, ffNumber, 3, 1));
-        JsonTiempo.AddPair('Semestres', FloatToStrF(semestres, ffNumber, 3, 1));
-        JsonTiempo.AddPair('Anos', FloatToStrF(anos, ffNumber, 3, 1));
-
-        JsonLinea.AddPair('cantidadsemestresejecucion', JsonTiempo);
-
-        ID := Query.FieldByName('idjurado1').AsString;
-        JsonLinea.AddPair('idjurado1', ID);
-        jsonDocente := Docente(ID);
-        jsonDocente.RemovePair('foto');
-        JsonLinea.AddPair('jurado1', jsonDocente);
-
-        ID := Query.FieldByName('idjurado2').AsString;
-        JsonLinea.AddPair('idjurado2', ID);
-        jsonDocente := Docente(ID);
-        jsonDocente.RemovePair('foto');
-        JsonLinea.AddPair('jurado2', jsonDocente);
-
-        ID := Query.FieldByName('idjurado3').AsString;
-        JsonLinea.AddPair('idjurado3', ID);
-        jsonDocente := Docente(ID);
-        jsonDocente.RemovePair('foto');
-        JsonLinea.AddPair('jurado3', jsonDocente);
-
-        ID := Query.FieldByName('iddirector').AsString;
-        JsonLinea.AddPair('iddirector', ID);
-        jsonDocente := Docente(ID);
-        jsonDocente.RemovePair('foto');
-        JsonLinea.AddPair('director', jsonDocente);
-
-        ID := Query.FieldByName('idcodirector').AsString;
-        JsonLinea.AddPair('idcodirector', ID);
-        jsonDocente := Docente(ID);
-        jsonDocente.RemovePair('foto');
-        JsonLinea.AddPair('codirector', jsonDocente);
-
-        ID := Query.FieldByName('idmodalidad').AsString;
-        JsonLinea.AddPair('idmodalidad', ID);
-        JsonLinea.AddPair('modalidad', Modalidad(ID));
-
-        ID := Query.FieldByName('idareaprofundizacion').AsString;
-        JsonLinea.AddPair('idareaprofundizacion', ID);
-        JsonLinea.AddPair('areaProfundizacion', AreaProfundizacion(ID));
-
-        ID := Query.FieldByName('idgrupoinvestigacion').AsString;
-        JsonLinea.AddPair('idgrupoinvestigacion', ID);
-        JsonLinea.AddPair('grupoInvestigacion', GrupoInvestigacion(ID));
-
-        JsonLinea.AddPair('actapropuesta',
-        Query.FieldByName('actanombramientojurados').AsString);
-
+        JsonLinea.AddPair('estudiante1', Query.FieldByName('estudiante1')
+          .AsString);
+        JsonLinea.AddPair('estudiante2', Query.FieldByName('estudiante2')
+          .AsString);
+        JsonLinea.AddPair('estudiante3', Query.FieldByName('estudiante3')
+          .AsString);
+        JsonLinea.AddPair('actanombramientojurados',
+          Query.FieldByName('actanombramientojurados').AsString);
+        JsonLinea.AddPair('actapropuesta', Query.FieldByName('actapropuesta')
+          .AsString);
         JsonLinea.AddPair('evaluacionpropuesta',
-        Query.FieldByName('evaluacionpropuesta').AsString);
-
+          Query.FieldByName('evaluacionpropuesta').AsString);
         JsonLinea.AddPair('evaluaciontrabajoescrito',
-        Query.FieldByName('evaluaciontrabajoescrito').AsString);
-
-        JsonLinea.AddPair('evaluacionsustentacion',
-        Query.FieldByName('evaluacionsustentacion').AsString);
-
+          Query.FieldByName('evaluaciontrabajoescrito').AsString);
         JsonLinea.AddPair('fechasustentacion',
-        Query.FieldByName('fechasustentacion').AsString);
-
+          Query.FieldByName('fechasustentacion').AsString);
         JsonLinea.AddPair('calificacionfinal',
-        Query.FieldByName('calificacionfinal').AsString);
-
-        JsonLinea.AddPair('estudiantecedederechos',
-        Query.FieldByName('estudiantecedederechos').AsString);
-
+          Query.FieldByName('calificacionfinal').AsString);
         JsonLinea.AddPair('fechainicioejecucion',
-        Query.FieldByName('fechainicioejecucion').AsString);
-
+          Query.FieldByName('fechainicioejecucion').AsString);
         JsonLinea.AddPair('estadoproyecto', Query.FieldByName('estadoproyecto')
-        .AsString); }
+          .AsString);
 
-      ArrayJson.AddElement(JsonLinea);
+        { Fechas de Trabajo de Grado }
+        { fs := TFormatSettings.create;
+          fs.DateSeparator := '-';
+          fs.ShortDateFormat := 'yyyy-mm-dd';
+
+          sFecha1 := Query.FieldByName('fechainicioejecucion').AsString;
+          sFecha2 := Query.FieldByName('fechasustentacion').AsString;
+
+          try
+          fecha1 := StrToDate(sFecha1, fs);
+          fecha2 := StrToDate(sFecha2, fs);
+          fecha3 := StrToDate(fechaInicio, fs);
+          fecha4 := StrToDate(fechaFin, fs);
+          diasEntre := fecha2 - fecha1;
+          dias := round(diasEntre);
+          meses := round(dias) / 30;
+          semestres := round(dias) / 180;
+          anos := round(dias) / 365;
+          except
+          dias := 0;
+          meses := 0;
+          semestres := 0;
+          anos := 0;
+          end;
+
+          JsonTiempo := TJSONObject.create;
+          JsonTiempo.AddPair('Dias', floatTostr(dias));
+          JsonTiempo.AddPair('Meses', FloatToStrF(meses, ffNumber, 3, 1));
+          JsonTiempo.AddPair('Semestres', FloatToStrF(semestres, ffNumber, 3, 1));
+          JsonTiempo.AddPair('Anos', FloatToStrF(anos, ffNumber, 3, 1));
+
+          JsonLinea.AddPair('cantidadsemestresejecucion', JsonTiempo);
+
+          ID := Query.FieldByName('idjurado1').AsString;
+          JsonLinea.AddPair('idjurado1', ID);
+          jsonDocente := Docente(ID);
+          jsonDocente.RemovePair('foto');
+          JsonLinea.AddPair('jurado1', jsonDocente);
+
+          ID := Query.FieldByName('idjurado2').AsString;
+          JsonLinea.AddPair('idjurado2', ID);
+          jsonDocente := Docente(ID);
+          jsonDocente.RemovePair('foto');
+          JsonLinea.AddPair('jurado2', jsonDocente);
+
+          ID := Query.FieldByName('idjurado3').AsString;
+          JsonLinea.AddPair('idjurado3', ID);
+          jsonDocente := Docente(ID);
+          jsonDocente.RemovePair('foto');
+          JsonLinea.AddPair('jurado3', jsonDocente);
+
+          ID := Query.FieldByName('iddirector').AsString;
+          JsonLinea.AddPair('iddirector', ID);
+          jsonDocente := Docente(ID);
+          jsonDocente.RemovePair('foto');
+          JsonLinea.AddPair('director', jsonDocente);
+
+          ID := Query.FieldByName('idcodirector').AsString;
+          JsonLinea.AddPair('idcodirector', ID);
+          jsonDocente := Docente(ID);
+          jsonDocente.RemovePair('foto');
+          JsonLinea.AddPair('codirector', jsonDocente);
+
+          ID := Query.FieldByName('idmodalidad').AsString;
+          JsonLinea.AddPair('idmodalidad', ID);
+          JsonLinea.AddPair('modalidad', Modalidad(ID));
+
+          ID := Query.FieldByName('idareaprofundizacion').AsString;
+          JsonLinea.AddPair('idareaprofundizacion', ID);
+          JsonLinea.AddPair('areaProfundizacion', AreaProfundizacion(ID));
+
+          ID := Query.FieldByName('idgrupoinvestigacion').AsString;
+          JsonLinea.AddPair('idgrupoinvestigacion', ID);
+          JsonLinea.AddPair('grupoInvestigacion', GrupoInvestigacion(ID));
+
+          JsonLinea.AddPair('actapropuesta',
+          Query.FieldByName('actanombramientojurados').AsString);
+
+          JsonLinea.AddPair('evaluacionpropuesta',
+          Query.FieldByName('evaluacionpropuesta').AsString);
+
+          JsonLinea.AddPair('evaluaciontrabajoescrito',
+          Query.FieldByName('evaluaciontrabajoescrito').AsString);
+
+          JsonLinea.AddPair('evaluacionsustentacion',
+          Query.FieldByName('evaluacionsustentacion').AsString);
+
+          JsonLinea.AddPair('fechasustentacion',
+          Query.FieldByName('fechasustentacion').AsString);
+
+          JsonLinea.AddPair('calificacionfinal',
+          Query.FieldByName('calificacionfinal').AsString);
+
+          JsonLinea.AddPair('estudiantecedederechos',
+          Query.FieldByName('estudiantecedederechos').AsString);
+
+          JsonLinea.AddPair('fechainicioejecucion',
+          Query.FieldByName('fechainicioejecucion').AsString);
+
+          JsonLinea.AddPair('estadoproyecto', Query.FieldByName('estadoproyecto')
+          .AsString); }
+
+        ArrayJson.AddElement(JsonLinea);
+      end;
+
       Query.Next;
     end;
+
+    cont := desde + cont - 1;
+    Resultados := 'Registros ' + IntToStr(desde) + '-' + IntToStr(cont) + ' de '
+      + IntToStr(total);
 
     paginacion.Free;
     paginacion := TJSONObject.create;
@@ -7271,6 +7297,7 @@ begin
           horasFactor := horasSemestre * 1;
         end;
       end
+      // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       else // Ahora se establece la nueva regla para el factor después de 2022-1
       begin
         { Para docentes de Carrera %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% }
@@ -7293,14 +7320,14 @@ begin
           else if (Jornada = 'posgrado') or (tipo = 'posgrado') then
           begin
             horasSemestre := horas * semanasSemestre;
-            reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
-            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
+            reconocimientoPosgrado := reconocimientoPosgrado + 2 * horasSemestre;
+            sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 4.5;
             horasFactor := horasSemestre * 2.5;
           end
           else if (Jornada = 'virtual') and (tipo = 'posgrado') then
           begin
             horasSemestre := horas;
-            reconocimientoPosgrado := reconocimientoPosgrado + horasSemestre;
+            reconocimientoPosgrado := reconocimientoPosgrado + 2*horasSemestre;
             sumaHorasSemestre := sumaHorasSemestre + (horasSemestre) * 3.5;
             horasFactor := horasSemestre * 2.5;
           end

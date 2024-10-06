@@ -147,9 +147,13 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
     this.leyendo = true;
     this.genService.getTrabajoGrado(this.id).subscribe((rTrabajoGrado: TrabajoGrado) => {
 
+      console.log(this.trabajogrado);
+
       this.trabajogrado = rTrabajoGrado;
-      this.verCamposEstudiantes[1] = this.trabajogrado.estudiante2.length > 0;
-      this.verCamposEstudiantes[2] = this.trabajogrado.estudiante3.length > 0;
+
+
+      this.verCamposEstudiantes[1] = this.trabajogrado.estudiante2 !== undefined;
+      this.verCamposEstudiantes[2] = this.trabajogrado.estudiante3 !== undefined;
       this.leyendo = false;
     });
   }
@@ -211,6 +215,8 @@ export class CrearEditarTrabajoGradoComponent implements OnInit {
         this.guardando = false;
         return;
       }
+
+      console.log(this.trabajogrado);
 
       const datos = JSON.stringify(this.trabajogrado);
       this.genService.postTrabajoGrado(datos).subscribe((rRespuesta: any) => {

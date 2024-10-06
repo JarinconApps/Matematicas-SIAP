@@ -1,289 +1,301 @@
 <div class="text-center" style="margin: 20px;" *ngIf="leyendo">
-    <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
-    <h3>Leyendo Agendas ...</h3>
+  <i class="fas fa-sync fa-10x text-success fa fa-spin"></i>
+  <h3>Leyendo Agendas ...</h3>
 </div>
 
 <div class="m-3" *ngIf="!leyendo">
 
-    <div class="row">
+  <div class="row">
 
-        <div class="col-3">
-            <div class="card shadow">
-                <div class="card-header bg-dark">
-                    <h5 class="text-center text-white">Menú Agendas</h5>
-                </div>
-
-                <div class="card-body">
-                    <div class="form-group">
-                        <label class="font-weight-bold">Periodo</label>
-                        <select [(ngModel)]="periodo" class="custom-select" (change)="cambiarPeriodo()">
-                          <option *ngFor="let periodo of Periodos"  [value]="periodo.periodo">{{periodo.periodo}}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="font-weight-bold">Tipo de Contrato</label>
-
-                        <ul class="list-group puntero-manito">
-                          <li class="list-group-item list-group-item-action" (click)="cambiarTipoContrato(contrato)" *ngFor="let contrato of contratos">{{ contrato.contrato | capitalizado }}</li>
-                        </ul>
-                    </div>
-
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item list-group-item-action puntero-manito" *ngFor="let opcion of Opciones" (click)="abrirOpcion(opcion.Ruta)">
-                            <div class="media">
-                                <img class="mr-3" style="height: 32px;" [src]="'assets/Iconos/' + opcion.Icono" alt="Descargar">
-                                <div class="media-body">
-                                    <h6>{{ opcion.Titulo | capitalizado }}</h6>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card card-shadow mt-1">
-                <div class="card-header bg-dark">
-                    <h5 class="text-center text-white">Docentes</h5>
-                </div>
-
-                <div class="card-body">
-
-                    <div class="form-group">
-                        <label class="font-weight-bold">Buscar por Nombre</label>
-                        <input class="form-control" type="text" [(ngModel)]="termino" name="termino" (keyup)="buscarDocente()">
-                    </div>
-
-                    <div class="list-group list-group-flush">
-                        <a class="list-group-item list-group-item-action puntero-manito" *ngFor="let docente of bDocentes" (click)="seleccionarDocenteLista(docente)">
-                            <img [src]="docente.foto | noImagen" class="icono32w" style="border-radius: 100%;"> {{ docente.nombre | capitalizado }}
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div class="col-3">
+      <div class="card shadow">
+        <div class="card-header bg-dark">
+          <h5 class="text-center text-white">Menú Agendas</h5>
         </div>
 
-        <div class="col-9">
-            <div class="card-shadow card">
-                <div class="card-body">
-                    <h3 class="text-success">{{ docenteSeleccionado.nombre | capitalizado }}
-                        <button class="btn btn-outline-success btn-sm m-1" (click)="editarDocente(docenteSeleccionado)">
-                          <img class="icono32h puntero-manito" src="assets/Iconos/Editar2.png" > Editar
-                        </button>
-                        <button class="btn btn-outline-success btn-sm m-1" (click)="exportarAgenda()">
-                          <img class="icono32h puntero-manito" src="assets/Iconos/Pdf.png" > Exportar
-                        </button>
-                        <button class="btn btn-outline-success btn-sm m-1" (click)="guardarDatosAgenda()">
-                          <img class="icono32h puntero-manito" src="assets/Iconos/Guardar.png" > Guardar
-                        </button>
-                    </h3>
-                    <hr>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="font-weight-bold">Periodo</label>
+            <select [(ngModel)]="periodo" class="custom-select" (change)="cambiarPeriodo()">
+              <option *ngFor="let periodo of Periodos" [value]="periodo.periodo">{{periodo.periodo}}</option>
+            </select>
+          </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="text-center">Formato de Concertación de Agenda Docente</h4>
-                            <hr>
+          <div class="form-group">
+            <label class="font-weight-bold">Tipo de Contrato</label>
 
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 15%;">Nombre</th>
-                                        <td style="width: 35%;">{{ docenteSeleccionado.nombre | capitalizado }}</td>
-                                        <th style="width: 15%;">Número de Contrato</th>
-                                        <td style="width: 35%;">
-                                            <input type="text" class="form-control mt-3" [(ngModel)]="numerocontrato" name="numerocontrato">
-                                        </td>
-                                    </tr>
+            <ul class="list-group puntero-manito">
+              <li class="list-group-item list-group-item-action" (click)="cambiarTipoContrato(contrato)"
+                *ngFor="let contrato of contratos">{{ contrato.contrato | capitalizado }}</li>
+            </ul>
+          </div>
 
-                                    <tr>
-                                        <th>Cédula</th>
-                                        <td>{{ docenteSeleccionado.documento | number }}</td>
-                                        <th>Teléfono</th>
-                                        <td>{{ docenteSeleccionado.telefono }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Categoría</th>
-                                        <td>{{ docenteSeleccionado.categoria | capitalizado}}</td>
-                                        <th>Correo</th>
-                                        <td class="text-dark">{{ docenteSeleccionado.correo }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Acta Programa</th>
-                                        <td>
-                                            <input type="text" class="form-control mr-3" [(ngModel)]="actaPrograma" name="actaPrograma">
-                                        </td>
-                                        <th>Acta Facultad</th>
-                                        <td>
-                                            <input type="text" class="form-control mr-3" [(ngModel)]="actaFacultad" name="actaFacultad">
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>¿Agenda Concertada?</th>
-                                        <td>
-                                            <select [(ngModel)]="agendaConcertada" name="agendaConcertada" class="custom-select mt-3">
-                                              <option value="si">Si</option>
-                                              <option value="no">No</option>
-                                            </select>
-                                        </td>
-                                        <th>¿Agenda Completa?</th>
-                                        <td>
-                                            <select [(ngModel)]="agendaCompleta" name="agendaCompleta" class="custom-select mt-3">
-                                              <option value="si">Si</option>
-                                              <option value="no">No</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <hr>
-
-                            <!-- %%%%%%% Tabla para  mostrar servicios %%%%%%% -->
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Asignatura</th>
-                                        <th>Grupo</th>
-                                        <th>Programa</th>
-                                        <th>I/H</th>
-                                        <th>I/S</th>
-                                        <th *ngIf="nombreContrato !== 'catedrático'">Con Factor</th>
-                                        <th>Horario</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr *ngFor="let agenda of AgendasServicio">
-                                        <td>{{ agenda.asignatura | capitalizado }} <br>
-                                            <button class="btn btn-sm btn-outline-success m-1" (click)="editarServicioPrograma(agenda.idservicioprograma)">Edición Rápida</button>
-                                            <button class="btn btn-sm btn-outline-success m-1" (click)="editarServicio(agenda.idservicioprograma)">Edición</button>
-                                        </td>
-                                        <td>{{ agenda.grupo }}</td>
-                                        <td>{{ agenda.programa | capitalizado }}</td>
-                                        <td>
-                                            <p *ngIf="agenda.jornada !== 'virtual'">{{ agenda.horas | capitalizado }}</p>
-                                        </td>
-                                        <td>{{ agenda.horassemestre }}</td>
-                                        <td *ngIf="nombreContrato !== 'catedrático'">{{ agenda.horasfactor }}</td>
-                                        <td>
-
-                                            <table class="table" *ngIf="agenda.jornada !== 'virtual'">
-                                                <tbody>
-                                                    <tr *ngFor="let horario of agenda.horarios">
-                                                        <td>{{ horario.dia | capitalizado }} de {{ horario.inicio }} a {{ horario.fin }}</td>
-                                                        <td>{{ horario.aula }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                            <p *ngIf="agenda.jornada === 'virtual'">Virtual</p>
-                                        </td>
-                                        <td>{{ agenda.aulas | uppercase }}</td>
-                                        <td>
-                                            <img src="assets/Iconos/Eliminar.png" class="icono32w puntero-manito" (click)="eliminarAgendaServicio(agenda)">
-                                        </td>
-                                    </tr>
-
-                                    <tr *ngIf="reconocimientoPosgrado > 0">
-                                        <td></td>
-                                        <td></td>
-                                        <th>Reconocimiento de Posgrado</th>
-                                        <th></th>
-                                        <th class="text-dark">{{ reconocimientoPosgrado }}</th>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <th>Total Docencia Directa</th>
-                                        <th>{{ horasSemanales }}</th>
-                                        <th></th>
-                                        <th class="text-dark">{{ horasSemestrales }}</th>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr *ngIf="nombreContrato === 'catedrático'">
-                                        <td></td>
-                                        <td>Horas Dispobibles</td>
-                                        <td></td>
-                                        <td>{{ horasRestantes }}</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <div class="alert alert-danger" *ngIf="observacion">
-                                {{ observacion }}
-                            </div>
-
-                            <button class="btn btn-outline-success mt-3" (click)="agregarServicio()"><img src="assets/Iconos/Agregar.png" class="icono32w"> Asignar Servicio</button>
-
-                            <div *ngIf="nombreContrato !== 'catedrático'">
-                                <table class="mt-3 table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Función</th>
-                                            <th>Actividad</th>
-                                            <th>Subactividad</th>
-                                            <th>Actividad Programa</th>
-                                            <th>Horas Semanales</th>
-                                            <th>Horas Semestre</th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <thead>
-                                        <tr *ngFor="let funcion of FuncionesDocente">
-                                            <td>{{ funcion.funcion | capitalizado }}</td>
-                                            <td>{{ funcion.actividad | capitalizado }}</td>
-                                            <td>{{ funcion.subactividad | capitalizado }}</td>
-                                            <td>{{ funcion.actividadprograma | capitalizado }}</td>
-                                            <td><span *ngIf="funcion.calculada === 'semanales'">{{ funcion.horas | capitalizado }}</span></td>
-                                            <td>{{ funcion.horassemestre | capitalizado }}</td>
-                                            <td>
-                                                <img src="assets/Iconos/Editar.png" class="icono32w puntero-manito" (click)="editarFuncionDocente(funcion)">
-                                            </td>
-                                            <td>
-                                                <img src="assets/Iconos/Eliminar.png" class="icono32w puntero-manito" (click)="eliminarFuncionDocente(funcion)">
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <th>Total Horas Actividades</th>
-                                            <td></td>
-                                            <th class="text-dark">{{ horasTotales }}</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-
-                                <div *ngIf="horasRestantes > 0" class="alert alert-danger">
-                                    Al docente le faltan {{ horasRestantes }} horas para completar la agenda.
-                                </div>
-
-                                <div class="alert alert-success" *ngIf="horasTotales === horasMaxContrato">
-                                    La agenda esta completa
-                                </div>
-
-                                <button class="btn btn-outline-success mt-3" (click)="agregarFuncion()"><img src="assets/Iconos/Agregar.png" class="icono32w"> Crear Función</button>
-                            </div>
-                        </div>
-                    </div>
-
-
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item list-group-item-action puntero-manito" *ngFor="let opcion of Opciones"
+              (click)="abrirOpcion(opcion.Ruta)">
+              <div class="media">
+                <img class="mr-3" style="height: 32px;" [src]="'assets/Iconos/' + opcion.Icono" alt="Descargar">
+                <div class="media-body">
+                  <h6>{{ opcion.Titulo | capitalizado }}</h6>
                 </div>
-            </div>
-
+              </div>
+            </li>
+          </ul>
         </div>
+      </div>
+
+      <div class="card card-shadow mt-1">
+        <div class="card-header bg-dark">
+          <h5 class="text-center text-white">Docentes</h5>
+        </div>
+
+        <div class="card-body">
+
+          <div class="form-group">
+            <label class="font-weight-bold">Buscar por Nombre</label>
+            <input class="form-control" type="text" [(ngModel)]="termino" name="termino" (keyup)="buscarDocente()">
+          </div>
+
+          <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action puntero-manito" *ngFor="let docente of bDocentes"
+              (click)="seleccionarDocenteLista(docente)">
+              <img [src]="docente.foto | noImagen" class="icono32w" style="border-radius: 100%;"> {{ docente.nombre |
+              capitalizado }}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="col-9">
+      <div class="card-shadow card">
+        <div class="card-body">
+          <h3 class="text-success">{{ docenteSeleccionado.nombre | capitalizado }}
+            <button class="btn btn-outline-success btn-sm m-1" (click)="editarDocente(docenteSeleccionado)">
+              <img class="icono32h puntero-manito" src="assets/Iconos/Editar2.png"> Editar
+            </button>
+            <button class="btn btn-outline-success btn-sm m-1" (click)="exportarAgenda()">
+              <img class="icono32h puntero-manito" src="assets/Iconos/Pdf.png"> Exportar
+            </button>
+            <button class="btn btn-outline-success btn-sm m-1" (click)="guardarDatosAgenda()">
+              <img class="icono32h puntero-manito" src="assets/Iconos/Guardar.png"> Guardar
+            </button>
+          </h3>
+          <hr>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="text-center">Formato de Concertación de Agenda Docente</h4>
+              <hr>
+
+              <table>
+                <tbody>
+                  <tr>
+                    <th style="width: 15%;">Nombre</th>
+                    <td style="width: 35%;">{{ docenteSeleccionado.nombre | capitalizado }}</td>
+                    <th style="width: 15%;">Número de Contrato</th>
+                    <td style="width: 35%;">
+                      <input type="text" class="form-control mt-3" [(ngModel)]="numerocontrato" name="numerocontrato">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Cédula</th>
+                    <td>{{ docenteSeleccionado.documento | number }}</td>
+                    <th>Teléfono</th>
+                    <td>{{ docenteSeleccionado.telefono }}</td>
+                  </tr>
+
+                  <tr>
+                    <th>Categoría</th>
+                    <td>{{ docenteSeleccionado.categoria | capitalizado}}</td>
+                    <th>Correo</th>
+                    <td class="text-dark">{{ docenteSeleccionado.correo }}</td>
+                  </tr>
+
+                  <tr>
+                    <th>Acta Programa</th>
+                    <td>
+                      <input type="text" class="form-control mr-3" [(ngModel)]="actaPrograma" name="actaPrograma">
+                    </td>
+                    <th>Acta Facultad</th>
+                    <td>
+                      <input type="text" class="form-control mr-3" [(ngModel)]="actaFacultad" name="actaFacultad">
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>¿Agenda Concertada?</th>
+                    <td>
+                      <select [(ngModel)]="agendaConcertada" name="agendaConcertada" class="custom-select mt-3">
+                        <option value="si">Si</option>
+                        <option value="no">No</option>
+                      </select>
+                    </td>
+                    <th>¿Agenda Completa?</th>
+                    <td>
+                      <select [(ngModel)]="agendaCompleta" name="agendaCompleta" class="custom-select mt-3">
+                        <option value="si">Si</option>
+                        <option value="no">No</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <hr>
+
+              <!-- %%%%%%% Tabla para  mostrar servicios %%%%%%% -->
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Asignatura</th>
+                    <th>Grupo</th>
+                    <th>Programa</th>
+                    <th>I/H</th>
+                    <th>I/S</th>
+                    <th *ngIf="nombreContrato !== 'catedrático'">Con Factor</th>
+                    <th>Horario</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let agenda of AgendasServicio">
+                    <td>{{ agenda.asignatura | capitalizado }} <br>
+                      <button class="btn btn-sm btn-outline-success m-1"
+                        (click)="editarServicioPrograma(agenda.idservicioprograma)">Edición Rápida</button>
+                      <button class="btn btn-sm btn-outline-success m-1"
+                        (click)="editarServicio(agenda.idservicioprograma)">Edición</button>
+                    </td>
+                    <td>{{ agenda.grupo }}</td>
+                    <td>{{ agenda.programa | capitalizado }}</td>
+                    <td>
+                      <!-- <p *ngIf="agenda.jornada !== 'virtual'">{{ agenda.horas | capitalizado }}</p> -->
+                      <p>{{ agenda.horas | capitalizado }}</p>
+                    </td>
+                    <td>{{ agenda.horassemestre }}</td>
+                    <td *ngIf="nombreContrato !== 'catedrático'">{{ agenda.horasfactor }}</td>
+                    <td>
+
+                      <table class="table" *ngIf="agenda.jornada !== 'virtual'">
+                        <tbody>
+                          <tr *ngFor="let horario of agenda.horarios">
+                            <td>{{ horario.dia | capitalizado }} de {{ horario.inicio }} a {{ horario.fin }}</td>
+                            <td>{{ horario.aula }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <p *ngIf="agenda.jornada === 'virtual'">Virtual</p>
+                    </td>
+                    <td>{{ agenda.aulas | uppercase }}</td>
+                    <td>
+                      <img src="assets/Iconos/Eliminar.png" class="icono32w puntero-manito"
+                        (click)="eliminarAgendaServicio(agenda)">
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="reconocimientoPosgrado > 0">
+                    <td></td>
+                    <td></td>
+                    <th>Reconocimiento de Posgrado</th>
+                    <th></th>
+                    <th class="text-dark">{{ reconocimientoPosgrado }}</th>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <th>Total Docencia Directa</th>
+                    <th>{{ horasSemanales }}</th>
+                    <th></th>
+                    <th class="text-dark">{{ horasSemestrales }}</th>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr *ngIf="nombreContrato === 'catedrático'">
+                    <td></td>
+                    <td>Horas Dispobibles</td>
+                    <td></td>
+                    <td>{{ horasRestantes }}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="alert alert-danger" *ngIf="observacion">
+                {{ observacion }}
+              </div>
+
+              <button class="btn btn-outline-success mt-3" (click)="agregarServicio()"><img
+                  src="assets/Iconos/Agregar.png" class="icono32w"> Asignar Servicio</button>
+
+              <div *ngIf="nombreContrato !== 'catedrático'">
+                <table class="mt-3 table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Función</th>
+                      <th>Actividad</th>
+                      <th>Subactividad</th>
+                      <th>Actividad Programa</th>
+                      <th>Horas Semanales</th>
+                      <th>Horas Semestre</th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+
+                  <thead>
+                    <tr *ngFor="let funcion of FuncionesDocente">
+                      <td>{{ funcion.funcion | capitalizado }}</td>
+                      <td>{{ funcion.actividad | capitalizado }}</td>
+                      <td>{{ funcion.subactividad | capitalizado }}</td>
+                      <td>{{ funcion.actividadprograma | capitalizado }}</td>
+                      <td><span *ngIf="funcion.calculada === 'semanales'">{{ funcion.horas | capitalizado }}</span></td>
+                      <td>{{ funcion.horassemestre | capitalizado }}</td>
+                      <td>
+                        <img src="assets/Iconos/Editar.png" class="icono32w puntero-manito"
+                          (click)="editarFuncionDocente(funcion)">
+                      </td>
+                      <td>
+                        <img src="assets/Iconos/Eliminar.png" class="icono32w puntero-manito"
+                          (click)="eliminarFuncionDocente(funcion)">
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <th>Total Horas Actividades</th>
+                      <td></td>
+                      <th class="text-dark">{{ horasTotales }}</th>
+                    </tr>
+                  </thead>
+                </table>
+
+                <div *ngIf="horasRestantes > 0" class="alert alert-danger">
+                  Al docente le faltan {{ horasRestantes }} horas para completar la agenda.
+                </div>
+
+                <div class="alert alert-success" *ngIf="horasTotales === horasMaxContrato">
+                  La agenda esta completa
+                </div>
+
+                <button class="btn btn-outline-success mt-3" (click)="agregarFuncion()"><img
+                    src="assets/Iconos/Agregar.png" class="icono32w"> Crear Función</button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

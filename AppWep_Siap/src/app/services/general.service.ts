@@ -1497,6 +1497,8 @@ export class GeneralService {
 
   getTrabajoGrado(id: string) {
     const url = this.dataSnap_Path(this.URL_TRABAJOGRADO) + this.parametro(id);
+    console.log(url);
+
     return this.http.get(url).pipe(retry(10));
   }
 

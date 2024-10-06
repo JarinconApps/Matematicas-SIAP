@@ -66,6 +66,7 @@ export class VerTrabajoGradoComponent implements OnInit {
 
     this.leyendo = true;
     this.genService.getTrabajoGrado(this.idtrabajogrado).subscribe((rTrabajoGrado: TrabajoGrado) => {
+      console.log(rTrabajoGrado);
       this.trabajogrado = rTrabajoGrado;
       this.leyendo = false;
     });

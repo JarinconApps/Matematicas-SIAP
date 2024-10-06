@@ -1,0 +1,9 @@
+node_modules
+dist
+Win32
+__history
+__recovery
+
+*.exe*
+*.~dsk*
+*.zip*

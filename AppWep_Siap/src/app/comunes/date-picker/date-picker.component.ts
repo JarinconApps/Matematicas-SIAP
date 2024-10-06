@@ -53,7 +53,13 @@ export class DatePickerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: { [property: string]: SimpleChange }) {
 
-    this.Fecha = changes.Fecha.currentValue;
+    console.log(changes.Fecha.currentValue);
+    if (changes.Fecha.currentValue === undefined) {
+      this.Fecha = '2020-08-20';
+    } else {
+      this.Fecha = changes.Fecha.currentValue;
+    }
+
     const datos: string[] = this.Fecha.split('-');
     this.dd = datos[2];
 
